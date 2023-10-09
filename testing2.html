@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Filterable Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
+
+        .filter select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image {
+            flex-basis: calc(33.33% - 10px);
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image:hover img {
+            transform: scale(1.1);
+        }
+
+        .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px 10px;
+            font-espèce: 12px;
+            border-radius: 0 0 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modern Filterable Gallery</h1>
+    </header>
+
+    <div class="container">
+        <div class="filter">
+            <label for="famille">Select Famille:</label>
+            <select id="famille">
+                <option value="Poaceae">Poaceae</option>
+                <option value="Cyperaceae">Cyperaceae</option>
+                <option value="Juncaceae">Juncaceae</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label for="genre">Select Genre:</label>
+            <select id="genre">
+                <option value="Carex">Carex</option>
+                <option value="Bromus">Bromus</option>
+                <option value="Juncus">Juncus</option>
+                <option value="Poa">Poa</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label for="espèce">Select Espèce:</label>
+            <select id="espèce">
+                <option value="all">All</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+
+        <div class="gallery" id="imageGallery">
+            <!-- Gallery images will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        const familleSelect = document.getElementById("famille");
+        const genreSelect = document.getElementById("genre");
+        const espèceSelect = document.getElementById("espèce");
+        const imageGallery = document.getElementById("imageGallery");
+
+        // Example images
+        const images = [
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/145310848/medium.jpg", alt: "Agropyron cristatum", famille: "Poaceae", genre: "Agropyron", espèce: "Agropyron cristatum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/311822566/medium.jpeg", alt: "Agrostis perennans", famille: "Poaceae", genre: "Agrostis", espèce: "Agrostis perennans" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/200957314/medium.jpeg", alt: "Anthoxanthum hirtum", famille: "Poaceae", genre: "Anthoxanthum", espèce: "Anthoxanthum hirtum" },
+{ src: "NA", alt: "Bromus japonicus", famille: "Poaceae", genre: "Bromus", espèce: "Bromus japonicus" },
+{ src: "NA", alt: "Bromus pumpellianus", famille: "Poaceae", genre: "Bromus", espèce: "Bromus pumpellianus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/289327821/medium.jpeg", alt: "Bromus tectorum", famille: "Poaceae", genre: "Bromus", espèce: "Bromus tectorum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/13932500/medium.jpeg", alt: "Carex albursina", famille: "Cyperaceae", genre: "Carex", espèce: "Carex albursina" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/163086930/medium.jpg", alt: "Carex alopecoidea", famille: "Cyperaceae", genre: "Carex", espèce: "Carex alopecoidea" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/225875889/medium.jpeg", alt: "Carex atlantica", famille: "Cyperaceae", genre: "Carex", espèce: "Carex atlantica" },
+{ src: "NA", alt: "Carex atrofusca", famille: "Cyperaceae", genre: "Carex", espèce: "Carex atrofusca" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/216649316/medium.jpeg", alt: "Carex crinita", famille: "Cyperaceae", genre: "Carex", espèce: "Carex crinita" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/216654881/medium.jpeg", alt: "Carex diandra", famille: "Cyperaceae", genre: "Carex", espèce: "Carex diandra" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/205056281/medium.jpeg", alt: "Carex flacca", famille: "Cyperaceae", genre: "Carex", espèce: "Carex flacca" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/318945884/medium.jpeg", alt: "Carex gynandra", famille: "Cyperaceae", genre: "Carex", espèce: "Carex gynandra" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/291342930/medium.jpeg", alt: "Carex hirtifolia", famille: "Cyperaceae", genre: "Carex", espèce: "Carex hirtifolia" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/220643795/medium.jpeg", alt: "Carex oligosperma", famille: "Cyperaceae", genre: "Carex", espèce: "Carex oligosperma" },
+{ src: "NA", alt: "Carex prairea", famille: "Cyperaceae", genre: "Carex", espèce: "Carex prairea" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/218602594/medium.jpeg", alt: "Carex scirpoidea", famille: "Cyperaceae", genre: "Carex", espèce: "Carex scirpoidea" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/211275163/medium.jpg", alt: "Carex tincta", famille: "Cyperaceae", genre: "Carex", espèce: "Carex tincta" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/217736758/medium.jpeg", alt: "Carex torta", famille: "Cyperaceae", genre: "Carex", espèce: "Carex torta" },
+{ src: "NA", alt: "Cenchrus longispinus", famille: "Poaceae", genre: "Cenchrus", espèce: "Cenchrus longispinus" },
+{ src: "NA", alt: "Cyperus erythrorhizos", famille: "Cyperaceae", genre: "Cyperus", espèce: "Cyperus erythrorhizos" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/177051917/medium.jpg", alt: "Cyperus strigosus", famille: "Cyperaceae", genre: "Cyperus", espèce: "Cyperus strigosus" },
+{ src: "NA", alt: "Dichanthelium subvillosum", famille: "Poaceae", genre: "Dichanthelium", espèce: "Dichanthelium subvillosum" },
+{ src: "NA", alt: "Dupontia fisheri", famille: "Poaceae", genre: "Dupontia", espèce: "Dupontia fisheri" },
+{ src: "NA", alt: "Eleocharis kamtschatica", famille: "Cyperaceae", genre: "Eleocharis", espèce: "Eleocharis kamtschatica" },
+{ src: "NA", alt: "Elymus curvatus", famille: "Poaceae", genre: "Elymus", espèce: "Elymus curvatus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/215320298/medium.jpg", alt: "Elymus wiegandii", famille: "Poaceae", genre: "Elymus", espèce: "Elymus wiegandii" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/52793441/medium.jpg", alt: "Eragrostis cilianensis", famille: "Poaceae", genre: "Eragrostis", espèce: "Eragrostis cilianensis" },
+{ src: "NA", alt: "Eriophorum brachyantherum", famille: "Cyperaceae", genre: "Eriophorum", espèce: "Eriophorum brachyantherum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/294201962/medium.jpg", alt: "Eriophorum vaginatum", famille: "Cyperaceae", genre: "Eriophorum", espèce: "Eriophorum vaginatum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/233455478/medium.jpg", alt: "Festuca trachyphylla", famille: "Poaceae", genre: "Festuca", espèce: "Festuca trachyphylla" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/311992936/medium.jpeg", alt: "Juncus alpinoarticulatus", famille: "Juncaceae", genre: "Juncus", espèce: "Juncus alpinoarticulatus" },
+{ src: "NA", alt: "Juncus ensifolius", famille: "Juncaceae", genre: "Juncus", espèce: "Juncus ensifolius" },
+{ src: "NA", alt: "Leymus arenarius", famille: "Poaceae", genre: "Leymus", espèce: "Leymus arenarius" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/237433810/medium.jpg", alt: "Lolium pratense", famille: "Poaceae", genre: "Lolium", espèce: "Lolium pratense" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/218189311/medium.jpeg", alt: "Milium effusum", famille: "Poaceae", genre: "Milium", espèce: "Milium effusum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/237607190/medium.jpg", alt: "Oreojuncus trifidus", famille: "Juncaceae", genre: "Oreojuncus", espèce: "Oreojuncus trifidus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/225866042/medium.jpg", alt: "Panicum capillare", famille: "Poaceae", genre: "Panicum", espèce: "Panicum capillare" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/238930866/medium.jpg", alt: "Panicum virgatum", famille: "Poaceae", genre: "Panicum", espèce: "Panicum virgatum" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/215706121/medium.jpeg", alt: "Poa annua", famille: "Poaceae", genre: "Poa", espèce: "Poa annua" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/137687613/medium.jpg", alt: "Poa palustris", famille: "Poaceae", genre: "Poa", espèce: "Poa palustris" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/300415918/medium.jpg", alt: "Poa pratensis", famille: "Poaceae", genre: "Poa", espèce: "Poa pratensis" },
+{ src: "NA", alt: "Poa secunda", famille: "Poaceae", genre: "Poa", espèce: "Poa secunda" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/234010877/medium.jpeg", alt: "Rhynchospora capillacea", famille: "Cyperaceae", genre: "Rhynchospora", espèce: "Rhynchospora capillacea" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/320154628/medium.jpeg", alt: "Schoenoplectus torreyi", famille: "Cyperaceae", genre: "Schoenoplectus", espèce: "Schoenoplectus torreyi" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/254720090/medium.jpeg", alt: "Scirpus microcarpus", famille: "Cyperaceae", genre: "Scirpus", espèce: "Scirpus microcarpus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/318942685/medium.jpeg", alt: "Sporobolus michauxianus", famille: "Poaceae", genre: "Sporobolus", espèce: "Sporobolus michauxianus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/229000945/medium.jpg", alt: "Sporobolus vaginiflorus", famille: "Poaceae", genre: "Sporobolus", espèce: "Sporobolus vaginiflorus" },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/94895700/medium.jpeg", alt: "Zizania aquatica", famille: "Poaceae", genre: "Zizania", espèce: "Zizania aquatica" },
+            // Add more example images here
+        ];
+
+        // Function to update the gallery based on filter options
+        function updatefamilleGallery() {
+            const selectedFamille = familleSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedFamille === image.famille)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        function updategenreGallery() {
+            const selectedGenre = genreSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedGenre === image.genre)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        function updateespèceGallery() {
+            const selectedEspèce = espèceSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedEspèce === image.espèce)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        // Event listeners for filter changes
+        familleSelect.addEventListener("change", updatefamilleGallery);
+        genreSelect.addEventListener("change", updategenreGallery);
+        espèceSelect.addEventListener("change", updateespèceGallery);
+
+        // Initial gallery update when the page loads
+        updateGallery();
+    </script>
+</body>
+</html>

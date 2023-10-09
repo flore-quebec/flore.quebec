@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Filterable Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
+
+        .filter select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image {
+            flex-basis: calc(33.33% - 10px);
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image:hover img {
+            transform: scale(1.1);
+        }
+
+        .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px 10px;
+            font-espèce: 12px;
+            border-radius: 0 0 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modern Filterable Gallery</h1>
+    </header>
+
+    <div class="container">
+        <div class="filter">
+            <label for="famille">Select Famille:</label>
+            <select id="famille">
+                <option value="all">All</option>
+                <option value="nature">Nature</option>
+                <option value="animals">Animals</option>
+                <option value="cities">Cities</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label for="genre">Select Genre:</label>
+            <select id="genre">
+                <option value="all">All</option>
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label for="espèce">Select Espèce:</label>
+            <select id="espèce">
+                <option value="all">All</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+
+        <div class="gallery" id="imageGallery">
+            <!-- Gallery images will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        const familleSelect = document.getElementById("famille");
+        const genreSelect = document.getElementById("genre");
+        const espèceSelect = document.getElementById("espèce");
+        const imageGallery = document.getElementById("imageGallery");
+
+        // Example images
+        const images = [
+            { src: "nature1.jpg", alt: "Nature 1", famille: "nature", genre: "green", espèce: "medium" },
+            { src: "animal1.jpg", alt: "Animal 1", famille: "animals", genre: "red", espèce: "small" },
+            { src: "city1.jpg", alt: "City 1", famille: "cities", genre: "blue", espèce: "large" },
+            { src: "nature2.jpg", alt: "Nature 2", famille: "nature", genre: "green", espèce: "large" },
+            { src: "animal2.jpg", alt: "Animal 2", famille: "animals", genre: "blue", espèce: "medium" },
+            { src: "city2.jpg", alt: "City 2", famille: "cities", genre: "red", espèce: "small" },
+            { src: "nature3.jpg", alt: "Nature 3", famille: "nature", genre: "blue", espèce: "medium" },
+            { src: "animal3.jpg", alt: "Animal 3", famille: "animals", genre: "green", espèce: "small" },
+            { src: "city3.jpg", alt: "City 3", famille: "cities", genre: "red", espèce: "large" },
+            { src: "nature4.jpg", alt: "Nature 4", famille: "nature", genre: "red", espèce: "large" },
+            { src: "animal4.jpg", alt: "Animal 4", famille: "animals", genre: "blue", espèce: "small" },
+            { src: "city4.jpg", alt: "City 4", famille: "cities", genre: "green", espèce: "medium" },
+            { src: "nature5.jpg", alt: "Nature 5", famille: "nature", genre: "green", espèce: "medium" },
+            { src: "animal5.jpg", alt: "Animal 5", famille: "animals", genre: "red", espèce: "small" },
+            { src: "city5.jpg", alt: "City 5", famille: "cities", genre: "blue", espèce: "large" },
+            { src: "nature6.jpg", alt: "Nature 6", famille: "nature", genre: "green", espèce: "large" },
+            { src: "animal6.jpg", alt: "Animal 6", famille: "animals", genre: "blue", espèce: "medium" },
+            { src: "city6.jpg", alt: "City 6", famille: "cities", genre: "red", espèce: "small" },
+            { src: "nature7.jpg", alt: "Nature 7", famille: "nature", genre: "green", espèce: "large" },
+            { src: "animal7.jpg", alt: "Animal 7", famille: "animals", genre: "blue", espèce: "medium" },
+            { src: "city7.jpg", alt: "City 7", famille: "cities", genre: "red", espèce: "small" },                       { src: "nature8.jpg", alt: "Nature 8", famille: "nature", genre: "green", espèce: "large" },
+            { src: "animal8.jpg", alt: "Animal 8", famille: "animals", genre: "blue", espèce: "medium" },
+            { src: "city8.jpg", alt: "City 8", famille: "cities", genre: "red", espèce: "small" },
+            // Add more example images here
+        ];
+
+        // Function to update the gallery based on filter options
+        function updatefamilleGallery() {
+            const selectedFamille = familleSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedFamille === image.famille)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        function updategenreGallery() {
+            const selectedGenre = genreSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedGenre === image.genre)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        function updateespèceGallery() {
+            const selectedEspèce = espèceSelect.value;
+
+            const filteredImages = images.filter(image => (
+                (selectedEspèce === image.espèce)
+            ));
+
+            // Clear the current gallery
+            imageGallery.innerHTML = '';
+
+            // Add filtered images to the gallery
+            filteredImages.forEach(image => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'image';
+                imageElement.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}">
+                    <span class="label">${image.alt}</span>
+                `;
+                imageGallery.appendChild(imageElement);
+            });
+        }
+
+        // Event listeners for filter changes
+        familleSelect.addEventListener("change", updatefamilleGallery);
+        genreSelect.addEventListener("change", updategenreGallery);
+        espèceSelect.addEventListener("change", updateespèceGallery);
+
+        // Initial gallery update when the page loads
+        updateGallery();
+    </script>
+</body>
+</html>
