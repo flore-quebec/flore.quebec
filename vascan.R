@@ -109,7 +109,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
   pics
 }
 
-ids<-sample(basename(d$inatID[d$inatID!=""]),100)
+ids<-sample(basename(d$inatID[d$inatID!=""]),200)
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
   if(i==""){
@@ -145,6 +145,9 @@ pics<-pics[!duplicated(species),]
 pics<-pics[!is.na(pics$url),]
 
 
+#fwrite(pics,"C:/Users/God/Downloads/pics.csv")
+fread(pics,"C:/Users/God/Downloads/pics.csv")
+
 image_container<-function(species,url){
   cat("\014")
   invisible(lapply(seq_along(species),function(i){
@@ -171,6 +174,13 @@ image_array<-function(){
     tags<-c(tags,"images")
     info<-c(info,urls)
 
+
+
+    urls<-photos$attribution[w][1:(min(c(length(w),8)))]
+    urls<-paste0("[ \"",paste(urls,collapse="\", \""),"\" ]")
+    tags<-c(tags,"credit")
+    info<-c(info,urls)
+
     arr<-paste("{",paste0(paste0(tags,": ",info),collapse=", "),"},",collapse="")
     #arr<-gsub("\"{","{",arr)
     #arr<-gsub("}\"","}",arr)
@@ -185,6 +195,7 @@ option_values<-function(x,tag){
   cat(paste0("<option value=\"",values,"\">\n"))
 }
 option_values(pics,tag="species")
+option_values(pics,tag="genus")
 
 
 
@@ -198,4 +209,59 @@ df<-as.data.frame(table(d[d$family!="As",]$genus))
 df<-df[rev(order(df$Freq)),]
 row.names(df)<-df[,1]
 wordcloud2(data=df, size=0.75, shape="square",color='random-dark',minSize=1)
+
+
+
+library(geodata)
+library(sf)
+library(rmapshaper)
+library(rnaturalearth)
+
+can<-gadm("CAN",path="C:/Users/God/Downloads/qc.gpkg") |> st_as_sf()
+
+# Downloads polygons using package geodata
+#can<-gadm("CAN",level=1,path=getwd()) |> st_as_sf()
+can<-st_transform(can,32618)
+
+# keep Québec and bordering provinces/states as a buffer
+region<-can[can$NAME_1%in%c("Québec"),]
+
+# split NF into different polygons
+labrador<-ms_explode(can[can$NAME_1%in%c("Newfoundland and Labrador"),])
+labrador<-labrador[which.max(st_area(labrador)),] # keep Labarador
+region<-rbind(region,labrador)
+qc<-ms_simplify(region,0.01)
+
+# Add it to the study region
+region<-rbind(region,labrador)
+
+# Simplify polygons to make things faster
+region<-ms_simplify(region,0.005)
+region<-st_union(region) |> st_as_sf()
+
+# lakes
+lakes<-ne_download(scale="medium",type="lakes",destdir=getwd(),category="physical",returnclass="sf") |> st_transform(32618)
+lakes<-st_filter(lakes,region)
+
+lakes<-st_intersection(lakes,region)
+
+
+plotQC<-function(){ # plotting function for the study area
+  par(mar=c(0,0,0,0))
+  plot(st_geometry(qc),col="grey99",border=NA)
+  plot(st_geometry(region),lwd=0.1,add=TRUE)
+  plot(st_geometry(lakes),col="lightblue",border=NA,lwd=0.01,add=TRUE)
+  plot(st_sample(region,50),pch=16,col="forestgreen",cex=0.4,add=TRUE)
+}
+png("C:/Users/God/Documents/floreqc/qcfloremap.png",units="cm",width=5,height=5,res=400)
+plotQC()
+dev.off()
+file.show("C:/Users/God/Documents/floreqc/qcfloremap.png")
+
+
+library(data.table)
+d<-fread("C:/Users/God/Documents/UdeS/Téléchargements/iNatQC.csv")
+d[,jul:=as.integer(format(as.Date(observed_on),"%j"))]
+d[,year:=substr(observed_on,1,4)]
+
 
