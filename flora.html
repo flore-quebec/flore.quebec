@@ -146,10 +146,10 @@
         }
 
         .modal-header {
-            font-size: 24px;
+            font-size: 6vh;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 2vhpx;
         }
 
         .modal-text {
@@ -190,7 +190,71 @@
             color: #333;
         }
 
-    </style>
+
+        /* Below for the gallery  */
+
+        /* Style for the gallery */
+        .gallery2 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1;
+        }
+
+        /* Style for the gallery content */
+        .gallery-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Style for the gallery image */
+        .gallery-image {
+            height: 95vh;
+        }
+
+        /* Style for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20vh; /* Larger font size for the close button */
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Style for the previous and next buttons in gallery */
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20vh; /* Larger font size for the arrows */
+            color: #fff;
+            cursor: pointer;
+            padding-top: 5vh;
+            padding-bottom: 5vh;
+            padding-left: 15vh;
+            padding-right: 15vh;
+        }
+
+        .prev {
+            left: 2vw;
+        }
+
+        .next {
+            right: 2vw;
+        }
+
+
+
+
+
+</style>
 </head>
 <body>
     <div id="header">
@@ -336,12 +400,32 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
+            <!-- <div class="thumbnail-gallery" id="thumbnailGallery">
+            <!--<img class="thumbnail-image" src="image1.jpg" alt="Image 1" onclick="openGallery('image1.jpg', 0)"> -->
+            <!--<img class="thumbnail-image" src="image2.jpg" alt="Image 2" onclick="openGallery('image2.jpg', 1)"> -->
+            <!--<img class="thumbnail-image" src="image3.jpg" alt="Image 3" onclick="openGallery('image3.jpg', 2)"> -->
+            <!-- Add more thumbnail images as needed -->
+            <!-- </div> -->
             <div class="modal-images" id="modalImages"></div>
             <div class="modal-header" id="modalHeader"></div>
             <div class="modal-text" id="modalText">
             </div>
         </div>
     </div>
+
+
+
+
+    <!-- The gallery -->
+    <div class="gallery2" id="myGallery">
+        <span class="close" onclick="closeGallery()">&times;</span>
+        <span class="prev" onclick="changeImage(-1)">&#10094;</span>
+        <span class="next" onclick="changeImage(1)">&#10095;</span>
+        <div class="gallery-content">
+            <img class="gallery-image" id="galleryImage">
+        </div>
+    </div>
+
 
     <script>
 
@@ -357,7 +441,7 @@
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/13236568/medium.jpg", alt: "Carex arctogena", famille: "Cyperaceae", genre: "Carex", espèce: "Carex arctogena", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/13236568/medium.jpg" ] },
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/32993517/medium.jpeg", alt: "Carex concinna", famille: "Cyperaceae", genre: "Carex", espèce: "Carex concinna", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/32993517/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/22676962/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/22675591/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/13299102/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/8119391/medium.jpeg" ] },
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/303357697/medium.jpeg", alt: "Carex conoidea", famille: "Cyperaceae", genre: "Carex", espèce: "Carex conoidea", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/303357697/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/218213251/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/210618675/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/193044074/medium.jpg", "https://inaturalist-open-data.s3.amazonaws.com/photos/44795742/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/31094571/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/5574261/medium.jpeg" ] },
-{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/216654881/medium.jpeg", alt: "Carex diandra", famille: "Cyperaceae", genre: "Carex", espèce: "Carex diandra", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/216654881/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/86448945/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/82006498/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/44489252/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42979295/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42414952/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42279748/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/19888940/medium.jpeg" ] },
+{ src: "https://inaturalist-open-data.s3.amazonaws.com/photos/216654881/medium.jpeg", alt: "Carex diandra", famille: "Cyperaceae", genre: "Carex", espèce: "Carex diandra", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/216654881/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/86448945/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/82006498/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/44489252/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42979295/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42414952/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/42279748/large.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/19888940/large.jpeg" ] },
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/198873393/medium.jpg", alt: "Carex digitalis", famille: "Cyperaceae", genre: "Carex", espèce: "Carex digitalis", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/198873393/medium.jpg" ] },
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/307272594/medium.jpeg", alt: "Carex exilis", famille: "Cyperaceae", genre: "Carex", espèce: "Carex exilis", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/307272594/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/303459673/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/303358552/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/222106386/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/222106249/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/218764814/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/218191349/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/199381871/medium.jpg" ] },
 { src: "https://inaturalist-open-data.s3.amazonaws.com/photos/289320163/medium.jpeg", alt: "Carex garberi", famille: "Cyperaceae", genre: "Carex", espèce: "Carex garberi", images: [ "https://inaturalist-open-data.s3.amazonaws.com/photos/289320163/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/288829120/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/288276665/medium.jpg", "https://inaturalist-open-data.s3.amazonaws.com/photos/44795273/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/43556015/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/43434618/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/32997341/medium.jpeg", "https://inaturalist-open-data.s3.amazonaws.com/photos/20402832/medium.jpeg" ] },
@@ -422,8 +506,11 @@
         const modalHeader = document.getElementById('modalHeader');
         const modalText = document.getElementById('modalText');
         const modalImages = document.getElementById('modalImages');
+        //const thumbnailGallery = document.getElementById('thumbnailGallery');
 
+        //const thumbnails = ["image1.jpg", "image2.jpg", "image3.jpg"];
 
+        var thumbnails;
 
         function openModal(headerText, bodyText, imageArray) {
             modal.style.display = 'block';
@@ -436,20 +523,66 @@
             // Add images to modal
             imageArray.forEach((imageUrl) => {
                 const image = document.createElement('img');
+                //const image = document.getElementById('modalImages');
                 image.classList.add('modal-image');
                 image.src = imageUrl;
+                image.onclick = function() {openGallery(imageUrl, 0);};
                 modalImages.appendChild(image);
+                //<img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 0)">
             });
+
+
+            // Array of image URLs
+            //const images = imageArray;
+
+            //thumbnailGallery.innerHTML = '';
+
+
+            // Add images to modal
+            //imageArray.forEach(imageUrl => {
+                //const image = document.createElement('div');
+                //image.classList.add('thumbnail-gallery');
+                //image.src = imageUrl;
+                //thumbnailGallery.appendChild(image);
+
+                //const imageElement = document.createElement('div');
+                //imageElement.classList.add('thumbnail-gallery');
+                //const allthumbs = document.getElementById('thumbnailGallery');
+                //const thumbs = document.createElement('img');
+                //thumbs.classList.add('thumbnail-image');
+                //thumbs.src = imageUrl;
+                //thumbs.alt = "Image 1";
+                //thumbs.onclick = openGallery(imageUrl, 0);
+                //thumbnailGallery.innerHTML = `
+                //      <img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 0)">
+                //      <img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 1)">
+                //`;
+                //thumbnailGallery.appendChild(thumbs);
+
+
+            //});
+
+
         }
+
 
         function closeModal() {
             modal.style.display = 'none';
         }
 
+                // Function to close the gallery
+        function closeGallery() {
+            const gallery = document.getElementById("myGallery");
+            gallery.style.display = "none";
+        }
+
         window.onclick = function (event) {
             if (event.target === modal) {
                 closeModal();
-            }
+            };
+            if (event.target === gallery) {
+                closeGallery();
+            };
         };
 
 
@@ -491,7 +624,9 @@
                     `;
 
                     const index = data.findIndex(p => p.espèce == title); // tests
-                    const images = data[index].images
+                    const images = data[index].images;
+                    thumbnails = images;
+
 
                     openModal(title, text, images);
                 });
@@ -539,12 +674,33 @@
                     `;
 
                     const index = data.findIndex(p => p.espèce == title); // tests
-                    const images = data[index].images
+                    const images = data[index].images;
+                    thumbnails = images;
 
                     openModal(title, text, images);
                 });
             });
 
+        }
+
+        let currentImageIndex = 0;
+
+        // Function to open the gallery with a specific image
+        function openGallery(imageSrc, index) {
+            const gallery = document.getElementById("myGallery");
+            const galleryImage = document.getElementById("galleryImage");
+
+            gallery.style.display = "block";
+            galleryImage.src = imageSrc;
+            currentImageIndex = index;
+        }
+
+
+        // Function to switch between images in the gallery
+        function changeImage(offset) {
+            currentImageIndex = (currentImageIndex + offset + thumbnails.length) % thumbnails.length;
+            const galleryImage = document.getElementById("galleryImage");
+            galleryImage.src = thumbnails[currentImageIndex];
         }
 
 
