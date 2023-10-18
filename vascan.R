@@ -109,7 +109,8 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
   pics
 }
 
-ids<-sample(basename(d$inatID[d$inatID!=""]),200)
+set.seed(1234)
+ids<-sample(basename(d$inatID[d$inatID!=""]),50)
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
   if(i==""){
@@ -146,20 +147,20 @@ pics<-pics[!is.na(pics$url),]
 
 
 #fwrite(pics,"C:/Users/God/Downloads/pics.csv")
-fread(pics,"C:/Users/God/Downloads/pics.csv")
+#fread("C:/Users/God/Downloads/pics.csv")
 
-image_container<-function(species,url){
-  cat("\014")
-  invisible(lapply(seq_along(species),function(i){
-    cat(paste0("
-      <div class=\"image-container\">
-        <img class=\"image\" src=\"",url[i],"\" alt=\"Additional Image 8\">
-        <div class=\"image-title\">",species[i],"</div>
-      </div>
-    "))
-  }))
-}
-image_container(pics$species,pics$url)
+#image_container<-function(species,url){
+#  cat("\014")
+#  invisible(lapply(seq_along(species),function(i){
+#    cat(paste0("
+#      <div class=\"image-container\">
+#        <img class=\"image\" src=\"",url[i],"\" alt=\"Additional Image 8\">
+#        <div class=\"image-title\">",species[i],"</div>
+#      </div>
+#    "))
+#  }))
+#}
+#image_container(pics$species,pics$url)
 
 image_array<-function(){
   cat("\014")
@@ -174,12 +175,17 @@ image_array<-function(){
     tags<-c(tags,"images")
     info<-c(info,urls)
 
-
-
     urls<-photos$attribution[w][1:(min(c(length(w),8)))]
     urls<-paste0("[ \"",paste(urls,collapse="\", \""),"\" ]")
     tags<-c(tags,"credit")
     info<-c(info,urls)
+
+    urls<-photos$idobs[w][1:(min(c(length(w),8)))]
+    urls<-paste0("https://www.inaturalist.org/observations/",urls)
+    urls<-paste0("[ \"",paste(urls,collapse="\", \""),"\" ]")
+    tags<-c(tags,"link")
+    info<-c(info,urls)
+
 
     arr<-paste("{",paste0(paste0(tags,": ",info),collapse=", "),"},",collapse="")
     #arr<-gsub("\"{","{",arr)
@@ -216,6 +222,7 @@ library(geodata)
 library(sf)
 library(rmapshaper)
 library(rnaturalearth)
+library(magick)
 
 can<-gadm("CAN",path="C:/Users/God/Downloads/qc.gpkg") |> st_as_sf()
 
@@ -230,13 +237,12 @@ region<-can[can$NAME_1%in%c("Québec"),]
 labrador<-ms_explode(can[can$NAME_1%in%c("Newfoundland and Labrador"),])
 labrador<-labrador[which.max(st_area(labrador)),] # keep Labarador
 region<-rbind(region,labrador)
-qc<-ms_simplify(region,0.01)
 
 # Add it to the study region
 region<-rbind(region,labrador)
 
 # Simplify polygons to make things faster
-region<-ms_simplify(region,0.01)
+region<-ms_simplify(region,0.02)
 region<-st_union(region) |> st_as_sf()
 
 # lakes
@@ -246,19 +252,33 @@ lakes<-st_filter(lakes,region)
 lakes<-ms_simplify(lakes,0.05)
 lakes<-st_intersection(lakes,region)
 
+lim<-c(min(st_bbox(region)[c(2,4)]),5700000)
+samp<-st_sample(region,50)
 
-plotQC<-function(){ # plotting function for the study area
+plotQC<-function(ylim=NULL,cex=0.2){ # plotting function for the study area
   par(mar=c(0,0,0,0))
-  plot(st_geometry(qc),col="grey99",border=NA)
-  plot(st_geometry(region),lwd=0.1,col="grey85",border="grey50",add=TRUE)
+  #plot(st_geometry(qc),col="grey99",border=NA)
+  plot(st_geometry(region),lwd=0.1,col="grey85",border="grey60",ylim=ylim)
   plot(st_geometry(lakes),col="grey99",border="grey75",lwd=0.05,add=TRUE)
-  plot(st_sample(region,50),pch=21,bg=adjustcolor("forestgreen",0.5),col=adjustcolor("forestgreen",0.9),lwd=0.3,cex=0.2,add=TRUE)
+  plot(samp,pch=21,bg=adjustcolor("forestgreen",0.5),col=adjustcolor("forestgreen",0.9),lwd=0.3,cex=cex,add=TRUE)
 }
-png("C:/Users/God/Documents/floreqc/qcfloremap.png",units="cm",width=3,height=3,res=500)
-plotQC()
+png("C:/Users/God/Documents/floreqc/qcfloremap1.png",units="cm",width=3,height=1.5,res=500)
+plotQC(ylim=lim)
 dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcfloremap.png") |> image_trim() |> image_border("10x10",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcfloremap.png")
+image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png") |> image_trim() |> image_border("x20",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+#file.show("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+
+png("C:/Users/God/Documents/floreqc/qcfloremap2.png",units="cm",width=3,height=1.5,res=500)
+plotQC(ylim=NULL,cex=0.3)
+dev.off()
+image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png") |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap2.png")
+
+im1<-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+im2<-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png")
+im<-image_composite(im1,image_scale(im2,"x140"),offset="+50+0",gravity="southeast")
+im |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap.png")
 file.show("C:/Users/God/Documents/floreqc/qcfloremap.png")
+
 
 
 library(data.table)
