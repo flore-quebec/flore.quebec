@@ -1,6 +1,14 @@
 
 library(data.table)
 library(jsonlite)
+library(future)
+library(future.apply)
+library(RCurl)
+library(magick)
+library(taxize)
+library(foreach)
+library(doParallel)
+
 
 #d<-read.table("https://data.canadensys.net/downloads/vascan/TXT-5bfd1205-26cd-4ee9-aada-af09bc88732a.txt",header=TRUE,encoding="UTF-8",sep="/t",nrows=10)
 
@@ -76,7 +84,51 @@ inatnames<-data.table(taxonID=species,inatID=unlist(l,use.names=FALSE))
 
 #fwrite(d,"C:/Users/God/Downloads/poales.csv")
 d<-fread("C:/Users/God/Downloads/poales.csv")
+d$species<-d$`Nom scientifique`
 
+
+### FNA links
+d$fna<-paste0("http://floranorthamerica.org/",gsub(" ","_",d$species))
+links<-unique(d$fna)
+plan(multisession,workers=8)
+ex<-future_lapply(links,url.exists)
+plan(sequential)
+d$fna<-ifelse(unlist(ex)[match(d$fna,links)],d$fna,NA)
+
+
+
+### iNat links
+inat<-basename(d$inatID)
+d$inat<-ifelse(inat=="",NA,paste0("https://www.inaturalist.org/observations?subview=grid&place_id=13336&taxon_id=",inat))
+
+
+### POWO links
+sp<-d$species
+powo<-get_pow(sp,ask=TRUE,accepted=TRUE,rank_filter="species")
+powourl<-data.frame(sp=sp,powo=attributes(powo)$uri)
+d$powo<-powourl$powo[match(d$species,powourl$sp)]
+
+
+### VASCAN links
+im<-image_read("https://layout.canadensys.net/common/images/favicon.ico")
+image_write(image_trim(im[6]),"C:/Users/God/Documents/floreqc/vascanlogo.jpg")
+d$vascan<-d$references
+
+
+### GBIF links
+sp<-d$species
+if(length(sp)){
+  registerDoParallel(detectCores())
+  keys<-foreach(i=sp,.packages=c("rgbif")) %dopar% {
+    #sptab<-rev(sort(table(as.data.frame(occ_search(scientificName=i,limit=200)$data)$scientificName)))
+    #spfull<-names(sptab)[1]
+    #key<-as.data.frame(name_suggest(q=spfull)$data)$key[1]
+    key<-as.data.frame(name_backbone(name=i, rank='species', kingdom='plants'))$usageKey[1]
+    file.path("https://www.gbif.org/fr/species",key)
+  }
+  gbifurl<-data.frame(sp=sp,gbif=unlist(keys))
+  d$gbif<-gbifurl$gbif[match(d$species,gbifurl$sp)]
+}
 
 
 iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney"),collapse="0%2C")
@@ -165,8 +217,8 @@ pics<-pics[!is.na(pics$url),]
 image_array<-function(){
   cat("\014")
   invisible(lapply(1:nrow(pics),function(i){
-    tags<-c("src","alt","famille","genre","espèce")
-    tagnames<-c("url","species","family","genus","species")
+    tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","class","ordre")
+    tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","class","order")
     info<-unlist(as.vector(pics[i,..tagnames]))
     info<-unname(sapply(info,function(x){paste0("\"",x,"\"")}))
     w<-which(photos$species==pics$species[i])
@@ -215,6 +267,7 @@ df<-as.data.frame(table(d[d$family!="As",]$genus))
 df<-df[rev(order(df$Freq)),]
 row.names(df)<-df[,1]
 wordcloud2(data=df, size=0.75, shape="square",color='random-dark',minSize=1)
+
 
 
 
