@@ -80,10 +80,6 @@ inatnames<-data.table(taxonID=species,inatID=unlist(l,use.names=FALSE))
 #inat$cbnm<-inat$taxref
 #inat$cbnm<-gsub("var. |subsp. ","",inat$cbnm)
 
-
-
-#fwrite(d,"C:/Users/God/Downloads/poales.csv")
-d<-fread("C:/Users/God/Downloads/poales.csv")
 d$species<-d$`Nom scientifique`
 
 
@@ -131,7 +127,11 @@ if(length(sp)){
 }
 
 
-iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney"),collapse="0%2C")
+#fwrite(d,"C:/Users/God/Downloads/poales.csv")
+d<-fread("C:/Users/God/Downloads/poales.csv")
+
+
+iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney","bird_bugs_botany","chasseurdeplantes","bachandy","paquette0747","brothernorbert"),collapse="0%2C")
 
 get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
   #sp<-gsub(" ","%20",species)
@@ -162,7 +162,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
 }
 
 set.seed(1234)
-ids<-sample(basename(d$inatID[d$inatID!=""]),50)
+ids<-sample(basename(d$inatID[d$inatID!=""]),100)
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
   if(i==""){
@@ -175,7 +175,7 @@ photos<-lapply(seq_along(ids),function(i){
       pic<-x[1:min(c(8,nrow(x))),]
     }
   }
-  Sys.sleep(0.5)
+  Sys.sleep(1)
   pic
 })
 photos<-lapply(seq_along(photos),function(i){
@@ -215,8 +215,8 @@ pics<-pics[!is.na(pics$url),]
 #image_container(pics$species,pics$url)
 
 image_array<-function(){
-  cat("\014")
-  invisible(lapply(1:nrow(pics),function(i){
+  #cat("\014")
+  l<-sapply(1:nrow(pics),function(i){
     tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","class","ordre")
     tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","class","order")
     info<-unlist(as.vector(pics[i,..tagnames]))
@@ -242,18 +242,24 @@ image_array<-function(){
     arr<-paste("{",paste0(paste0(tags,": ",info),collapse=", "),"},",collapse="")
     #arr<-gsub("\"{","{",arr)
     #arr<-gsub("}\"","}",arr)
-    cat(arr,"\n")
-  }))
+    #cat(arr,"\n")
+    arr
+    #write(paste("const = [",arr,"];"),file="data.js",append=TRUE)
+  })
+  arr<-paste(l,collapse=" ")
+  write(paste("const data = [",arr,"];"),file="data.js",append=TRUE)
 }
+
+option_values<-function(x,tag,append=TRUE){
+  #cat("\014")
+  values<-sort(unique(x[[tag]]))
+  write(paste0("const ",paste0(tag,"_values")," = [\"",paste0(values,collapse="\", \""),"\"];"),file="data.js",append=append)
+}
+option_values(pics,tag="family",append=FALSE)
+option_values(pics,tag="genus")
+option_values(pics,tag="species")
 image_array()
 
-option_values<-function(x,tag){
-  cat("\014")
-  values<-sort(unique(x[[tag]]))
-  cat(paste0("<option value=\"",values,"\">\n"))
-}
-option_values(pics,tag="species")
-option_values(pics,tag="genus")
 
 
 
@@ -267,101 +273,5 @@ df<-as.data.frame(table(d[d$family!="As",]$genus))
 df<-df[rev(order(df$Freq)),]
 row.names(df)<-df[,1]
 wordcloud2(data=df, size=0.75, shape="square",color='random-dark',minSize=1)
-
-
-
-
-library(geodata)
-library(sf)
-library(rmapshaper)
-library(rnaturalearth)
-library(magick)
-
-can<-gadm("CAN",path="C:/Users/God/Downloads/qc.gpkg") |> st_as_sf()
-
-# Downloads polygons using package geodata
-#can<-gadm("CAN",level=1,path=getwd()) |> st_as_sf()
-can<-st_transform(can,32618)
-
-# keep Québec and bordering provinces/states as a buffer
-region<-can[can$NAME_1%in%c("Québec"),]
-
-# split NF into different polygons
-labrador<-ms_explode(can[can$NAME_1%in%c("Newfoundland and Labrador"),])
-labrador<-labrador[which.max(st_area(labrador)),] # keep Labarador
-region<-rbind(region,labrador)
-
-# Add it to the study region
-region<-rbind(region,labrador)
-
-# Simplify polygons to make things faster
-region<-ms_simplify(region,0.02)
-region<-st_union(region) |> st_as_sf()
-
-# lakes
-lakes<-ne_download(scale="large",type="lakes",destdir=getwd(),category="physical",returnclass="sf") |> st_transform(32618)
-#lakes<-ne_download(scale="large",type="rivers_lake_centerlines",destdir=getwd(),category="physical",returnclass="sf") |> st_transform(32618)
-lakes<-st_filter(lakes,region)
-lakes<-ms_simplify(lakes,0.05)
-lakes<-st_intersection(lakes,region)
-
-lim<-c(min(st_bbox(region)[c(2,4)]),5700000)
-samp<-st_sample(region,50)
-
-plotQC<-function(ylim=NULL,cex=0.2){ # plotting function for the study area
-  par(mar=c(0,0,0,0))
-  #plot(st_geometry(qc),col="grey99",border=NA)
-  plot(st_geometry(region),lwd=0.1,col="grey85",border="grey60",ylim=ylim)
-  plot(st_geometry(lakes),col="grey99",border="grey75",lwd=0.05,add=TRUE)
-  plot(samp,pch=21,bg=adjustcolor("forestgreen",0.5),col=adjustcolor("forestgreen",0.9),lwd=0.3,cex=cex,add=TRUE)
-}
-png("C:/Users/God/Documents/floreqc/qcfloremap1.png",units="cm",width=3,height=1.5,res=500)
-plotQC(ylim=lim)
-dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png") |> image_trim() |> image_border("x20",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcfloremap1.png")
-#file.show("C:/Users/God/Documents/floreqc/qcfloremap1.png")
-
-png("C:/Users/God/Documents/floreqc/qcfloremap2.png",units="cm",width=3,height=1.5,res=500)
-plotQC(ylim=NULL,cex=0.3)
-dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png") |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap2.png")
-
-im1<-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png")
-im2<-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png")
-im<-image_composite(im1,image_scale(im2,"x140"),offset="+50+0",gravity="southeast")
-im |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap.png")
-file.show("C:/Users/God/Documents/floreqc/qcfloremap.png")
-
-
-
-library(data.table)
-library(magick)
-d<-fread("C:/Users/God/Documents/UdeS/Téléchargements/iNatQC.csv")
-d[,jul:=as.integer(format(as.Date(observed_on),"%j"))]
-d[,year:=substr(observed_on,1,4)]
-
-dates<-format(as.Date(90:300)-1,"%Y-%m-%d")
-brks<-as.integer(format(as.Date(dates[which(substr(dates,9,10)%in%c("01","15"))]),"%j"))
-h<-hist(d[taxon_species_name=="Trillium erectum","jul",]$jul,breaks=brks)
-labs<-format(as.Date(h$mids),"%b-%d")
-
-png("C:/Users/God/Documents/floreqc/qcflorepheno.png",units="cm",width=10,height=5,res=300)
-par(mar=c(3,3,0.5,0.5))
-b<-barplot(h$counts,names.arg="",las=2,col="forestgreen",border=NA,space=0.05,yaxt="n",xaxt="n")
-text(b[,1],rep(0,nrow(b)),label=labs,srt=90,adj=c(1.2,0.5),cex=0.5,xpd=TRUE)
-axis(2,mgp=c(2,0.25,0),tcl=-0.1,las=2,col="grey50",cex.axis=0.5)
-box(col="grey99",lwd=3)
-mtext(side=2,line=1,font=2,text="Nb d'observations",cex=0.75)
-abline(v=b[,1],lty=3,col="grey80")
-abline(h=pretty(h$counts),lty=3,col="grey80")
-par(new=TRUE)
-par(mar=c(3,3,0.5,0.5))
-b<-barplot(h$counts,names.arg="",las=2,col="forestgreen",border=NA,space=0.05,yaxt="n")
-par(new=FALSE)
-dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcflorepheno.png") |> image_trim() |> image_border("10x10",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcflorepheno.png")
-file.show("C:/Users/God/Documents/floreqc/qcflorepheno.png")
-
-
 
 

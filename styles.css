@@ -1,0 +1,433 @@
+
+:root {
+    --green: #43cd80; /* #43cd80; */
+    --white: #fff; /* #fff8dc; */
+    --black: #111; /* #111111; */
+    --gray: #fff8dc77; /* #fff8dc77; */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--white); /* White background */
+    font-family: 'Roboto', sans-serif; /* Modern font */
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #228B22; /* Dark green header */
+    padding: 10px 20px; /* Reduced padding */
+    color: #fff; /* Header text color */
+}
+
+#logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+#title {
+    font-size: 24px; /* Larger font size for the header title */
+    font-weight: bold;
+    letter-spacing: 2px; /* Adjust spacing as needed */
+    margin-left: 20px;
+}
+
+#filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--white); /* White background */
+    padding: 10px 0;
+    border-top: 0px solid darkgreen; /* Dark green top border */
+    border-radius: 0px; /* Rounded corners */
+}
+
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    border: 5px solid #228B22; /* Dark green border */
+    border-radius: 15px; /* Rounded corners */
+    background: #228B22; /* Rounded corners */
+    border-color: #228B22;
+}
+
+.dropdown-label {
+    margin-top: 0px; /* Adjust top margin */
+    font-weight: bold;
+    font-size: 2.5vh;
+    color: white; /* Dark green label text color */
+}
+
+.dropdown-input {
+    width: 200px; /* Adjust the width as needed */
+    padding: 8px;
+    border: none;
+    background-color: white; /* White background */
+    font-size: 16px; /* Larger font size for dropdowns */
+    color: black; /* Font color for dropdown values (changed to black) */
+    border-radius: 15px; /* Rounded corners */
+    border-color: darkgreen;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.image-container {
+    width: 30vh; /* 30% of the viewport height */
+    height: 33vh; /* 30% of the viewport height */
+    margin: 0.75vw;
+    position: relative;
+    border-radius: 15px; /* Rounded corners for image containers */
+    /* overflow: hidden; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for images 4px 6px */
+    border: 0px solid darkgreen;
+}
+
+.image {
+    width: 101%; /* hack for underflow problem of image with title area */
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border-radius: 15px; /* Rounded corners for images */
+}
+
+.image:hover {
+    transform: scale(1.2);
+}
+
+.image-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.90); /* White background with transparency */
+    color: black; /* Black title text */
+    padding: 0px; /* Larger padding for title */
+    padding-top: 4px; /* Larger padding for title */
+    padding-bottom: 2px; /* Larger padding for title */
+    font-size: 2.45vh; /* Larger font size for title */
+    font-style: italic;
+    text-align: center;
+    border-radius: 15px 15px 15px 15px; /* Rounded corners at the bottom */
+    font-weight: bold; /* Bold title text */
+    border-left: 1px solid darkgreen;
+    border-right: 1px solid darkgreen;
+    border-bottom: 1px solid darkgreen;
+    border-top: 1px solid darkgreen;
+}
+
+.image-credit {
+    color: #333; /* Black title text */
+    padding: 5px; /* Larger padding for title */
+    font-size: 1.2vh; /* Larger font size for title */
+    text-align: left;
+    border-radius: 0 0 15px 15px; /* Rounded corners at the bottom */
+    font-weight: normal; /* Bold title text */
+    font-style: normal;
+    /* line-height: 0.2vh; */
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 67%;
+}
+
+.modal-header {
+    font-size: 8vh;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.modal-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.modal-paragraph {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.modal-images {
+    display: flex;
+    justify-content: center; /* center; */
+    flex-wrap: wrap;
+}
+
+.modal-image {
+    width: 15vh;
+    height: 15vh;
+    margin: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    object-fit: cover;
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-image:hover {
+    transform: scale(1.15);
+}
+
+/* Close button for the modal */
+.close {
+    position: absolute;
+    top: 1vh;
+    right: 1vw;
+    font-size: 5vh;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #333;
+}
+
+
+/* Below for the gallery  */
+
+/* Style for the gallery */
+.gallery2 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    z-index: 1;
+}
+
+/* Style for the gallery content */
+.gallery-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-wrap: wrap; /* flush caption to bottom*/
+}
+
+/* Style for the gallery image */
+.gallery-image {
+    margin-top: 1vh;
+    height: 85vh;
+    border-radius: 15px;
+}
+
+/* Style for the close button */
+.close {
+    position: absolute;
+    top: 1vh;
+    right: 1vw;
+    font-size: 20vh; /* Larger font size for the close button */
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+}
+
+/* Style for the previous and next buttons in gallery */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20vh; /* Larger font size for the arrows */
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    padding-left: 15vh;
+    padding-right: 15vh;
+}
+
+.prev {
+    left: 2vw;
+}
+
+.next {
+    right: 2vw;
+}
+
+.prev:hover {
+    color: #333;
+}
+
+.next:hover {
+    color: #333;
+}
+
+.map {
+    width:90%;
+    /* float: right; */
+    /* object-fit: contain; */
+    /* object-position: top; */
+    padding-top: 5vh;
+    margin: auto;
+    display: block;
+}
+.pheno {
+    width: 95%;
+    /* float: right; */
+    /* object-fit: contain; */
+    /* object-position: bottom; */
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    margin: auto;
+    display: block;
+}
+
+/* Create two equal columns that floats next to each other */
+.column1 {
+  float: left;
+  width: 58%;
+  padding-left: 1%;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  border: 10px solid #DDDDDD;
+  /* border-top: 10px solid #DDDDDD; */
+  /* border-right: 5px solid #DDDDDD; */
+  border-radius: 10px;
+}
+
+.column2 {
+  float: right;
+  width: 35%;
+  padding: 0px;
+  border-radius: 0px;
+  border: 10px solid #00640033;
+  /* border-top: 10px solid #DDDDDD; */
+  /* border-left: 5px solid #DDDDDD; */
+  border-radius: 10px;
+}
+
+.info {
+  font-size: 2.5vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
+
+.taxonomy {
+  color: #BBBBBB;
+  font-size: 2.5vh;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 2vh;
+  margin-top: 1vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
+
+.container {
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: wrap;              /* default value; can be omitted */
+  justify-content: space-between; /* switched from default (flex-start, see below) */
+  /* background-color: #EEE;
+  border-radius: 10px;
+  border: 10px solid #DDDDDD; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* flex-wrap: wrap; */
+}
+
+.container > div {
+  /* border: 2px solid red; */
+}
+
+.fna {
+  display: flex;
+  height: 4vh;
+  padding-right: 0.5vw;
+  /* text-align: right; */
+}
+
+
+/* .row {
+  background-color: #DDDDDD;
+} */
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.caption {
+  display: flex;
+  font-size: 4vh;
+  font-weight: normal;
+  color: white;
+  text-align: center;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  width: 100%;
+  justify-content: center; /* align center */
+}
+
+.link {
+  display: flex;
+  font-size: 3vh;
+  font-weight: normal;
+  color: #228B22;
+  text-align: center;
+  margin-bottom: 1vh;
+  margin-top: 0vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  width: 100%;
+  justify-content: center; /* align center */
+  text-decoration: none;
+}
+
+.contributor, doi {
+  display: flex;
+  font-size: 1.5vh;
+  font-weight: normal;
+  color: black;
+  text-align: center;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  margin-left: 1vh;
+  margin-right: 1vh;
+  width: 100%;
+  justify-content: center; /* align center */
+  text-decoration: none;
+}
