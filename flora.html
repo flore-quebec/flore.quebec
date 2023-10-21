@@ -8,8 +8,8 @@
 
         :root {
             --green: #43cd80; /* #43cd80; */
-            --white: #fff8dc; /* #fff8dc; */
-            --black: #111111; /* #111111; */
+            --white: #fff; /* #fff8dc; */
+            --black: #111; /* #111111; */
             --gray: #fff8dc77; /* #fff8dc77; */
         }
 
@@ -19,7 +19,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #fff; /* White background */
+            background-color: var(--white); /* White background */
             font-family: 'Roboto', sans-serif; /* Modern font */
         }
 
@@ -51,7 +51,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            background-color: white; /* White background */
+            background-color: var(--white); /* White background */
             padding: 10px 0;
             border-top: 0px solid darkgreen; /* Dark green top border */
             border-radius: 0px; /* Rounded corners */
@@ -96,12 +96,12 @@
 
         .image-container {
             width: 30vh; /* 30% of the viewport height */
-            height: 30vh; /* 30% of the viewport height */
-            margin: 10px;
+            height: 33vh; /* 30% of the viewport height */
+            margin: 0.75vw;
             position: relative;
             border-radius: 15px; /* Rounded corners for image containers */
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for images 4px 6px */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Box shadow for images 4px 6px */
             border: 0px solid darkgreen;
         }
 
@@ -123,7 +123,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.7); /* White background with transparency */
+            background-color: rgba(255, 255, 255, 0.97); /* White background with transparency */
             color: black; /* Black title text */
             padding: 5px; /* Larger padding for title */
             font-size: 2.25vh; /* Larger font size for title */
@@ -131,6 +131,9 @@
             text-align: center;
             border-radius: 0 0 15px 15px; /* Rounded corners at the bottom */
             font-weight: bold; /* Bold title text */
+            border-left: 1px solid darkgreen;
+            border-right: 1px solid darkgreen;
+            border-bottom: 1px solid darkgreen;
         }
 
         .image-credit {
@@ -240,6 +243,7 @@
         .gallery-image {
             margin-top: 1vh;
             height: 85vh;
+            border-radius: 15px;
         }
 
         /* Style for the close button */
