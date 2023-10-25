@@ -5,9 +5,9 @@ library(rmapshaper)
 library(rnaturalearth)
 library(magick)
 
-d<-fread("C:/Users/God/Downloads/0021817-231002084531237/0021817-231002084531237.csv")
-d<-st_as_sf(d,coords=c("decimalLongitude","decimalLatitude"),crs=4326)
-d<-st_transform(d,32618)
+gbif<-fread("C:/Users/God/Downloads/0021817-231002084531237/0021817-231002084531237.csv")
+gbif<-st_as_sf(gbif,coords=c("decimalLongitude","decimalLatitude"),crs=4326)
+gbif<-st_transform(gbif,32618)
 
 can<-gadm("CAN",path="C:/Users/God/Downloads/qc.gpkg") |> st_as_sf()
 
@@ -39,11 +39,6 @@ lakes<-st_intersection(lakes,region)
 
 lim<-c(min(st_bbox(region)[c(2,4)]),5700000)
 
-
-
-sp<-"Trillium cernuum"
-x<-d[d$species==sp,]
-
 plotQC<-function(ylim=NULL,cex=0.2){ # plotting function for the study area
   par(mar=c(0,0,0,0))
   #plot(st_geometry(qc),col="grey99",border=NA)
@@ -51,20 +46,28 @@ plotQC<-function(ylim=NULL,cex=0.2){ # plotting function for the study area
   plot(st_geometry(lakes),col="grey99",border="grey75",lwd=0.05,add=TRUE)
   plot(st_geometry(x),pch=21,bg=adjustcolor("forestgreen",0.5),col=adjustcolor("forestgreen",0.9),lwd=0.3,cex=cex,add=TRUE)
 }
-png("C:/Users/God/Documents/floreqc/qcfloremap1.png",units="cm",width=3,height=1.5,res=500)
-plotQC(ylim=lim)
-dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png") |> image_trim() |> image_border("x20",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcfloremap1.png")
-#file.show("C:/Users/God/Documents/floreqc/qcfloremap1.png")
 
-png("C:/Users/God/Documents/floreqc/qcfloremap2.png",units="cm",width=3,height=1.5,res=500)
-plotQC(ylim=NULL,cex=0.3)
-dev.off()
-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png") |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap2.png")
 
-im1<-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png")
-im2<-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png")
-im<-image_composite(im1,image_scale(im2,"x140"),offset="+10+0",gravity="southeast")
-im |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap.png")
-file.show("C:/Users/God/Documents/floreqc/qcfloremap.png")
+sp<-sample(unique(d$species[d$species%in%gbif$species]),20)
+for(i in sp){
+  print(i)
+  x<-gbif[gbif$species==i,]
+  path<-paste0("C:/Users/God/Documents/floreqc/images/",gsub(" ","_",i),"_map.png")
+  png("C:/Users/God/Documents/floreqc/qcfloremap1.png",units="cm",width=3,height=1.5,res=500)
+  plotQC(ylim=lim)
+  dev.off()
+  image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png") |> image_trim() |> image_border("x20",color="white") |> image_write("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+  #file.show("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+
+  png("C:/Users/God/Documents/floreqc/qcfloremap2.png",units="cm",width=3,height=1.5,res=500)
+  plotQC(ylim=NULL,cex=0.3)
+  dev.off()
+  image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png") |> image_trim() |> image_write("C:/Users/God/Documents/floreqc/qcfloremap2.png")
+
+  im1<-image_read("C:/Users/God/Documents/floreqc/qcfloremap1.png")
+  im2<-image_read("C:/Users/God/Documents/floreqc/qcfloremap2.png")
+  im<-image_composite(im1,image_scale(im2,"x140"),offset="+10+0",gravity="southeast")
+  im |> image_trim() |> image_write(path)
+}
+file.show(list.files(dirname(path),full=TRUE)[1])
 

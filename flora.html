@@ -9,7 +9,12 @@
 </head>
 <body>
     <div id="header">
-        <h1 id="title">Flore du Québec</h1>
+        <span id="title">Flore du Québec</span>
+        <div>
+          <span id="tab">Explorer</span>
+          <span id="tab">Contribuer</span>
+          <span id="tab">À propos</span>
+        </div>
         <img id="logo" src="qc.png" alt="Logo">
     </div>
     <div id="filters">
@@ -32,6 +37,16 @@
             <label class="dropdown-label" for="filter4">Nom commun</label>
             <input class="dropdown-input" type="text" id="filter4" list="filterList4">
             <datalist id="filterList4"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="container_radio">Ordre alphabétique
+              <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container_radio">Par nb. d'observations
+              <input type="radio" name="order" value="nobs" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
         </div>
     </div>
 
@@ -67,8 +82,8 @@
               </div>
               <div class="column2">
                 <div class="info" id="info">Nom scientifique complet<br>Nom scientifique alternatif<br><br>Nom commun<br>Nom commun alternatif<br><br>Statut (e.g. indigène ou introduit)<br><br>Niveau de protection (e.g. vulnérable)</div>
-                <img class="map" src="C:/Users/God/Documents/floreqc/qcfloremap.png">
-                <img class="pheno" src="C:/Users/God/Documents/floreqc/qcflorepheno.png">
+                <img class="map" id="map">
+                <img class="pheno" id="pheno">
                 <div class="contributor" id="data_update">Dernière mise à jour 2023-10-20 à partir de GBIF <a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">https://doi.org/10.15468/dl.266m4y</a></div>
               </div>
             </div>
@@ -102,12 +117,20 @@
         const modalText = document.getElementById('modalText');
         const modalImages = document.getElementById('modalImages');
         const gallery = document.getElementById("myGallery");
+        const radio = document.getElementsByName("order");
         //const thumbnailGallery = document.getElementById('thumbnailGallery');
+
+        let currentImageIndex = 0;
 
         //const thumbnails = ["image1.jpg", "image2.jpg", "image3.jpg"];
 
         var thumbnails;
         var which;
+        var last_category = "family";
+        var last_value = "Poaceae";
+
+        //console.log(last_category);
+        //console.log(last_value);
 
         function openModal(headerText, bodyText, imageArray) {
             modal.style.display = 'block';
@@ -118,22 +141,25 @@
             modalImages.innerHTML = '';
 
             // Add images to modal
-            imageArray.forEach((imageUrl) => {
+            imageArray.forEach(function (imageUrl, index) {
                 const image = document.createElement('img');
                 //const image = document.getElementById('modalImages');
                 image.classList.add('modal-image');
-                image.src = imageUrl;
-                image.onclick = function() {openGallery(imageUrl, 0);};
+                image.src = imageUrl.replace("medium","medium");
+                image.onclick = function() {openGallery(imageUrl, index);};
                 modalImages.appendChild(image);
                 //<img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 0)">
             });
 
-            //const links = document.getElementById('links');
-            //links.innerHTML='<a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a>';
             const taxonomy = document.getElementById('taxonomy');
             taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre+'&nbsp>&nbsp'+data[which].espèce;
             const right = document.getElementById('links');
             links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+
+            const map = document.getElementById('map');
+            const pheno = document.getElementById('pheno');
+            map.src = "C:/Users/God/Documents/floreqc/images/"+headerText.replace(" ","_")+"_map.png";
+            pheno.src = "C:/Users/God/Documents/floreqc/images/"+headerText.replace(" ","_")+"_pheno.png";
 
         }
 
@@ -159,11 +185,45 @@
 
 
         function updatefamilleGallery() {
-            const selectedFamille = familleSelect.value;
+            const order = document.getElementsByName('order');
 
-            const filteredImages = data.filter(image => (
+            //console.log(value);
+
+            //if(value === undefined){
+              const selectedFamille = familleSelect.value;
+              //console.log("yes");
+              //var last_value = familleSelect.value;
+            //} else {
+              //const selectedFamille = value;
+              //console.log("no");
+              var last_value = selectedFamille;
+              //console.log(last_value);
+            //};
+
+            //console.log(familleSelect.value);
+
+            var last_category = "family";
+
+
+
+            //console.log(selectedFamille);
+            //console.log(last_category);
+
+            var filteredImages = data.filter(image => (
                 (selectedFamille === image.famille)
             ));
+
+            //console.log(order);
+
+            //for (i = 0; i < order.length; i++) {
+            //    if (order[i].checked)
+            //        document.getElementById("result").innerHTML
+            //            = "Gender: " + ele[i].value;
+            //}
+
+            if( order[1].checked ){
+               filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
+            };
 
             // Clear the current gallery
             imageGallery.innerHTML = '';
@@ -173,11 +233,13 @@
                 const imageElement = document.createElement('div');
                 imageElement.className = 'image-container';
                 imageElement.id = image.alt;
+                //const src = if(image.src === "NA"){"Pas de photo"}else{image.src};
+
                 imageElement.innerHTML = `
                       <img class="image" src=${image.src} alt=${image.alt}>
                       <div class="image-title">
                         ${image.alt}<br>
-                        <span class="image-credit">${image.credit[0].replace(", ",", ")}</span>
+                        <span class="image-credit">${image.credit[0].replace(', some rights reserved','').replace(', no rights reserved','')}</span>
                       </div>
                 `;
                 imageGallery.appendChild(imageElement);
@@ -216,6 +278,7 @@
 
         function updategenreGallery() {
             const selectedGenre = genreSelect.value;
+            var last_category = "genus";
 
             const filteredImages = data.filter(image => (
                 (selectedGenre === image.genre)
@@ -262,8 +325,6 @@
 
         }
 
-        let currentImageIndex = 0;
-
         // Function to open the gallery with a specific image
         function openGallery(imageSrc, index) {
             const gallery = document.getElementById("myGallery");
@@ -273,7 +334,8 @@
             //const linkText = document.getElementById(\"link\");
 
             gallery.style.display = "block";
-            galleryImage.src = imageSrc;
+            galleryImage.src = imageSrc.replace("medium","medium");
+            galleryImage.src = imageSrc.replace("medium","medium");
             currentImageIndex = index;
             captionText.innerHTML = data[which].credit[index];
             //linkText.innerHTML = data[which].link[index];
@@ -290,10 +352,10 @@
             const galleryImage = document.getElementById("galleryImage");
             const captionText = document.getElementById("caption");
             const linkText = document.getElementById("link");
-            galleryImage.src = thumbnails[currentImageIndex];
+            galleryImage.src = thumbnails[currentImageIndex].replace("medium","medium");
             captionText.innerHTML = data[which].credit[currentImageIndex];
             //linkText.innerHTML = data[which].link[currentImageIndex];
-            link = data[which].link[currentImageIndex];
+            link = data[which].link[currentImageIndex].replace("medium","medium");
             linkText.innerHTML = '<a class=\"link\" href=\"'+link+'\" target=\"_blank\">'+link+'</a>' ;
         }
 
@@ -322,9 +384,16 @@
            filter.appendChild(option);
         });
 
+        function changeOrder() {
+          //console.log("changin Order");
+          //if(last_category === "family"){
+          //  updatefamilleGallery(last_value);
+          //}else{
+          //  updategenreGallery(last_value);
+          //};
+        };
 
 
-        //updatefamilleGallery(); // not working
 
     </script>
 </body>

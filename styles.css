@@ -1,6 +1,6 @@
 
 :root {
-    --green: #43cd80; /* #43cd80; */
+    --green: #228B22; /* #43cd80; */
     --white: #fff; /* #fff8dc; */
     --black: #111; /* #111111; */
     --gray: #fff8dc77; /* #fff8dc77; */
@@ -26,6 +26,20 @@ body {
     color: #fff; /* Header text color */
 }
 
+#tab {
+    font-size: 3vh; /* Larger font size for the header title */
+    font-weight: bold;
+    letter-spacing: 2px; /* Adjust spacing as needed */
+    margin-right: 40px;
+    /* overflow: hidden;
+    transition: transform 0.2s ease-in-out; */
+}
+
+#tab:hover {
+    /* font-size: 4vh;
+    transform: scale(1.1); */
+}
+
 #logo {
     width: 50px;
     height: 50px;
@@ -33,7 +47,7 @@ body {
 }
 
 #title {
-    font-size: 24px; /* Larger font size for the header title */
+    font-size: 5vh; /* Larger font size for the header title */
     font-weight: bold;
     letter-spacing: 2px; /* Adjust spacing as needed */
     margin-left: 20px;
@@ -42,12 +56,17 @@ body {
 #filters {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     align-items: center;
     width: 100%;
     background-color: var(--white); /* White background */
     padding: 10px 0;
     border-top: 0px solid darkgreen; /* Dark green top border */
     border-radius: 0px; /* Rounded corners */
+}
+
+.img {
+  loading: "lazy";
 }
 
 .dropdown-container {
@@ -59,6 +78,7 @@ body {
     border-radius: 15px; /* Rounded corners */
     background: #228B22; /* Rounded corners */
     border-color: #228B22;
+    margin-top: 5px;
 }
 
 .dropdown-label {
@@ -74,6 +94,7 @@ body {
     border: none;
     background-color: white; /* White background */
     font-size: 16px; /* Larger font size for dropdowns */
+    font-style: italic;
     color: black; /* Font color for dropdown values (changed to black) */
     border-radius: 15px; /* Rounded corners */
     border-color: darkgreen;
@@ -96,6 +117,7 @@ body {
     /* overflow: hidden; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for images 4px 6px */
     border: 0px solid darkgreen;
+    background-color: #ddd;
 }
 
 .image {
@@ -105,10 +127,12 @@ body {
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     border-radius: 15px; /* Rounded corners for images */
+    transform: scale(1.05);
+    background-color: #ddd;
 }
 
 .image:hover {
-    transform: scale(1.2);
+    transform: scale(1.12);
 }
 
 .image-title {
@@ -190,8 +214,8 @@ body {
 }
 
 .modal-image {
-    width: 15vh;
-    height: 15vh;
+    width: 16.25vh;
+    height: 16.25vh;
     margin: 5px;
     border-radius: 10px;
     cursor: pointer;
@@ -372,9 +396,13 @@ body {
   display: flex;
   height: 4vh;
   padding-right: 0.5vw;
+  transition: transform 0.2s ease-in-out;
   /* text-align: right; */
 }
 
+.fna:hover {
+  transform: scale(1.3);
+}
 
 /* .row {
   background-color: #DDDDDD;
@@ -390,7 +418,7 @@ body {
 
 .caption {
   display: flex;
-  font-size: 4vh;
+  font-size: 3.5vh;
   font-weight: normal;
   color: white;
   text-align: center;
@@ -404,9 +432,9 @@ body {
 
 .link {
   display: flex;
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-weight: normal;
-  color: #228B22;
+  color: var(--green);
   text-align: center;
   margin-bottom: 1vh;
   margin-top: 0vh;
@@ -415,6 +443,10 @@ body {
   width: 100%;
   justify-content: center; /* align center */
   text-decoration: none;
+}
+
+.link:hover {
+  /* transform: scale(1.05); */
 }
 
 .contributor, doi {
@@ -431,3 +463,77 @@ body {
   justify-content: center; /* align center */
   text-decoration: none;
 }
+
+
+/* The container */
+.container_radio {
+  display: block;
+  /* float: left; */
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 2.5vh;
+  color: white; /* Dark green label text color */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container_radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1vw;
+  width: 1vw;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container_radio:hover input ~ .checkmark {
+  background-color: #fff;
+}
+
+/* When the radio button is checked, add a blue background */
+.container_radio input:checked ~ .checkmark {
+  background-color: #fff;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container_radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container_radio .checkmark:after {
+ 	top: 0.25vw;
+	left: 0.25vw;
+	width: 0.5vw;
+	height: 0.5vw;
+	border-radius: 50%;
+	background: var(--green);
+}
+
+
+
+
+
+

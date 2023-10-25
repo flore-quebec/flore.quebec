@@ -28,12 +28,14 @@ vernacular<-vernacular[language=="FR" & isPreferredName,]
 
 d<-fread("C:/Users/God/Downloads/vascan.csv",header=TRUE,encoding="UTF-8")
 d<-d[d$Rang=="Espèce",]
+d$species<-d$"Nom scientifique"
+d<-d[-grep("×",d$species),] # removes hybrid
 d[,taxonID:=as.integer(basename(URL))]
 
 
 d<-d[taxon,on="taxonID", nomatch=NULL]
 
-d<-d[family%in%c("Poaceae","Cyperaceae","Juncaceae"),]
+d<-d[family%in%c("Poaceae","Cyperaceae","Juncaceae","Lamiaceae"),]
 
 d<-merge(d,distribution,all.x=TRUE,by="taxonID")
 #d<-d[distribution,,on="taxonID", nomatch=NA] # bug here!!!!!!!!
@@ -43,10 +45,6 @@ d<-merge(d,vernacular,all.x=TRUE,by="taxonID")
 
 #i<-"Equisetum pratense"
 #x<-fromJSON(paste0("https://api.inaturalist.org/v1/taxa?q=\"",gsub(" ","%20",i),"\""))$results$id[1]
-
-
-
-
 
 
 ### get inat ids from checklistbank.org
@@ -75,12 +73,11 @@ names(l)<-species
 species[sapply(l,length)==0]
 species[sapply(l,length)==2]
 
+
 inatnames<-data.table(taxonID=species,inatID=unlist(l,use.names=FALSE))
 #d<-merge(d,inatnames,all.x=TRUE)
 #inat$cbnm<-inat$taxref
 #inat$cbnm<-gsub("var. |subsp. ","",inat$cbnm)
-
-d$species<-d$`Nom scientifique`
 
 
 ### FNA links
@@ -90,7 +87,6 @@ plan(multisession,workers=8)
 ex<-future_lapply(links,url.exists)
 plan(sequential)
 d$fna<-ifelse(unlist(ex)[match(d$fna,links)],d$fna,NA)
-
 
 
 ### iNat links
@@ -127,18 +123,29 @@ if(length(sp)){
 }
 
 
-#fwrite(d,"C:/Users/God/Downloads/poales.csv")
-d<-fread("C:/Users/God/Downloads/poales.csv")
+fwrite(d,"C:/Users/God/Downloads/plants.csv")
+#d<-fread("C:/Users/God/Downloads/plants.csv")
+#d<-fread("C:/Users/God/Downloads/poales.csv")
+#d$species<-d$`Nom scientifique`
+
+### N obs
+gbif<-fread("C:/Users/God/Downloads/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
+gbif<-gbif[!is.na(decimalLatitude),]
+gbif<-gbif[!is.na(eventDate),]
+counts<-gbif[,.(nobs=.N),by=.(species)]
+d<-merge(d,counts,by="species",all.x=TRUE)
+d<-d[,nobs:=fifelse(is.na(nobs),0,nobs),]
 
 
-iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney","bird_bugs_botany","chasseurdeplantes","bachandy","paquette0747","brothernorbert"),collapse="0%2C")
+iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney","chasseurdeplantes","birds_bugs_botany","bachandy","paquette0747","brothernorbert","tsn","ludoleclerc","trscavo","ken_j_allison","alexandre_bergeron","johnklymko","charlie","mcusson","mhough","birddogger","ibarzabal_j","choess","m-bibittes","brucebennett","tiarelle","polemoniaceae"),collapse=",")
 
-get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
-  #sp<-gsub(" ","%20",species)
-  cc<-paste(license,collapse="0%2C")
-  #urlsearch<-paste0("https://api.inaturalist.org/v1/taxa?q=",sp,"&order=desc&order_by=observations_count")
-  #x<-fromJSON(urlsearch)$results
-  x<-fromJSON(paste0("https://api.inaturalist.org/v1/observations?photo_license=",cc,"&taxon_id=",id,"&quality_grade=research&ident_user_id=",iders,"&order=desc&order_by=created_at"))
+#iders<-paste(c("marc_aurele","frousseu","lysandra"),collapse=",")
+
+get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRUE){
+  cc<-paste(license,collapse=",")
+  #x<-fromJSON(paste0("https://api.inaturalist.org/v1/observations?photo_license=",cc,"&taxon_id=",id,"&quality_grade=research&ident_user_id=",iders,"&order=desc&order_by=created_at"))
+  api<-paste0("https://api.inaturalist.org/v1/observations?photo_license=",cc,"&taxon_id=",id,if(is.null(place)){""}else{"&place_id=13336"},if(is.null(iders)){""}else{paste0("&ident_user_id=",iders)},"&order=desc&order_by=created_at&per_page=200")
+  x<-fromJSON(api)#$to
   if(x$total_results==0){
     return(NULL)
   }else{
@@ -155,6 +162,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
     #}
     cbind(idobs=x$id[i],res,users[rep(i,nrow(res)),])
   }))
+  showbobs<-paste0("https://www.inaturalist.org/observations/?id=",paste0(pics$idobs,collapse=","),"&place_id=any")
   #ids<-x$identifications[[1]][,c("taxon_id","current","user")]
   pics$url<-gsub("/square","/medium",pics$url)
   pics<-pics[which(pics$width>205 & pics$height>205),]
@@ -162,19 +170,27 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=""){
 }
 
 set.seed(1234)
-ids<-sample(basename(d$inatID[d$inatID!=""]),100)
+ids<-sample(basename(d$inatID[d$inatID!=""]),497)
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
-  if(i==""){
-    pic<-""
-  }else{
-    x<-get_photos(id=ids[i],iders=iders)
-    if(is.null(x)){
-      pic<-NULL
-    }else{
-      pic<-x[1:min(c(8,nrow(x))),]
+  #print(d$species[match(ids[i],basename(d$inatID))])
+  x<-get_photos(id=ids[i],iders=iders,place=TRUE)
+  if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
+  if(is.null(x) || nrow(x)<8){
+    x<-get_photos(id=ids[i],iders=iders,place=NULL)
+    if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
+    if(is.null(x) || nrow(x)<8){
+      x<-get_photos(id=ids[i],iders=NULL,place=TRUE)
+      if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
+      if(is.null(x) || nrow(x)<8){
+        x<-get_photos(id=ids[i],iders=NULL,place=NULL)
+        if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
+      }else{
+        x<-NULL
+      }
     }
   }
+  pic<-x[1:min(c(8,nrow(x))),]
   Sys.sleep(1)
   pic
 })
@@ -217,8 +233,8 @@ pics<-pics[!is.na(pics$url),]
 image_array<-function(){
   #cat("\014")
   l<-sapply(1:nrow(pics),function(i){
-    tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","class","ordre")
-    tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","class","order")
+    tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","class","ordre","nobs")
+    tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","class","order","nobs")
     info<-unlist(as.vector(pics[i,..tagnames]))
     info<-unname(sapply(info,function(x){paste0("\"",x,"\"")}))
     w<-which(photos$species==pics$species[i])
@@ -228,6 +244,12 @@ image_array<-function(){
     info<-c(info,urls)
 
     urls<-photos$attribution[w][1:(min(c(length(w),8)))]
+    ww<-which(urls=="no rights reserved")
+    if(any(ww)){
+      name<-ifelse(is.na(photos$name[w]),photos$login[w],photos$name[w])
+      name<-ifelse(name=="",photos$login[w],name)
+      urls[ww]<-paste0("(c) ",name[1:(min(c(length(w),8)))][ww],", no rights reserved (CC0)")
+    }
     urls<-paste0("[ \"",paste(urls,collapse="\", \""),"\" ]")
     tags<-c(tags,"credit")
     info<-c(info,urls)
