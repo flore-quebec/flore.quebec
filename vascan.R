@@ -136,6 +136,23 @@ counts<-gbif[,.(nobs=.N),by=.(species)]
 d<-merge(d,counts,by="species",all.x=TRUE)
 d<-d[,nobs:=fifelse(is.na(nobs),0,nobs),]
 
+d[,vernacularFR:=.(`Nom vernaculaire fr`)]
+d[,vernacularEN:=.(`Nom vernaculaire en`)]
+d[,botanic:=.(`acceptedNameUsage`)]
+
+
+### Herbier du Québec links
+nomvern<-tolower(gsub(" |'","-",d$vernacularFR))
+nomvern<-iconv(nomvern,to="ASCII//TRANSLIT")
+d$herbierqc<-paste0("https://herbierduquebec.gouv.qc.ca/plante/",nomvern)
+links<-unique(d$herbierqc)
+plan(multisession,workers=8)
+ex<-future_lapply(links,url.exists)
+plan(sequential)
+d$herbierqc<-ifelse(unlist(ex)[match(d$herbierqc,links)],d$herbierqc,NA)
+
+
+
 
 iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney","chasseurdeplantes","birds_bugs_botany","bachandy","paquette0747","brothernorbert","tsn","ludoleclerc","trscavo","ken_j_allison","alexandre_bergeron","johnklymko","charlie","mcusson","mhough","birddogger","ibarzabal_j","choess","m-bibittes","brucebennett","tiarelle","polemoniaceae"),collapse=",")
 
@@ -170,7 +187,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRU
 }
 
 set.seed(1234)
-ids<-sample(basename(d$inatID[d$inatID!=""]),497)
+ids<-sample(basename(d$inatID[d$inatID!=""]),10)
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
   #print(d$species[match(ids[i],basename(d$inatID))])
@@ -206,6 +223,7 @@ photos<-rbindlist(photos)
 
 d[,idtaxa:=basename(inatID)]
 d[,species:=d$"Nom scientifique"]
+d[,nom:=vernacularFR]
 #pics<-data.frame(id=ids,pics=photos)
 photos<-merge(photos,d,by.x="idtaxa",by.y="idtaxa",all.x=TRUE)
 pics<-photos[order(species),]
@@ -233,8 +251,8 @@ pics<-pics[!is.na(pics$url),]
 image_array<-function(){
   #cat("\014")
   l<-sapply(1:nrow(pics),function(i){
-    tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","class","ordre","nobs")
-    tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","class","order","nobs")
+    tags<-c("src","alt","famille","genre","espèce","fna","inat","vascan","gbif","powo","herbierqc","class","ordre","nobs","vernaculaire")
+    tagnames<-c("url","species","family","genus","species","fna","inat","vascan","gbif","powo","herbierqc","class","order","nobs","vernacularFR")
     info<-unlist(as.vector(pics[i,..tagnames]))
     info<-unname(sapply(info,function(x){paste0("\"",x,"\"")}))
     w<-which(photos$species==pics$species[i])
@@ -280,7 +298,11 @@ option_values<-function(x,tag,append=TRUE){
 option_values(pics,tag="family",append=FALSE)
 option_values(pics,tag="genus")
 option_values(pics,tag="species")
+option_values(pics,tag="nom")
 image_array()
+file.show("C:/Users/God/Documents/floreqc/flora.html")
+
+
 
 
 

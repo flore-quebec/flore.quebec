@@ -29,13 +29,13 @@
             <datalist id="filterList2"></datalist>
         </div>
         <div class="dropdown-container">
-            <label class="dropdown-label" for="filter3">Espèce</label>
-            <input class="dropdown-input" type="text" id="filter3" list="filterList3" onfocus="this.value=''" onchange="this.blur();">
+            <label class="dropdown-label" for="species">Espèce</label>
+            <input class="dropdown-input" type="text" id="species" list="filterList3" onfocus="this.value=''" onchange="this.blur();">
             <datalist id="filterList3"></datalist>
         </div>
         <div class="dropdown-container">
-            <label class="dropdown-label" for="filter4">Nom commun</label>
-            <input class="dropdown-input" type="text" id="filter4" list="filterList4">
+            <label class="dropdown-label" for="nom">Nom commun</label>
+            <input class="dropdown-input" type="text" id="nom" list="filterList4" onfocus="this.value=''" onchange="this.blur();">
             <datalist id="filterList4"></datalist>
         </div>
         <div class="dropdown-container">
@@ -111,6 +111,8 @@
 
         const familleSelect = document.getElementById("famille");
         const genreSelect = document.getElementById("genre");
+        const speciesSelect = document.getElementById("species");
+        const nomSelect = document.getElementById("nom");
 
         const modal = document.getElementById('myModal');
         const modalHeader = document.getElementById('modalHeader');
@@ -154,7 +156,7 @@
             const taxonomy = document.getElementById('taxonomy');
             taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre+'&nbsp>&nbsp'+data[which].espèce;
             const right = document.getElementById('links');
-            links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+            links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
@@ -184,42 +186,53 @@
         };
 
 
-        function updatefamilleGallery() {
+        function updateGallery(group) {
             const order = document.getElementsByName('order');
 
-            //console.log(value);
-
-            //if(value === undefined){
-              const selectedFamille = familleSelect.value;
-              //console.log("yes");
-              //var last_value = familleSelect.value;
-            //} else {
-              //const selectedFamille = value;
-              //console.log("no");
-              var last_value = selectedFamille;
-              //console.log(last_value);
-            //};
-
+            //console.log(group);
             //console.log(familleSelect.value);
 
-            var last_category = "family";
+            //let selected;
+            let selected;
+            var filteredImages;
+
+            if (group === "famille") {
+              selected = familleSelect.value;
+              //last_value = familleSelect.value;
+              filteredImages = data.filter(image => (
+                (selected === image.famille)
+              ));
+            } else if (group === "genre") {
+              selected = genreSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (selected === image.genre)
+              ));
+            } else if (group === "species") {
+              selected = speciesSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (selected === image.espèce)
+              ));
+            } else if (group === "nom") {
+              selected = nomSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (selected === image.vernaculaire)
+              ));
+            } else {
+              selected = speciesSelect.value;
+              //last_value = speciesSelect.value;
+              filteredImages = data.filter(image => (
+                (selected === image.espèce)
+              ));
+            };
+            console.log(group);
 
 
+            last_category = group;
+            last_value = selected;
 
-            //console.log(selectedFamille);
-            //console.log(last_category);
-
-            var filteredImages = data.filter(image => (
-                (selectedFamille === image.famille)
-            ));
-
-            //console.log(order);
-
-            //for (i = 0; i < order.length; i++) {
-            //    if (order[i].checked)
-            //        document.getElementById("result").innerHTML
-            //            = "Gender: " + ele[i].value;
-            //}
 
             if( order[1].checked ){
                filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
@@ -275,56 +288,6 @@
 
         }
 
-
-        function updategenreGallery() {
-            const selectedGenre = genreSelect.value;
-            var last_category = "genus";
-
-            const filteredImages = data.filter(image => (
-                (selectedGenre === image.genre)
-            ));
-
-            // Clear the current gallery
-            imageGallery.innerHTML = '';
-
-            // Add filtered images to the gallery
-            filteredImages.forEach(image => {
-                const imageElement = document.createElement('div');
-                imageElement.className = 'image-container';
-                imageElement.innerHTML = `
-                      <img class="image" src=${image.src} alt=${image.alt}>
-                      <div class="image-title">${image.alt}</div>
-                `;
-                imageGallery.appendChild(imageElement);
-            });
-
-            const imageContainers = document.querySelectorAll('.image-container');
-
-            imageContainers.forEach((container, index) => {
-                container.addEventListener('click', () => {
-                    const title = container.querySelector('.image-title').textContent;
-                    const text = `
-                        <h2>Traits distinctifs</h2>
-                        <p>Ici on trouve une description possiblement en liste à points ou en continu des traits distinctifs de l'espèce ou des élémnets clés pour repérer l'espèce sur le terrain. En d'autres mots, que remarque-t-on de particulier chez cette espèce par rapport aux autres semblables</p>
-                        <h2>Espèces semblables</h2>
-                        <p>Ici on énumère les critères à regarder pour différencier cette espèces des autres espèces semblables</p>
-                        <h2>Habitat</h2>
-                        <p>Description sommaire de l'habitat et possiblement de la répartition</p>
-                        <h2>Commentaires</h2>
-                        <p>Est-ce qu'il y a des remarques à faire pour l'espèce notamment en lien avec la distribution, la taxonomie, le statut ou autres trucs intéressants</p>
-                    `;
-
-                    const index = data.findIndex(p => p.espèce == title); // tests
-                    const images = data[index].images;
-                    thumbnails = images;
-                    which = index;
-
-                    openModal(title, text, images);
-                });
-            });
-
-        }
-
         // Function to open the gallery with a specific image
         function openGallery(imageSrc, index) {
             const gallery = document.getElementById("myGallery");
@@ -360,8 +323,11 @@
         }
 
 
-        familleSelect.addEventListener("change", updatefamilleGallery);
-        genreSelect.addEventListener("change", updategenreGallery);
+        familleSelect.addEventListener("change", () => updateGallery("famille"));
+        genreSelect.addEventListener("change", () => updateGallery("genre"));
+        speciesSelect.addEventListener("change", () => updateGallery("species"));
+        nomSelect.addEventListener("change", () => updateGallery("nom"));
+
 
         var filter = document.getElementById('filterList1');
         family_values.forEach(function(item){
@@ -384,14 +350,22 @@
            filter.appendChild(option);
         });
 
-        function changeOrder() {
-          //console.log("changin Order");
-          //if(last_category === "family"){
-          //  updatefamilleGallery(last_value);
-          //}else{
-          //  updategenreGallery(last_value);
-          //};
-        };
+        var filter = document.getElementById('filterList4');
+        nom_values.forEach(function(item){
+           var option = document.createElement('option');
+           option.value = item;
+           filter.appendChild(option);
+        });
+
+
+        /** function changeOrder() {
+          console.log("changing order");
+          if(last_category === "family"){
+            function(){updateGallery(last_value)};
+          }else{
+            updategenreGallery(last_value);
+          };
+        } */
 
 
 
