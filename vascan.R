@@ -187,7 +187,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRU
 }
 
 set.seed(1234)
-ids<-sample(basename(d$inatID[d$inatID!=""]),10)
+ids<-sample(basename(d$inatID[d$inatID!=""]))
 photos<-lapply(seq_along(ids),function(i){
   cat(paste(i,"\r"));flush.console()
   #print(d$species[match(ids[i],basename(d$inatID))])

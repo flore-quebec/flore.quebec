@@ -336,23 +336,21 @@ body {
   float: left;
   width: 58%;
   padding-left: 1%;
-  border-radius: 10px;
   background-color: #FFFFFF;
-  border: 10px solid #DDDDDD;
+  border-top: 10px solid #DDDDDD;
   /* border-top: 10px solid #DDDDDD; */
   /* border-right: 5px solid #DDDDDD; */
-  border-radius: 10px;
+  border-radius: 0px;
 }
 
 .column2 {
   float: right;
   width: 35%;
   padding: 0px;
-  border-radius: 0px;
-  border: 10px solid #00640033;
+  border-top: 10px solid #00640033;
   /* border-top: 10px solid #DDDDDD; */
   /* border-left: 5px solid #DDDDDD; */
-  border-radius: 10px;
+  border-radius: 0px;
 }
 
 .info {

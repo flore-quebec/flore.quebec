@@ -81,7 +81,12 @@
                 <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce</div>
               </div>
               <div class="column2">
-                <div class="info" id="info">Nom scientifique complet<br>Nom scientifique alternatif<br><br>Nom commun<br>Nom commun alternatif<br><br>Statut (e.g. indigène ou introduit)<br><br>Niveau de protection (e.g. vulnérable)</div>
+                <div class="info" id="sc_complet">Nom scientifique complet</div>
+                <div class="info" id="sc_alternatif">Nom scientifique alternatif</div>
+                <div class="info" id="vern">Nom commun</div>
+                <div class="info" id="vern_alternatif">Nom commun alternatif</div>
+                <div class="info" id="statut">Statut (e.g. indigène ou introduit)</div>
+                <div class="info" id="protection">Niveau de protection (e.g. vulnérable)</div>
                 <img class="map" id="map">
                 <img class="pheno" id="pheno">
                 <div class="contributor" id="data_update">Dernière mise à jour 2023-10-20 à partir de GBIF <a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">https://doi.org/10.15468/dl.266m4y</a></div>
@@ -128,7 +133,7 @@
 
         var thumbnails;
         var which;
-        var last_category = "family";
+        var last_category = "famille";
         var last_value = "Poaceae";
 
         //console.log(last_category);
@@ -157,6 +162,16 @@
             taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre+'&nbsp>&nbsp'+data[which].espèce;
             const right = document.getElementById('links');
             links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+
+            const sc_complet = document.getElementById('sc_complet');
+            //const map = document.getElementById('map');
+            const vern = document.getElementById('vern');
+            //const map = document.getElementById('map');
+            //const map = document.getElementById('map');
+            //const map = document.getElementById('map');
+
+            sc_complet.innerHTML = data[which].espèce;
+            vern.innerHTML = data[which].vernaculaire;
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
@@ -358,14 +373,14 @@
         });
 
 
-        /** function changeOrder() {
-          console.log("changing order");
-          if(last_category === "family"){
-            function(){updateGallery(last_value)};
+        function changeOrder() {
+        //  console.log("changing order");
+          if(last_category === "famille"){
+            updateGallery("famille");
           }else{
-            updategenreGallery(last_value);
+            updateGallery("genre");
           };
-        } */
+        }
 
 
 
