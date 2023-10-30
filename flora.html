@@ -81,12 +81,23 @@
                 <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce</div>
               </div>
               <div class="column2">
-                <div class="info" id="sc_complet">Nom scientifique complet</div>
-                <div class="info" id="sc_alternatif">Nom scientifique alternatif</div>
-                <div class="info" id="vern">Nom commun</div>
-                <div class="info" id="vern_alternatif">Nom commun alternatif</div>
-                <div class="info" id="statut">Statut (e.g. indigène ou introduit)</div>
-                <div class="info" id="protection">Niveau de protection (e.g. vulnérable)</div>
+                <div class="scientifique">
+                  <div id="scien_complet">Nom scientifique complet</div>
+                  <div id="scien_alternatif">Nom scientifique alternatif</div>
+                </div>
+                <div class="commun">
+                  <div id="verna_fr">Nom commun</div>
+                  <div id="verna_alternatif_fr">Nom commun alternatif</div>
+                </div>
+                <div class="commun_en">
+                  <div id="verna_en">Nom commun alternatif</div>
+                </div>
+                <div class="status">
+                  <div id="statut">Statut (e.g. indigène ou introduit)</div>
+                </div>
+                <div class="protection">
+                  <div id="protection">Niveau de protection (e.g. vulnérable)</div>
+                </div>
                 <img class="map" id="map">
                 <img class="pheno" id="pheno">
                 <div class="contributor" id="data_update">Dernière mise à jour 2023-10-20 à partir de GBIF <a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">https://doi.org/10.15468/dl.266m4y</a></div>
@@ -163,15 +174,23 @@
             const right = document.getElementById('links');
             links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
 
-            const sc_complet = document.getElementById('sc_complet');
-            //const map = document.getElementById('map');
-            const vern = document.getElementById('vern');
-            //const map = document.getElementById('map');
+            const scien_complet = document.getElementById('scien_complet');
+            const scien_alternatif = document.getElementById('scien_alternatif');
+            const verna_fr = document.getElementById('verna_fr');
+            const verna_alternatif_fr = document.getElementById('verna_alternatif_fr');
+            const verna_en = document.getElementById('verna_en');
+            const statut = document.getElementById('statut');
+            const protection = document.getElementById('protection');
             //const map = document.getElementById('map');
             //const map = document.getElementById('map');
 
-            sc_complet.innerHTML = data[which].espèce;
-            vern.innerHTML = data[which].vernaculaire;
+            scien_complet.innerHTML = data[which].botanic;
+            scien_alternatif.innerHTML = data[which].alternatif;
+            verna_fr.innerHTML = data[which].vernaculaire;
+            verna_alternatif_fr.innerHTML = data[which].vernacularFRalt;
+            verna_en.innerHTML = data[which].vernacularEN;
+            statut.innerHTML = data[which].status;
+            protection.innerHTML = data[which].protection;
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
@@ -375,11 +394,13 @@
 
         function changeOrder() {
         //  console.log("changing order");
-          if(last_category === "famille"){
-            updateGallery("famille");
-          }else{
-            updateGallery("genre");
-          };
+          //if(which.length > 1){
+            if(last_category === "famille"){
+              updateGallery("famille");
+            }else{
+              updateGallery("genre");
+            };
+          //};
         }
 
 

@@ -353,13 +353,6 @@ body {
   border-radius: 0px;
 }
 
-.info {
-  font-size: 2.5vh;
-  margin-bottom: 2vh;
-  margin-top: 2vh;
-  margin-left: 2vh;
-  margin-right: 2vh;
-}
 
 .taxonomy {
   color: #BBBBBB;
@@ -530,6 +523,17 @@ body {
 	background: var(--green);
 }
 
+.scientifique, .commun, .commun_en, .status, .protection {
+  font-size: 2.5vh;
+  margin-left: 1vh;
+  margin-top: 4vh;
+  padding-left: 0.5vw;
+  border-left: 1px solid #00640033;
+}
+
+.scientifique, .commun_en {
+  font-style: italic;
+}
 
 
 
