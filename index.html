@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flore du Québec</title>
-  <link rel="stylesheet" href="http://cdn.hebergix.com/fr/floreqc/styles.css">
-  <script type="text/javascript" src="http://cdn.hebergix.com/fr/floreqc/data.js"></script>
+  <link rel="stylesheet" href="https://cdn.hebergix.com/fr/floreqc/styles.css">
+  <script type="text/javascript" src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
 </head>
 <body>
     <div id="header">
@@ -169,7 +169,7 @@
             const taxonomy = document.getElementById('taxonomy');
             taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre;
             const right = document.getElementById('links');
-            links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="http://cdn.hebergix.com/fr/floreqc/vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="http://cdn.hebergix.com/fr/floreqc/herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="http://cdn.hebergix.com/fr/floreqc/fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+            links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
 
             const scien_complet = document.getElementById('scien_complet');
             const scien_alternatif = document.getElementById('scien_alternatif');
@@ -191,8 +191,8 @@
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
-            map.src = "http://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_map.png";
-            pheno.src = "http://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_pheno.png";
+            map.src = "https://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_map.png";
+            pheno.src = "https://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_pheno.png";
 
         }
 
