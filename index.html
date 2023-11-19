@@ -43,6 +43,10 @@
               <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
               <span class="checkmark"></span>
             </label>
+            <label class="container_radio">Par ordre taxonomique
+              <input type="radio" name="order" value="taxonomic" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
             <label class="container_radio">Par nb. d'observations
               <input type="radio" name="order" value="nobs" onclick="changeOrder()">
               <span class="checkmark"></span>
@@ -59,7 +63,7 @@
     <!-- Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close_modal" onclick="closeModal()">&times;</span>
 
             <div class="modal-images" id="modalImages"></div>
 
@@ -108,7 +112,7 @@
 
     <!-- The gallery -->
     <div class="gallery2" id="myGallery">
-        <span class="close" onclick="closeGallery()">&times;</span>
+        <span class="close_gallery" onclick="closeGallery()">&times;</span>
         <span class="prev" onclick="changeImage(-1)">&#10094;</span>
         <span class="next" onclick="changeImage(1)">&#10095;</span>
         <div class="gallery-content">
@@ -264,9 +268,12 @@
             last_category = group;
             last_value = selected;
 
+            console.log(order[1].checked);
 
-            if( order[1].checked ){
+            if( order[2].checked ){
                filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
+            } else if (order[1].checked) {
+               filteredImages = filteredImages.sort((a, b) => Number(a.taxonomic_order) - Number(b.taxonomic_order));
             };
 
             // Clear the current gallery
