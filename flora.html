@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flore du Québec</title>
-  <link rel="stylesheet" href="styles.css">
-  <script type="text/javascript" src="data.js"></script>
+  <link rel="stylesheet" href="https://cdn.hebergix.com/fr/floreqc/styles.css">
+  <script type="text/javascript" src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
 </head>
 <body>
     <div id="header">
@@ -13,14 +13,14 @@
         <div>
           <span id="tab">Explorer</span>
           <span id="tab">Contribuer</span>
-          <span id="tab">À propos</span>
+          <span id="tab">À&nbsp;propos</span>
         </div>
-        <img id="logo" src="qc.png" alt="Logo">
+        <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/qc.png" alt="Logo">
     </div>
     <div id="filters">
         <div class="dropdown-container">
             <label class="dropdown-label" for="famille">Famille</label>
-            <input class="dropdown-input" type="text" id="famille" list="filterList1" onfocus="this.value=''" onchange="this.blur();">
+            <input class="dropdown-input" type="text" id="famille" list="filterList1" onfocus="this.value=''" onchange="this.blur();" onmouseover="focus();">
             <datalist id="filterList1"></datalist>
         </div>
         <div class="dropdown-container">
@@ -39,8 +39,12 @@
             <datalist id="filterList4"></datalist>
         </div>
         <div class="dropdown-container">
-            <label class="container_radio">Ordre alphabétique
+            <label class="container_radio">Par ordre alphabétique
               <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container_radio">Par ordre taxonomique
+              <input type="radio" name="order" value="taxonomic" onclick="changeOrder()">
               <span class="checkmark"></span>
             </label>
             <label class="container_radio">Par nb. d'observations
@@ -59,47 +63,44 @@
     <!-- Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <!-- <div class="thumbnail-gallery" id="thumbnailGallery">
-            <!--<img class="thumbnail-image" src="image1.jpg" alt="Image 1" onclick="openGallery('image1.jpg', 0)"> -->
-            <!--<img class="thumbnail-image" src="image2.jpg" alt="Image 2" onclick="openGallery('image2.jpg', 1)"> -->
-            <!--<img class="thumbnail-image" src="image3.jpg" alt="Image 3" onclick="openGallery('image3.jpg', 2)"> -->
-            <!-- Add more thumbnail images as needed -->
-            <!-- </div> -->
+            <span class="close_modal" onclick="closeModal()">&times;</span>
 
             <div class="modal-images" id="modalImages"></div>
-            <div class="modal-header" id="modalHeader"></div>
+
+            <div class="head" id="head">
+              <div class="modal-header" id="modalHeader"></div>
+              <div>
+                <div class="commun">
+                  <div id="verna_fr">Nom commun</div>
+                  <!-- <div id="verna_alternatif_fr">Nom commun alternatif</div> -->
+                </div>
+                <div class="commun_en">
+                  <div id="verna_en">Nom commun alternatif</div>
+                </div>
+                <div class="scientifique">
+                  <div id="scien_complet">Nom scientifique complet</div>
+                  <!-- <div id="scien_alternatif">Nom scientifique alternatif</div> -->
+                </div>
+              </div>
+            </div>
             <div class="container" id="container">
               <div class="taxonomy" id="taxonomy"></div>
               <div class="container" id="links"></div>
             </div>
-
-
             <div class="row">
               <div class="column1">
                 <div class="modal-text" id="modalText"></div>
                 <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce</div>
               </div>
               <div class="column2">
-                <div class="scientifique">
-                  <div id="scien_complet">Nom scientifique complet</div>
-                  <div id="scien_alternatif">Nom scientifique alternatif</div>
-                </div>
-                <div class="commun">
-                  <div id="verna_fr">Nom commun</div>
-                  <div id="verna_alternatif_fr">Nom commun alternatif</div>
-                </div>
-                <div class="commun_en">
-                  <div id="verna_en">Nom commun alternatif</div>
-                </div>
                 <div class="status">
                   <div id="statut">Statut (e.g. indigène ou introduit)</div>
                 </div>
                 <div class="protection">
                   <div id="protection">Niveau de protection (e.g. vulnérable)</div>
                 </div>
-                <img class="map" id="map">
                 <img class="pheno" id="pheno">
+                <img class="map" id="map">
                 <div class="contributor" id="data_update">Dernière mise à jour 2023-10-20 à partir de GBIF <a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">https://doi.org/10.15468/dl.266m4y</a></div>
               </div>
             </div>
@@ -111,7 +112,7 @@
 
     <!-- The gallery -->
     <div class="gallery2" id="myGallery">
-        <span class="close" onclick="closeGallery()">&times;</span>
+        <span class="close_gallery" onclick="closeGallery()">&times;</span>
         <span class="prev" onclick="changeImage(-1)">&#10094;</span>
         <span class="next" onclick="changeImage(1)">&#10095;</span>
         <div class="gallery-content">
@@ -152,7 +153,7 @@
 
         function openModal(headerText, bodyText, imageArray) {
             modal.style.display = 'block';
-            modalHeader.textContent = headerText;
+            modalHeader.innerHTML = headerText.replace(" "," ");
             modalText.innerHTML = bodyText;
 
             // Clear previous images
@@ -170,9 +171,14 @@
             });
 
             const taxonomy = document.getElementById('taxonomy');
-            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre+'&nbsp>&nbsp'+data[which].espèce;
+            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre;
             const right = document.getElementById('links');
-            links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="herbierqc.jpg"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+
+            //console.log(makeLink(data[which].vascan,"vascan"));
+
+            //links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/herbier.png"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+
+            links.innerHTML=makeLink(data[which].vascan,"vascan")+makeLink(data[which].herbierqc,"herbierqc")+makeLink(data[which].inat,"inat")+makeLink(data[which].gbif,"gbif")+makeLink(data[which].fna,"fna")+makeLink(data[which].powo,"powo");
 
             const scien_complet = document.getElementById('scien_complet');
             const scien_alternatif = document.getElementById('scien_alternatif');
@@ -185,17 +191,17 @@
             //const map = document.getElementById('map');
 
             scien_complet.innerHTML = data[which].botanic;
-            scien_alternatif.innerHTML = data[which].alternatif;
+            //scien_alternatif.innerHTML = data[which].alternatif;
             verna_fr.innerHTML = data[which].vernaculaire;
-            verna_alternatif_fr.innerHTML = data[which].vernacularFRalt;
+            //verna_alternatif_fr.innerHTML = data[which].vernacularFRalt;
             verna_en.innerHTML = data[which].vernacularEN;
             statut.innerHTML = data[which].status;
-            protection.innerHTML = data[which].protection;
+            protection.innerHTML = makeProtection();
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
-            map.src = "C:/Users/God/Documents/floreqc/images/"+headerText.replace(" ","_")+"_map.png";
-            pheno.src = "C:/Users/God/Documents/floreqc/images/"+headerText.replace(" ","_")+"_pheno.png";
+            map.src = "https://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_map.png";
+            pheno.src = "https://cdn.hebergix.com/fr/floreqc/"+headerText.replace(" ","_")+"_pheno.png";
 
         }
 
@@ -267,9 +273,12 @@
             last_category = group;
             last_value = selected;
 
+            console.log(order[1].checked);
 
-            if( order[1].checked ){
+            if( order[2].checked ){
                filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
+            } else if (order[1].checked) {
+               filteredImages = filteredImages.sort((a, b) => Number(a.taxonomic_order) - Number(b.taxonomic_order));
             };
 
             // Clear the current gallery
@@ -280,6 +289,9 @@
                 const imageElement = document.createElement('div');
                 imageElement.className = 'image-container';
                 imageElement.id = image.alt;
+                map = data.filter(index => (
+                (image.alt === index.species)
+              ));
                 //const src = if(image.src === "NA"){"Pas de photo"}else{image.src};
 
                 imageElement.innerHTML = `
@@ -287,6 +299,9 @@
                       <div class="image-title">
                         ${image.alt}<br>
                         <span class="image-credit">${image.credit[0].replace(', some rights reserved','').replace(', no rights reserved','')}</span>
+                      </div>
+                      <div class="image-map">
+                        <img class="image-map-mini" src="https://cdn.hebergix.com/fr/floreqc/${image.alt.replace(" ","_")}_minimap.png"></img>
                       </div>
                 `;
                 imageGallery.appendChild(imageElement);
@@ -300,7 +315,7 @@
                     const title = container.id;
                     const text = `
                         <h2>Traits distinctifs</h2>
-                        <p>Ici on trouve une description possiblement en liste à points ou en continu des traits distinctifs de l'espèce ou des élémnets clés pour repérer l'espèce sur le terrain. En d'autres mots, que remarque-t-on de particulier chez cette espèce par rapport aux autres semblables</p>
+                        <p>Ici, on trouve une description possiblement en liste à points ou en continu des traits distinctifs de l'espèce ou des éléments clés pour repérer l'espèce sur le terrain. En d'autres mots, que remarque-t-on de particulier chez cette espèce par rapport aux autres semblables</p>
                         <h2>Espèces semblables</h2>
                         <p>Ici on énumère les critères à regarder pour différencier cette espèces des autres espèces semblables. L'idéal est de cibler les espèces qui sont semblables et de ne pas se perdre dans les espèces qui sont clairement différentes si on regarde attentivement les photos.</p>
                         <h2>Habitat</h2>
@@ -331,8 +346,8 @@
             //const linkText = document.getElementById(\"link\");
 
             gallery.style.display = "block";
-            galleryImage.src = imageSrc.replace("medium","medium");
-            galleryImage.src = imageSrc.replace("medium","medium");
+            //galleryImage.src = imageSrc.replace("medium","medium");
+            galleryImage.src = imageSrc.replace("medium","original");
             currentImageIndex = index;
             captionText.innerHTML = data[which].credit[index];
             //linkText.innerHTML = data[which].link[index];
@@ -349,10 +364,10 @@
             const galleryImage = document.getElementById("galleryImage");
             const captionText = document.getElementById("caption");
             const linkText = document.getElementById("link");
-            galleryImage.src = thumbnails[currentImageIndex].replace("medium","medium");
+            galleryImage.src = thumbnails[currentImageIndex].replace("medium","original");
             captionText.innerHTML = data[which].credit[currentImageIndex];
             //linkText.innerHTML = data[which].link[currentImageIndex];
-            link = data[which].link[currentImageIndex].replace("medium","medium");
+            link = data[which].link[currentImageIndex];
             linkText.innerHTML = '<a class=\"link\" href=\"'+link+'\" target=\"_blank\">'+link+'</a>' ;
         }
 
@@ -402,6 +417,50 @@
             };
           //};
         }
+
+
+        function linkExists(link) {
+          if(link === "" || link === "NA"){
+            //console.log(link);
+            link;
+          }else{
+            //console.log("no link");
+            "";
+          };
+        }
+
+
+        function makeLink(link,name) {
+          if(link===""){
+            return "";
+          };
+          switch(name){
+            case "vascan":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/vascanlogo.jpg"></a>';
+            case "herbierqc":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/herbier.png"></a>';
+            case "inat":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a>';
+            case "gbif":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a>';
+            case "fna":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/fna.jpg"></a>';
+            case "powo":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
+          };
+        }
+
+
+        function makeProtection() {
+          var pro = data[which].LOIEMV + ", " + data[which].SARASTATUS + ", " + data[which].COSEWIC + ", " + data[which].GRANK+", " + data[which].NRANK + ", " + data[which].SRANK;
+          pro = pro.replaceAll("NA, ","-").replace("NA","-");
+          return pro;
+        }
+
+
+
+
+//'
 
 
 
