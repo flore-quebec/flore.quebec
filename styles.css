@@ -204,9 +204,9 @@ body {
     bottom: 2%;
     left: 2%;
     width: 96%;
-    background-color: rgba(255, 255, 255, 0.70); /* White background with transparency */
+    background-color: rgba(255, 255, 255, 0.80); /* White background with transparency */
     color: #000; /* Black title text */
-    text-shadow: 1px 1px #555;
+    text-shadow: 0px 0px #555;
     padding: 0px; /* Larger padding for title */
     padding-top: 4px; /* Larger padding for title */
     padding-bottom: 1px; /* Larger padding for title */
