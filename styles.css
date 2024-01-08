@@ -1,6 +1,6 @@
 
 :root {
-    --green: #228b22;  /* #4CBB17;   #43cd80;   */
+    --green: #228b22; /* #228b22; */
     --white: #fdfdfd;/* #fffaf0;  #fff8dc; */
     --black: #111; /* #111111; */
     --gray: #fff8dc77; /* #fff8dc77; */
@@ -164,7 +164,7 @@ body {
 
 .image-container {
     width: 30vh; /* 30% of the viewport height */
-    height: 33vh; /* 30% of the viewport height */
+    height: 35vh; /* 30% of the viewport height */
     margin: 0.5vw;
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
@@ -380,7 +380,7 @@ body {
     background-color: var(--white); /* #00640033; */
     border-radius: 10px;
     border: 0px solid #ddd;
-    text-shadow: 1px 1px #555;
+    text-shadow: 1px 1px #DDD;
 }
 
 .modal-text {
