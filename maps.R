@@ -10,9 +10,9 @@ library(data.table)
 library(future)
 library(future.apply)
 
-d<-fread("C:/Users/franc/Documents/floreqc/plants.csv")
+d<-fread("/home/frousseu/Documents/Github/floreqc/plants.csv")
 
-gbif<-fread("C:/Users/franc/Documents/floreqc/gbif/0021817-231002084531237.csv")
+gbif<-fread("/home/frousseu/Documents/github/floreqc/gbif/0021817-231002084531237.csv")
 
 gbif[,speciesgbif:=species]
 spnames<-unique(gbif$scientificName)
@@ -34,7 +34,7 @@ gbif[is.na(species),species:=speciesgbif]
 gbif<-st_as_sf(gbif,coords=c("decimalLongitude","decimalLatitude"),crs=4326)
 gbif<-st_transform(gbif,32618)
 
-can<-gadm("CAN",path="C:/Users/franc/Documents/floreqc/qc.gpkg") |> st_as_sf()
+can<-gadm("CAN",path="/home/frousseu/Documents/Github/floreqc/qc.gpkg") |> st_as_sf()
 
 # Downloads polygons using package geodata
 #can<-gadm("CAN",level=1,path=getwd()) |> st_as_sf()
@@ -90,7 +90,7 @@ foreach(i=sp,.packages=c("sf","terra","magick")) %dopar% {
 
 
   x<-gbif[gbif$species==i,]
-  path<-paste0("C:/Users/franc/Documents/floreqc/images/",gsub(" ","_",i),"_map.png")
+  path<-paste0("/home/frousseu/Documents/Github/floreqc/images/",gsub(" ","_",i),"_map.png")
   png(gsub("_map","_map1",path),units="cm",width=3,height=1.5,res=500)
   plotQC(region,ylim=lim)
   dev.off()
@@ -125,18 +125,18 @@ file.show(list.files(dirname(path),full=TRUE,pattern="_map.png")[1])
 
 
 
-herbier<-image_read("C:/Users/franc/Documents/floreqc/herbierqc.jpg")
+herbier<-image_read("/home/frousseu/Documents/Github/floreqc/herbierqc.jpg")
 
 plot(herbier)
 
-png("C:/Users/franc/Documents/floreqc/overlayqc.png",res=300,units="in",width=3,height=3)
+png("/home/frousseu/Documents/Github/floreqc/overlayqc.png",res=300,units="in",width=3,height=3)
 par(mar=c(0,0,0,0),bg="transparent")
 plot(st_geometry(region),lwd=0.1,col="#ffffff",border=NA)
 plot(st_geometry(lakes),col="#ffffffff",border=NA,lwd=0.05,add=TRUE)
 dev.off()
 
-qc<-image_read("C:/Users/franc/Documents/floreqc/overlayqc.png")
+qc<-image_read("/home/frousseu/Documents/Github/floreqc/overlayqc.png")
 qc<-image_scale(qc,image_info(herbier)$height)
 
 im<-image_composite(herbier,qc,operator="blend",compose_args="90")
-image_write(im,"C:/Users/franc/Documents/floreqc/herbier.png")
+image_write(im,"/home/frousseu/Documents/Github/floreqc/herbier.png")

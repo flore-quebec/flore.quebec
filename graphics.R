@@ -10,7 +10,7 @@ library(berryFunctions)
 
 
 ###
-gbif<-fread("C:/Users/franc/Documents/floreqc/gbif/0021817-231002084531237.csv")
+gbif<-fread("/home/frousseu/Documents/Github/floreqc/gbif/0021817-231002084531237.csv")
 gbif[,date:=eventDate]
 gbif[,jul:=as.integer(format(as.Date(date),"%j"))]
 gbif[,year:=substr(date,1,4)]
@@ -68,7 +68,7 @@ for(i in sp){
   #h<-lapply(h,"[",c(5:25))
   labs<-gsub("\\.","",format(as.Date(h$mids,origin="1970-01-01"),"%b"))
 
-  path<-paste0("C:/Users/franc/Documents/floreqc/images/",gsub(" ","_",i),"_pheno.png")
+  path<-paste0("/home/frousseu/Documents/Github/floreqc/images/",gsub(" ","_",i),"_pheno.png")
   png(path,units="cm",width=9,height=6,res=300)
   par(mar=c(3,2,3,0.5),bg="white")
 

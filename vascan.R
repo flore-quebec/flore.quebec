@@ -19,7 +19,7 @@ library(sf)
 #d<-fread("https://data.canadensys.net/downloads/vascan/TXT-5bfd1205-26cd-4ee9-aada-af09bc88732a.txt",header=TRUE,encoding="UTF-8")
 
 
-lf<-list.files("C:/Users/franc/Documents/floreqc/vascan",full=TRUE,pattern=".txt")
+lf<-list.files("/home/frousseu/Documents/Github/floreqc/vascan",full=TRUE,pattern=".txt")
 
 taxon<-fread(grep("taxon",lf,value=TRUE))
 spnames<-unique(taxon$scientificName)
@@ -42,7 +42,7 @@ vernacular<-fread(grep("vernacularname",lf,value=TRUE))
 vernacular<-vernacular[language=="FR" & isPreferredName,]
 
 
-d<-fread("C:/Users/franc/Documents/floreqc/vascan.csv",header=TRUE,encoding="UTF-8")
+d<-fread("/home/frousseu/Documents/Github/floreqc/vascan.csv",header=TRUE,encoding="UTF-8")
 d<-d[Rang=="Espèce",]
 d$species<-d$"Nom scientifique"
 d<-d[-grep("×",d$species),] # removes hybrid
@@ -153,7 +153,7 @@ d$powo<-powourl$powo[match(d$species,powourl$sp)]
 
 ### VASCAN links
 im<-image_read("https://layout.canadensys.net/common/images/favicon.ico")
-image_write(image_trim(im[6]),"C:/Users/franc/Documents/floreqc/vascanlogo.jpg")
+image_write(image_trim(im[6]),"/home/frousseu/Documents/Github/floreqc/vascanlogo.jpg")
 d$vascan<-d$references
 
 
@@ -174,7 +174,7 @@ if(length(sp)){
 
 
 ### N obs
-gbif<-fread("C:/Users/franc/Documents/floreqc/gbif/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
+gbif<-fread("/home/frousseu/Documents/Github/floreqc/gbif/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
 gbif<-gbif[!is.na(decimalLatitude),]
 gbif<-gbif[!is.na(eventDate),]
 counts<-gbif[,.(nobs=.N),by=.(species)]
@@ -206,8 +206,8 @@ d$vernacularFRalt<-NA
 
 
 
-#fwrite(d,"C:/Users/franc/Documents/floreqc/plants.csv")
-#d<-fread("C:/Users/franc/Documents/floreqc/plants.csv")
+#fwrite(d,"/home/frousseu/Documents/Github/floreqc/plants.csv")
+#d<-fread("/home/frousseu/Documents/Github/floreqc/plants.csv")
 
 
 
@@ -299,7 +299,7 @@ ma<-match(d$species,sapply(strsplit(taxon$acceptedNameUsage," "),function(i){pas
 d[,taxonomic_order:=ma]
 
 ### Some ssp have several statuses that should be combined
-s<-st_read("C:/Users/franc/Documents/floreqc/emvs_dq.gpkg") |> as.data.table()
+s<-st_read("/home/frousseu/Documents/Github/floreqc/emvs_dq.gpkg") |> as.data.table()
 s<-s[GROUPE=="Plantes" & GGROUPE!="Invasculaires",]
 s[,species:=sapply(strsplit(SNAME," "),function(i){paste(i[1:2],collapse=" ")})]
 s<-s[,c("species","LOIEMV","COSEWIC","SARASTATUS","GRANK","NRANK","SRANK"),with=FALSE] |> unique()
@@ -407,7 +407,7 @@ option_values(rbindlist(pics),tag="genus")
 option_values(rbindlist(pics),tag="species")
 all_values(d)
 image_array()
-file.show("C:/Users/franc/Documents/floreqc/flora.html")
+file.show("/home/frousseu/Documents/Github/floreqc/flora.html")
 
 
 
