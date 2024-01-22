@@ -19,7 +19,7 @@ library(sf)
 #d<-fread("https://data.canadensys.net/downloads/vascan/TXT-5bfd1205-26cd-4ee9-aada-af09bc88732a.txt",header=TRUE,encoding="UTF-8")
 
 
-lf<-list.files("/home/frousseu/Documents/Github/floreqc/vascan",full=TRUE,pattern=".txt")
+lf<-list.files("/home/frousseu/Documents/github/floreqc/vascan",full=TRUE,pattern=".txt")
 
 taxon<-fread(grep("taxon",lf,value=TRUE))
 spnames<-unique(taxon$scientificName)
@@ -42,7 +42,10 @@ vernacular<-fread(grep("vernacularname",lf,value=TRUE))
 vernacular<-vernacular[language=="FR" & isPreferredName,]
 
 
-d<-fread("/home/frousseu/Documents/Github/floreqc/vascan.csv",header=TRUE,encoding="UTF-8")
+#d<-fread("/home/frousseu/Documents/github/floreqc/vascan.csv",header=TRUE,encoding="UTF-8")
+
+d<-fread("/home/frousseu/Documents/github/floreqc/TXT-007361df-1554-4e21-9aa7-0271ef025e6f.txt",header=TRUE,encoding="UTF-8")
+
 d<-d[Rang=="Espèce",]
 d$species<-d$"Nom scientifique"
 d<-d[-grep("×",d$species),] # removes hybrid
@@ -153,7 +156,7 @@ d$powo<-powourl$powo[match(d$species,powourl$sp)]
 
 ### VASCAN links
 im<-image_read("https://layout.canadensys.net/common/images/favicon.ico")
-image_write(image_trim(im[6]),"/home/frousseu/Documents/Github/floreqc/vascanlogo.jpg")
+image_write(image_trim(im[6]),"/home/frousseu/Documents/github/floreqc/vascanlogo.jpg")
 d$vascan<-d$references
 
 
@@ -174,7 +177,7 @@ if(length(sp)){
 
 
 ### N obs
-gbif<-fread("/home/frousseu/Documents/Github/floreqc/gbif/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
+gbif<-fread("/home/frousseu/Documents/github/floreqc/gbif/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
 gbif<-gbif[!is.na(decimalLatitude),]
 gbif<-gbif[!is.na(eventDate),]
 counts<-gbif[,.(nobs=.N),by=.(species)]
@@ -206,8 +209,8 @@ d$vernacularFRalt<-NA
 
 
 
-#fwrite(d,"/home/frousseu/Documents/Github/floreqc/plants.csv")
-#d<-fread("/home/frousseu/Documents/Github/floreqc/plants.csv")
+#fwrite(d,"/home/frousseu/Documents/github/floreqc/plants.csv")
+#d<-fread("/home/frousseu/Documents/github/floreqc/plants.csv")
 
 
 
@@ -299,7 +302,7 @@ ma<-match(d$species,sapply(strsplit(taxon$acceptedNameUsage," "),function(i){pas
 d[,taxonomic_order:=ma]
 
 ### Some ssp have several statuses that should be combined
-s<-st_read("/home/frousseu/Documents/Github/floreqc/emvs_dq.gpkg") |> as.data.table()
+s<-st_read("/home/frousseu/Documents/github/floreqc/emvs_dq.gpkg") |> as.data.table()
 s<-s[GROUPE=="Plantes" & GGROUPE!="Invasculaires",]
 s[,species:=sapply(strsplit(SNAME," "),function(i){paste(i[1:2],collapse=" ")})]
 s<-s[,c("species","LOIEMV","COSEWIC","SARASTATUS","GRANK","NRANK","SRANK"),with=FALSE] |> unique()
@@ -407,7 +410,7 @@ option_values(rbindlist(pics),tag="genus")
 option_values(rbindlist(pics),tag="species")
 all_values(d)
 image_array()
-file.show("/home/frousseu/Documents/Github/floreqc/flora.html")
+file.show("/home/frousseu/Documents/github/floreqc/flora.html")
 
 
 
@@ -425,6 +428,98 @@ file.show("/home/frousseu/Documents/Github/floreqc/flora.html")
 #row.names(df)<-df[,1]
 #wordcloud2(data=df, size=0.75, shape="square",color='random-dark',minSize=1)
 
+folders <- unique(d[, c("family", "genus", "sp")]) |>
+             apply(1, paste, collapse = "/") |>
+             gsub(" ", "_", x = _) |>
+             paste0(".md") |>
+             file.path("Espèces",x = _) |>
+             sort()
+
+lapply(folders,function(i){
+ if(!dir.exists(dirname(i))){
+   dir.create(dirname(i), recursive = TRUE)
+ }
+ template <- "## Traits distinctifs\n\n-\n\n## Espèces semblables\n\n-\n\n## Habitat\n\n-\n\n## Commentaires"
+ write(template,i)
+})
 
 
 
+
+
+get_species_photos <- function(species = NULL){
+  url <- file.path("https://raw.githubusercontent.com/frousseu/floreqc/main",gsub(" ","_",species))
+  x <- readLines(url)
+  beg <- match("<!--", x)
+  end <- match("-->", x)
+  x <- x[(beg + 1):(end - 1)]
+  x <- gsub(" ", "", x)
+  x <- x[x != ""]
+  l <- lapply(strsplit(x, "-"),function(i){
+    if(length(i) == 1){
+      i <- c(1,i)
+    }
+    data.frame(species = gsub("_", " ", basename(url)), obs = i[length(i)], id = as.integer(basename(i[length(i)])), no = as.integer(i[1:(length(i) - 1)]))
+  })
+  x <- do.call("rbind", l)
+  l <- split(x, x$id)
+  j <- fromJSON(file.path("https://api.inaturalist.org/v1/observations",paste0(names(l),collapse=",")))
+  l <- lapply(seq_along(l),function(i){
+    res <- j$results$photos[[i]][l[[i]]$no, c("license_code", "url", "attribution")]
+    cbind(l[[i]], res, uuid = j$results$uuid[i], taxon.name = j$results$taxon$name[i])
+  })
+  info <- do.call("rbind", l)
+  info$reject <- ifelse(info$license_code %in% c("cc0","c(c-by","cc-by-nc") & info$species == info$taxon.name, 0, 1)
+  info
+}
+
+get_species_photos("README.md")
+
+
+#latest_species_commit <- function(){}
+
+x <- fromJSON("https://frousseu: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@api.github.com/repos/frousseu/floreqc/commits?per_page=100&files=true")
+sha <- x$sha
+
+l <- lapply(sha, function(i){
+  print(i)
+  x <- fromJSON(file.path("https://frousseu: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@api.github.com/repos/frousseu/floreqc/commits",i))
+  file <- x$files$filename
+  if(is.null(file)){
+    return(NULL)
+  }
+  author <- x$commit$author$name
+  login <- x$author$login
+  date <- x$commit$author$date
+  message <- x$commit$message
+  #x$files$patch
+  res <- data.frame(sha = i, file = file, author = author, login = login, date = date, message = message)
+  res <- cbind(res, x$files[,c("additions","deletions","changes")])
+  res
+})
+
+x <- do.call("rbind", l)
+x <- x[grep(".md", x$file),]
+x
+
+
+# count_letters_changed <- function(diff) {
+#   additions <- gsub("\\+([^\\n]+)", "\\1", regmatches(diff, gregexpr("\\+([^\\n]+)", diff)))
+#   deletions <- gsub("\\-([^\\n]+)", "\\1", regmatches(diff, gregexpr("\\-([^\\n]+)", diff)))
+#
+#   additions_text <- paste(additions, collapse = "")
+#   deletions_text <- paste(deletions, collapse = "")
+#
+#   letters_changed <- sum(utf8ToInt(additions_text) != utf8ToInt(deletions_text))
+#   return(letters_changed)
+# }
+#
+# count_letters_changed(x$files$patch)
+
+
+
+
+# lapply(1:100,function(i){
+#   print(i)
+#   readLines("https://raw.githubusercontent.com/frousseu/floreqc/main/README.md")
+# })
