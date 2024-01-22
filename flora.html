@@ -6,6 +6,7 @@
   <title>Flore du Québec</title>
   <link rel="stylesheet" href="styles.css">
   <script type="text/javascript" src="data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div id="header">
@@ -74,23 +75,24 @@
                   <div id="verna_fr">Nom commun</div>
                   <!-- <div id="verna_alternatif_fr">Nom commun alternatif</div> -->
                 </div>
-                <div class="commun_en">
-                  <div id="verna_en">Nom commun alternatif</div>
-                </div>
                 <div class="scientifique">
                   <div id="scien_complet">Nom scientifique complet</div>
                   <!-- <div id="scien_alternatif">Nom scientifique alternatif</div> -->
                 </div>
+                <div class="commun_en">
+                  <div id="verna_en">Nom commun alternatif</div>
+                </div>
               </div>
             </div>
             <div class="container" id="container">
+              <div class="links" id="links"></div>
               <div class="taxonomy" id="taxonomy"></div>
-              <div class="container" id="links"></div>
             </div>
             <div class="row">
               <div class="column1">
                 <div class="modal-text" id="modalText"></div>
                 <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce</div>
+                <div id="txt"></div>
               </div>
               <div class="column2">
                 <div class="status">
@@ -154,7 +156,19 @@
         function openModal(headerText, bodyText, imageArray) {
             modal.style.display = 'block';
             modalHeader.innerHTML = headerText.replace(" "," ");
-            modalText.innerHTML = bodyText;
+            //modalText.innerHTML = bodyText;
+
+            //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/README.md";
+            //fetch(url)
+            //  .then(r=>r.blob()).then(b=>b.text()).then(m=>{document.getElementById("txt").innerHTML=marked.parse(m)});
+            //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/" + headerText.replace(" ","_");
+            var url = "https://raw.githubusercontent.com/frousseu/floreqc/main/README.md";
+            //var temp = marked.parse(fetch(url).then(r=>r.blob()).then(b=>b.text()));
+            //console.log(temp);
+
+            fetch(url)
+              .then(r=>r.blob()).then(b=>b.text()).then(m => {modalText.innerHTML=marked.parse(m)});
+
 
             // Clear previous images
             modalImages.innerHTML = '';
@@ -267,13 +281,9 @@
                 (selected === image.espèce)
               ));
             };
-            console.log(group);
-
 
             last_category = group;
             last_value = selected;
-
-            console.log(order[1].checked);
 
             if( order[2].checked ){
                filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
@@ -456,8 +466,6 @@
           pro = pro.replaceAll("NA, ","-").replace("NA","-");
           return pro;
         }
-
-
 
     </script>
 </body>
