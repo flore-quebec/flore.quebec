@@ -478,12 +478,16 @@ get_species_photos("README.md")
 
 #latest_species_commit <- function(){}
 
-x <- fromJSON("https://frousseu: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@api.github.com/repos/frousseu/floreqc/commits?per_page=100&files=true")
+
+token <- readLines("/home/frousseu/.ssh/github_token")
+githubapi <- paste0("https://frousseu:",token,"@api.github.com/repos/frousseu/floreqc/commits")
+
+x <- fromJSON(paste0(githubapi,"?per_page=100&files=true"))
 sha <- x$sha
 
 l <- lapply(sha, function(i){
   print(i)
-  x <- fromJSON(file.path("https://frousseu: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@api.github.com/repos/frousseu/floreqc/commits",i))
+  x <- fromJSON(file.path(githubapi,i))
   file <- x$files$filename
   if(is.null(file)){
     return(NULL)
