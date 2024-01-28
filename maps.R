@@ -10,7 +10,7 @@ library(data.table)
 library(future)
 library(future.apply)
 
-d<-fread("/home/frousseu/Documents/Github/floreqc/plants.csv")
+d<-fread("/home/frousseu/Documents/github/floreqc/plants.csv")
 
 gbif<-fread("/home/frousseu/Documents/github/floreqc/gbif/0021817-231002084531237.csv")
 
@@ -34,7 +34,7 @@ gbif[is.na(species),species:=speciesgbif]
 gbif<-st_as_sf(gbif,coords=c("decimalLongitude","decimalLatitude"),crs=4326)
 gbif<-st_transform(gbif,32618)
 
-can<-gadm("CAN",path="/home/frousseu/Documents/Github/floreqc/qc.gpkg") |> st_as_sf()
+can<-gadm("CAN",path="/home/frousseu/Documents/github/floreqc/qc.gpkg") |> st_as_sf()
 
 # Downloads polygons using package geodata
 #can<-gadm("CAN",level=1,path=getwd()) |> st_as_sf()
@@ -140,3 +140,24 @@ qc<-image_scale(qc,image_info(herbier)$height)
 
 im<-image_composite(herbier,qc,operator="blend",compose_args="90")
 image_write(im,"/home/frousseu/Documents/Github/floreqc/herbier.png")
+
+
+library(sf)
+library(rmapshaper)
+library(FRutils)
+
+l <- st_layers("/home/frousseu/Downloads/CLASSI_ECO_QC_GDB/CLASSI_ECO_QC.gdb")
+bio <- st_read("/home/frousseu/Downloads/CLASSI_ECO_QC_GDB/CLASSI_ECO_QC.gdb", layer="N3_DOM_BIO")
+bio <- ms_simplify(bio,0.001)
+
+
+cols<-colo.scale(1:10,c("gold2","gold3","palegreen","yellowgreen","forestgreen","darkgreen","darkseagreen","navajowhite4","grey80"))
+cols <- adjustcolor(cols,0.65)
+
+par(mar=c(0,0,0,0))
+plot(st_geometry(bio),col=cols,border=NA)
+plot(st_transform(st_geometry(lakes),st_crs(bio)),col="grey99",border="grey75",lwd=0.05,add=TRUE)
+plot(st_geometry(st_transform(gbif[gbif$species=="Elymus virginicus",],st_crs(bio))),cex=3,pch=21,col="black",lwd=4,bg=adjustcolor("deepskyblue",0.5),add=TRUE)
+plot(st_geometry(bio),border="black",lwd=0.1,add=TRUE)
+
+
