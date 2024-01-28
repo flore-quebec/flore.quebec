@@ -13,7 +13,7 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: var(--white); /* White background */
-    font-family: 'Roboto', sans-serif; /* Modern font */
+    font-family: 'League Spartan', Helvetica, Arial, sans-serif; /* 'Roboto', sans-serif; */ /* Modern font */
 }
 
 @media only screen and (max-width: 850px) {
@@ -36,8 +36,8 @@ body {
 }
 
 #tab {
-    font-size: 3vmin; /* Larger font size for the header title */
-    font-weight: bold;
+    font-size: 4vmin; /* Larger font size for the header title */
+    font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
     margin-right: 2vmin;
     /* overflow: hidden;
@@ -56,7 +56,7 @@ body {
 
 #title {
     font-size: 5vmin; /* Larger font size for the header title */
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
     margin-left: 2vw;
 }
@@ -90,22 +90,22 @@ body {
     margin: 0 10px;
     border: 5px solid var(--green); /* Dark green border */
     border-radius: 15px; /* Rounded corners */
-    background: var(--green); /* Rounded corners */
-    border-color: var(--green);
+    background: var(--white); /* Rounded corners */
+    border-color: var(--white);
     margin-top: 5px;
 }
 
 .dropdown-label {
     margin-top: 0px; /* Adjust top margin */
-    font-weight: bold;
+    font-weight: italic;
     font-size: 2.5vmin;
-    color: white; /* Dark green label text color */
+    color: var(--green); /* Dark green label text color */
 }
 
 .dropdown-input {
     width: 225px; /* Adjust the width as needed */
     padding: 8px;
-    border: none;
+    border: 2px solid var(--green);
     background-color: white; /* White background */
     font-size: 2vmin; /* Larger font size for dropdowns */
     font-style: italic;
@@ -146,6 +146,18 @@ body {
 }
 
 
+.selected {
+    color: var(--green);
+    font-size: 6vmin; /* Larger font size for dropdowns */
+    padding-top: 2vmin;
+    padding-bottom: 1vmin;
+    font-style: italic;
+    transition: transform 0.15s ease-in-out;
+}
+
+.selected:hover {
+    transform: scale(1.15);
+}
 
 .gallery {
     display: flex;
@@ -165,7 +177,7 @@ body {
 .image-container {
     width: 30vh; /* 30% of the viewport height */
     height: 35vh; /* 30% of the viewport height */
-    margin: 0.5vw;
+    margin: 1.0vw;
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
     /* overflow: hidden; */
@@ -204,21 +216,22 @@ body {
     bottom: 2%;
     left: 2%;
     width: 96%;
-    background-color: rgba(255, 255, 255, 0.80); /* White background with transparency */
+    background-color: rgba(255, 255, 255, 0.85); /* White background with transparency */
     color: #000; /* Black title text */
     text-shadow: 0px 0px #555;
     padding: 0px; /* Larger padding for title */
-    padding-top: 4px; /* Larger padding for title */
+    padding-top: 6px; /* Larger padding for title */
     padding-bottom: 1px; /* Larger padding for title */
     font-size: 2.45vmin; /* Larger font size for title */
     font-style: italic;
     text-align: center;
-    border-radius: 15px 15px 15px 15px; /* Rounded corners at the bottom */
-    font-weight: bold; /* Bold title text */
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #ccc;
+    border-radius: 14px 14px 14px 14px; /* Rounded corners at the bottom */
+    font-weight: normal; /* Bold title text */
+    border-left: 0px solid #ccc;
+    border-right: 0px solid #ccc;
+    border-bottom: 0px solid #ccc;
+    border-top: 0px solid #ccc;
+    text-shadow: 0px 0px #FFF;
     /* margin-left: 0.25vw;
     margin-right: 0.25vw;
     margin-bottom: 0.25vw; */
@@ -268,7 +281,7 @@ body {
     font-style: italic;
     text-align: center;
     /* border-radius: 15px 15px 15px 15px;  Rounded corners at the bottom */
-    font-weight: bold; /* Bold title text */
+    font-weight: normal; /* Bold title text */
 }
 
 .image-map-mini {
@@ -292,7 +305,7 @@ body {
         font-style: italic;
         text-align: center;
         /* border-radius: 15px 15px 15px 15px;  Rounded corners at the bottom */
-        font-weight: bold; /* Bold title text */
+        font-weight: normal; /* Bold title text */
     }
     .image-map-mini {
         height: 11vh;
@@ -357,6 +370,8 @@ body {
   flex-wrap: wrap;              /* default value; can be omitted */
   justify-content: space-around;
   align-items: center;
+  margin-top: 1vmin;
+  padding-bottom: 1vmin;
 }
 
 @media only screen and (max-width: 850px) {
@@ -368,8 +383,8 @@ body {
 }
 
 .modal-header {
-    font-size: 6vmin;
-    font-weight: bold;
+    font-size: 6.5vmin;
+    font-weight: normal;
     font-style: italic;
     color: #000;
     text-align: center;
@@ -380,13 +395,20 @@ body {
     background-color: var(--white); /* #00640033; */
     border-radius: 10px;
     border: 0px solid #ddd;
-    text-shadow: 1px 1px #DDD;
+    text-shadow: 0px 0px #DDD;
 }
 
 .modal-text {
-    font-size: 1.75vmin;
+    font-size: 2.5vmin;
     margin-bottom: 1vmin;
     background-color: var(--white);
+    color: #555;
+}
+
+h2 {
+    font-size: 3.5vmin;
+    font-weight: normal;
+    color: #000;
 }
 
 @media only screen and (max-width: 850px) {
@@ -402,6 +424,7 @@ body {
     }
     h2 {
         font-size: 6vmin;
+        font-weight: normal;
     }
 }
 
@@ -582,7 +605,7 @@ body {
     /* float: right; */
     /* object-fit: contain; */
     /* object-position: bottom; */
-    padding-top: 5vh;
+    padding-top: 3vh;
     padding-bottom: 2vh;
     margin: auto;
     display: block;
@@ -599,6 +622,10 @@ body {
 
 /* Create two equal columns that floats next to each other */
 .column1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
   float: left;
   width: 58%;
   padding-left: 1%;
@@ -607,6 +634,10 @@ body {
   /* border-top: 10px solid #DDDDDD; */
   /* border-right: 5px solid #DDDDDD; */
   border-radius: 0px;
+}
+
+.footer1 {
+  display: flex;
 }
 
 .column2 {
@@ -636,12 +667,12 @@ body {
 
 .taxonomy {
   color: #999; /* #999; */
-  font-size: 2.25vmin;
-  font-weight: bold;
+  font-size: 2.5vmin;
+  font-weight: normal;
   font-style: italic;
   text-align: center;
-  margin-bottom: 2vmin;
-  margin-top: 1vmin;
+  margin-bottom: 0vmin;
+  margin-top: 0vmin;
   margin-left: 2vmin;
   margin-right: 2vmin;
   text-shadow: 1px 1px #FFF;
@@ -660,10 +691,15 @@ body {
   flex-direction: row;            /* default value; can be omitted */
   flex-wrap: wrap;              /* default value; can be omitted */
   justify-content: space-between; /* switched from default (flex-start, see below) */
-  background-color: #eee;
-  border-radius: 10px;
-  padding-top: 0.65vh;
+  background-color: #fff;
+  border-radius: 0px;
+  padding-top: 0.75vh;
+  padding-bottom: 0.75vh;
   margin-left: 0vmin;
+  margin-bottom: 0.5vmin;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
   /* border: 10px solid #DDDDDD; */
   /* display: flex; */
   /* justify-content: center; */
@@ -672,6 +708,7 @@ body {
 
 .links{
   margin-left: 2vmin;
+  border: 0px solid #ccc;
 }
 
 @media only screen and (max-width: 850px) {
@@ -756,11 +793,11 @@ body {
   /* transform: scale(1.05); */
 }
 
-.contributor, .doi {
+.contributor, .doi, .edit {
   display: flex;
-  font-size: 1.5vmin;
+  font-size: 1.25vmin;
   font-weight: normal;
-  color: black;
+  color: #888;
   text-align: center;
   margin-bottom: 1vh;
   margin-top: 1vh;
@@ -768,9 +805,15 @@ body {
   margin-right: 1vh;
   width: 90%;
   justify-content: center; /* align center */
+  align-items: center;
   text-decoration: none;
 }
 
+.minioctocat {
+    height: 1.25vmin;
+    margin-left: 0.5vmin;
+    opacity: 0.5;
+}
 
 /* The container */
 .container_radio {
@@ -780,9 +823,9 @@ body {
   padding-left: 35px;
   margin-bottom: 5px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 2.5vh;
-  color: white; /* Dark green label text color */
+  color: var(--green); /* Dark green label text color */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -847,7 +890,7 @@ body {
 }
 
 .scientifique, .commun, .commun_en, .status, .protection {
-  font-size: 2.5vmin;
+  font-size: 3.00vmin;
   margin-left: 1vw;
   margin-right: 0vmin;
   margin-top: 1.5vmin;
@@ -858,12 +901,8 @@ body {
   background-color: var(--white);
   border-radius: 0px;
   text-shadow: 1px 1px #fff;
-  font-weight: bold;
+  font-weight: normal;
   color: var(--green);
-}
-
-.scientifique, .commun_en {
-  font-style: italic;
 }
 
 .commun_en {
@@ -876,16 +915,16 @@ body {
 }
 
 .status {
-  font-weight: bold;
+  font-weight: normal;
   color: var(--green);
-  margin-top: 3vh;
+  margin-top: 1.5vmin;
   /* text-shadow: 1px 1px #000; */
 }
 
 .protection {
-  font-weight: bold;
+  font-weight: normal;
   color: darkred;
-  margin-top: 3vh;
+  margin-top: 1.5vmin;
   /* text-shadow: 1px 1px #000; */
 }
 
