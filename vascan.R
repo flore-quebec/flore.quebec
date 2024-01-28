@@ -177,7 +177,7 @@ if(length(sp)){
 
 
 ### N obs
-gbif<-fread("/home/frousseu/Documents/github/floreqc/gbif/0021817-231002084531237/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
+gbif<-fread("/home/frousseu/Documents/github/floreqc/gbif/0021817-231002084531237.csv",select=c("species","eventDate","decimalLatitude",""))
 gbif<-gbif[!is.na(decimalLatitude),]
 gbif<-gbif[!is.na(eventDate),]
 counts<-gbif[,.(nobs=.N),by=.(species)]
@@ -208,17 +208,11 @@ d$alternatif<-NA
 d$vernacularFRalt<-NA
 
 
-
-#fwrite(d,"/home/frousseu/Documents/github/floreqc/plants.csv")
-#d<-fread("/home/frousseu/Documents/github/floreqc/plants.csv")
-
-
-
 iders<-paste(c("frousseu","elacroix-carignan","lysandra","marc_aurele","elbourret","bickel","michael_oldham","wdvanhem","sedgequeen","hsteger","seanblaney","chasseurdeplantes","birds_bugs_botany","bachandy","paquette0747","brothernorbert","tsn","ludoleclerc","trscavo","ken_j_allison","alexandre_bergeron","johnklymko","charlie","mcusson","mhough","birddogger","ibarzabal_j","choess","m-bibittes","brucebennett","tiarelle","polemoniaceae"),collapse=",")
 
 #iders<-paste(c("marc_aurele","frousseu","lysandra"),collapse=",")
 
-get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRUE){
+get_random_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRUE){
   cc<-paste(license,collapse=",")
   #x<-fromJSON(paste0("https://api.inaturalist.org/v1/observations?photo_license=",cc,"&taxon_id=",id,"&quality_grade=research&ident_user_id=",iders,"&order=desc&order_by=created_at"))
   api<-paste0("https://api.inaturalist.org/v1/observations?photo_license=",cc,"&taxon_id=",id,if(is.null(place)){""}else{"&place_id=13336"},if(is.null(iders)){""}else{paste0("&ident_user_id=",iders)},"&order=desc&order_by=created_at&per_page=200")
@@ -237,7 +231,7 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRU
     #if(nrow(res)>0){
     res<-res[1,] # keep first one
     #}
-    cbind(idobs=x$id[i],res,users[rep(i,nrow(res)),])
+    cbind(idobs=as.integer(x$id[i]),res,users[rep(i,nrow(res)),])
   }))
   showbobs<-paste0("https://www.inaturalist.org/observations/?id=",paste0(pics$idobs,collapse=","),"&place_id=any")
   #ids<-x$identifications[[1]][,c("taxon_id","current","user")]
@@ -251,20 +245,20 @@ get_photos<-function(id,license=c("cc0","cc-by","cc-by-nc"),iders=NULL,place=TRU
 
 set.seed(1234)
 ids<-basename(d$inatID)#[1:10]
-photos<-lapply(seq_along(ids),function(i){
+random_photos<-lapply(seq_along(ids),function(i){
   #cat(paste(i,"/r"));flush.console()
   print(i)
   if(is.na(ids[i])){return(NULL)}
-  x<-get_photos(id=ids[i],iders=iders,place=TRUE)
+  x<-get_random_photos(id=ids[i],iders=iders,place=TRUE)
   if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
   if(is.null(x) || nrow(x)<8){
-    x<-get_photos(id=ids[i],iders=iders,place=NULL)
+    x<-get_random_photos(id=ids[i],iders=iders,place=NULL)
     if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
     if(is.null(x) || nrow(x)<8){
-      x<-get_photos(id=ids[i],iders=NULL,place=TRUE)
+      x<-get_random_photos(id=ids[i],iders=NULL,place=TRUE)
       if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
       if(is.null(x) || nrow(x)<8){
-        x<-get_photos(id=ids[i],iders=NULL,place=NULL)
+        x<-get_random_photos(id=ids[i],iders=NULL,place=NULL)
         if(!is.null(x)){x<-x[sample(1:nrow(x)),]}
       }else{
         x<-NULL
@@ -276,7 +270,9 @@ photos<-lapply(seq_along(ids),function(i){
     Sys.sleep(0.5)
     pic$when<-as.character(Sys.time())
     pic$idtaxa<-ids[i]
-    fwrite(pic,"pics.csv",append=TRUE)
+    pic$selected <- 0
+    pic$rank <- NA
+    fwrite(pic,"random_photos.csv",append=TRUE)
   }
 })
 #photos<-lapply(seq_along(photos),function(i){
@@ -288,18 +284,13 @@ photos<-lapply(seq_along(ids),function(i){
 #})
 #photos<-rbindlist(photos)
 
-
-photos<-fread("pics.csv",fill=TRUE)
-photos<-photos[!is.na(when),]
-#x<-readLines("pics.csv")
-
-
 d[,idtaxa:=as.integer(basename(inatID))]
 #d<-d[!is.na(idtaxa),]
 d[,species:=d$"Nom scientifique"]
 d[,nom:=vernacularFR]
 ma<-match(d$species,sapply(strsplit(taxon$acceptedNameUsage," "),function(i){paste(i[1:2],collapse=" ")}))
 d[,taxonomic_order:=ma]
+
 
 ### Some ssp have several statuses that should be combined
 s<-st_read("/home/frousseu/Documents/github/floreqc/emvs_dq.gpkg") |> as.data.table()
@@ -311,12 +302,64 @@ s<-s[!duplicated(s$species),]
 d<-s[d,on=.(species)]
 
 
+#fwrite(d,"/home/frousseu/Documents/github/floreqc/plants.csv")
+d<-fread("/home/frousseu/Documents/github/floreqc/plants.csv")
+
+
+
+
+random_photos <- fread("random_photos.csv", fill = TRUE)
+random_photos$idobs <- as.integer(random_photos$idobs)
+random_photos <- random_photos[!is.na(when), ]
+random_photos$species <- d$species[match(random_photos$idtaxa,d$idtaxa)]
+
+
+commits <- latest_species_commits(50)
+selected_photos <- get_species_photos(commits)
+#fwrite(selected_photos, "selected_photos.csv")
+sphotos <- fread("selected_photos.csv")
+selected_photos <- unique(rbind(sphotos, selected_photos))
+fwrite(selected_photos, "selected_photos.csv", append = FALSE)
+
+
+selected_photos<-fread("selected_photos.csv")
+selected_photos$idtaxa <- d$idtaxa[match(selected_photos$species,d$species)]
+
+
+photos <- merge(selected_photos, random_photos, all = TRUE)
+photos <- photos[order(species, rank), ]
+photos <- split(photos, photos$species) |>
+            lapply(function(i){i[1:min(c(nrow(i),8)), ]}) |>
+            rbindlist()
+
+
+
+
+
+
+
+
+
+
 #pics<-data.frame(id=ids,pics=photos)
 #photos<-merge(photos,d,by.x="idtaxa",by.y="idtaxa",all.x=TRUE)
-photos<-merge(photos,d,by.x="idtaxa",by.y="idtaxa",all=TRUE)
+
+d <- d[!is.na(idtaxa), ] # ????????????
+photos <- merge(photos, d, by.x="idtaxa", by.y="idtaxa", all=TRUE)
+names(photos) <- gsub("\\.x|i\\.","",names(photos)) # ?????????
+photos <- photos[order(species,rank)]
 #pics<-photos[order(species),]
 
-pics<-split(photos,photos$species)
+
+
+pics <- split(photos, photos$species) #|>
+          #lapply(function(i){i[1:min(c(nrow(i),8)), ]})
+
+
+
+
+
+
 
 #pics<-pics[!duplicated(species),]
 #pics<-pics[!is.na(pics$url),]
@@ -405,12 +448,12 @@ all_values<-function(x,append=TRUE){
 }
 
 
-option_values(rbindlist(pics),tag="family",append=FALSE)
+option_values(rbindlist(pics),tag="family", append=FALSE)
 option_values(rbindlist(pics),tag="genus")
 option_values(rbindlist(pics),tag="species")
 all_values(d)
 image_array()
-file.show("/home/frousseu/Documents/github/floreqc/flora.html")
+#file.show("/home/frousseu/Documents/github/floreqc/flora.html")
 
 
 
@@ -428,97 +471,13 @@ file.show("/home/frousseu/Documents/github/floreqc/flora.html")
 #row.names(df)<-df[,1]
 #wordcloud2(data=df, size=0.75, shape="square",color='random-dark',minSize=1)
 
-folders <- unique(d[, c("family", "genus", "sp")]) |>
-             apply(1, paste, collapse = "/") |>
-             gsub(" ", "_", x = _) |>
-             paste0(".md") |>
-             file.path("Espèces",x = _) |>
-             sort()
-
-lapply(folders,function(i){
- if(!dir.exists(dirname(i))){
-   dir.create(dirname(i), recursive = TRUE)
- }
- template <- "## Traits distinctifs\n\n-\n\n## Espèces semblables\n\n-\n\n## Habitat\n\n-\n\n## Commentaires"
- write(template,i)
-})
 
 
 
 
 
-get_species_photos <- function(species = NULL){
-  url <- file.path("https://raw.githubusercontent.com/frousseu/floreqc/main",gsub(" ","_",species))
-  x <- readLines(url)
-  beg <- match("<!--", x)
-  end <- match("-->", x)
-  x <- x[(beg + 1):(end - 1)]
-  x <- gsub(" ", "", x)
-  x <- x[x != ""]
-  l <- lapply(strsplit(x, "-"),function(i){
-    if(length(i) == 1){
-      i <- c(1,i)
-    }
-    data.frame(species = gsub("_", " ", basename(url)), obs = i[length(i)], id = as.integer(basename(i[length(i)])), no = as.integer(i[1:(length(i) - 1)]))
-  })
-  x <- do.call("rbind", l)
-  l <- split(x, x$id)
-  j <- fromJSON(file.path("https://api.inaturalist.org/v1/observations",paste0(names(l),collapse=",")))
-  l <- lapply(seq_along(l),function(i){
-    res <- j$results$photos[[i]][l[[i]]$no, c("license_code", "url", "attribution")]
-    cbind(l[[i]], res, uuid = j$results$uuid[i], taxon.name = j$results$taxon$name[i])
-  })
-  info <- do.call("rbind", l)
-  info$reject <- ifelse(info$license_code %in% c("cc0","c(c-by","cc-by-nc") & info$species == info$taxon.name, 0, 1)
-  info
-}
-
-get_species_photos("README.md")
 
 
-#latest_species_commit <- function(){}
-
-
-token <- readLines("/home/frousseu/.ssh/github_token")
-githubapi <- paste0("https://frousseu:",token,"@api.github.com/repos/frousseu/floreqc/commits")
-
-x <- fromJSON(paste0(githubapi,"?per_page=100&files=true"))
-sha <- x$sha
-
-l <- lapply(sha, function(i){
-  print(i)
-  x <- fromJSON(file.path(githubapi,i))
-  file <- x$files$filename
-  if(is.null(file)){
-    return(NULL)
-  }
-  author <- x$commit$author$name
-  login <- x$author$login
-  date <- x$commit$author$date
-  message <- x$commit$message
-  #x$files$patch
-  res <- data.frame(sha = i, file = file, author = author, login = login, date = date, message = message)
-  res <- cbind(res, x$files[,c("additions","deletions","changes")])
-  res
-})
-
-x <- do.call("rbind", l)
-x <- x[grep(".md", x$file),]
-x
-
-
-# count_letters_changed <- function(diff) {
-#   additions <- gsub("\\+([^\\n]+)", "\\1", regmatches(diff, gregexpr("\\+([^\\n]+)", diff)))
-#   deletions <- gsub("\\-([^\\n]+)", "\\1", regmatches(diff, gregexpr("\\-([^\\n]+)", diff)))
-#
-#   additions_text <- paste(additions, collapse = "")
-#   deletions_text <- paste(deletions, collapse = "")
-#
-#   letters_changed <- sum(utf8ToInt(additions_text) != utf8ToInt(deletions_text))
-#   return(letters_changed)
-# }
-#
-# count_letters_changed(x$files$patch)
 
 
 
