@@ -337,7 +337,7 @@ body {
     margin-bottom: 1%;
     padding: 20px;
     border-radius: 10px;
-    max-width: 75%;
+    max-width: 80%;
 }
 
 @media only screen and (max-width: 850px) {
@@ -361,6 +361,7 @@ body {
     border-radius: 15px;
     max-width: 100%;
     box-sizing: border-box;
+    white-space: pre-wrap; /* so that it respects paragraphs without the br tag */
   }
 }
 
@@ -438,6 +439,7 @@ h2 {
     display: flex;
     justify-content: center; /* center; */
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .modal-image {
@@ -448,6 +450,7 @@ h2 {
     cursor: pointer;
     object-fit: cover;
     transition: transform 0.2s ease-in-out;
+    flex-grow: 1;
 }
 
 .modal-image:hover {
@@ -638,6 +641,9 @@ h2 {
 
 .footer1 {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .column2 {
@@ -799,11 +805,10 @@ h2 {
   font-weight: normal;
   color: #888;
   text-align: center;
-  margin-bottom: 1vh;
-  margin-top: 1vh;
-  margin-left: 1vh;
-  margin-right: 1vh;
-  width: 90%;
+  margin-bottom: 1vmin;
+  margin-top: 1vmin;
+  margin-left: 0vmin;
+  margin-right: 0vmin;
   justify-content: center; /* align center */
   align-items: center;
   text-decoration: none;
@@ -890,7 +895,7 @@ h2 {
 }
 
 .scientifique, .commun, .commun_en, .status, .protection {
-  font-size: 3.00vmin;
+  font-size: 3.5vmin;
   margin-left: 1vw;
   margin-right: 0vmin;
   margin-top: 1.5vmin;
