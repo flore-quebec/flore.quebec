@@ -94,9 +94,13 @@
               <div class="taxonomy" id="taxonomy"></div>
               <div class="links" id="links"></div>
             </div>
-            <div class="row">
+            <div class="main">
               <div class="column1">
                 <div class="modal-text" id="modalText"></div>
+                <div class="footer1">
+                  <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce.&nbsp</div>
+                  <div class="edit" id="edit"></div>
+                </div>
               </div>
               <div class="column2">
                 <div class="status">
@@ -107,19 +111,9 @@
                 </div>
                 <img class="pheno" id="pheno">
                 <img class="map" id="map">
-              </div>
-            </div>
-            <div class="row">
-              <div class="column1">
                 <div class="footer1">
-                  <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce</div>
-                  <div class="edit" id="edit"></div>
+                  <div class="contributor" id="data_update"><a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">Mis à jour le 2023-10-20 à partir de GBIF https://doi.org/10.15468/dl.266m4y</a>
                 </div>
-              </div>
-              <div class="column2">
-                <div class="footer1">
-                  <div class="contributor" id="data_update"><a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">Dernière mise à jour 2023-10-20 à partir de GBIF https://doi.org/10.15468/dl.266m4y</a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -232,7 +226,7 @@
             protection.innerHTML = makeProtection();
 
             const edit_link = "https://github.com/frousseu/floreduquebecsp/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
-            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="images/github-mark.png"></a>'
+            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>'
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
@@ -386,7 +380,7 @@
             //const linkText = document.getElementById(\"link\");
 
             gallery.style.display = "block";
-            //galleryImage.src = imageSrc.replace("medium","medium");
+            //galleryImage.src = imageSrc;
             galleryImage.src = imageSrc.replace("medium","original");
             currentImageIndex = index;
             captionText.innerHTML = data[which].credit[index];
