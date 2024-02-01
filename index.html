@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flore du Québec</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="text/javascript" src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
+  <script type="text/javascript" src="data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,9 +94,13 @@
               <div class="taxonomy" id="taxonomy"></div>
               <div class="links" id="links"></div>
             </div>
-            <div class="row">
+            <div class="main">
               <div class="column1">
                 <div class="modal-text" id="modalText"></div>
+                <div class="footer1">
+                  <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce.&nbsp</div>
+                  <div class="edit" id="edit"></div>
+                </div>
               </div>
               <div class="column2">
                 <div class="status">
@@ -107,19 +111,9 @@
                 </div>
                 <img class="pheno" id="pheno">
                 <img class="map" id="map">
-              </div>
-            </div>
-            <div class="row">
-              <div class="column1">
-                <div class="footer1">
-                  <div class="contributor" id="contributor">Ici on liste les contributeurs pour l'espèce.&nbsp</div>
-                  <div class="edit" id="edit"></div>
-                </div>
-              </div>
-              <div class="column2">
                 <div class="footer1">
                   <div class="contributor" id="data_update"><a class="doi" href="https://doi.org/10.15468/dl.266m4y" target="_blank">Mis à jour le 2023-10-20 à partir de GBIF https://doi.org/10.15468/dl.266m4y</a>
-                  </div>
+                </div>
                 </div>
               </div>
             </div>

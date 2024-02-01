@@ -122,8 +122,8 @@ body {
         margin: 0 10px;
         border: 5px solid var(--green); /* Dark green border */
         border-radius: 10px; /* Rounded corners */
-        background: var(--green); /* Rounded corners */
-        border-color: var(--green);
+        background: var(--white); /* Rounded corners */
+        border-color: var(--white);
         margin-top: 1vh;
         margin-bottom: 1vh;
         width: 80vw;
@@ -361,7 +361,7 @@ body {
     border-radius: 15px;
     max-width: 100%;
     box-sizing: border-box;
-    white-space: pre-wrap; /* so that it respects paragraphs without the br tag */
+    /* white-space: pre-wrap; /* so that it respects paragraphs without the br tag */
   }
 }
 
@@ -426,6 +426,8 @@ h2 {
     h2 {
         font-size: 6vmin;
         font-weight: normal;
+        /* padding: 0vh;
+        margin: 0vh; */
     }
 }
 
@@ -621,15 +623,18 @@ h2 {
     }
 }
 
-
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 /* Create two equal columns that floats next to each other */
 .column1 {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: space-between;
-  float: left;
   width: 58%;
   padding-left: 1%;
   background-color: var(--white);
@@ -647,7 +652,10 @@ h2 {
 }
 
 .column2 {
-  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: space-between;
   width: 35%;
   padding: 0px;
   border-top: 0px solid #00640033;
@@ -658,13 +666,15 @@ h2 {
 }
 
 @media only screen and (max-width: 850px) {
+    .main {
+      flex-direction: column-reverse;
+    }
+
     .column1 {
-      float: left;
       width: 100%;
     }
 
     .column2 {
-      float: right;
       width: 100%;
     }
 }
@@ -759,11 +769,7 @@ h2 {
 } */
 
 /* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+
 
 
 .caption {
