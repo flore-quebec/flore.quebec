@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flore du Québec</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="text/javascript" src="data.js"></script>
+  <script type="text/javascript" src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="header">
@@ -488,7 +488,7 @@
         function makeProtection() {
           var pro = data[which].LOIEMV + ", " + data[which].SARASTATUS + ", " + data[which].COSEWIC + ", " + data[which].GRANK+", " + data[which].NRANK + ", " + data[which].SRANK;
           pro = pro.replaceAll("NA, ","-").replace("NA","-");
-          console.log(pro);
+          //console.log(pro);
           if(pro === ", , , , , "){
             return '';
           } else {
@@ -515,6 +515,25 @@
           // Return the original string if there is no second space
           return inputString;
         }
+
+
+        // https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
+        let touchstartX = 0
+        let touchendX = 0
+
+        function checkDirection() {
+          if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
+          if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
+        }
+
+        document.addEventListener('touchstart', e => {
+          touchstartX = e.changedTouches[0].screenX
+        })
+
+        document.addEventListener('touchend', e => {
+          touchendX = e.changedTouches[0].screenX
+          checkDirection()
+        })
 
 
     </script>
