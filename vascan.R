@@ -314,11 +314,12 @@ random_photos <- random_photos[!is.na(when), ]
 random_photos$species <- d$species[match(random_photos$idtaxa,d$idtaxa)]
 
 
-commits <- latest_species_commits(50)
+commits <- latest_species_commits(10, species = TRUE)
 selected_photos <- get_species_photos(commits)
+setDT(selected_photos)
 #fwrite(selected_photos, "selected_photos.csv")
 sphotos <- fread("selected_photos.csv")
-selected_photos <- unique(rbind(sphotos, selected_photos))
+selected_photos <- unique(rbind(selected_photos, sphotos), by = c("species", "rank"))
 fwrite(selected_photos, "selected_photos.csv", append = FALSE)
 
 
