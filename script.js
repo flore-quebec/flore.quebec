@@ -380,17 +380,25 @@
         // https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
         let touchstartX = 0
         let touchendX = 0
+        let touchstartY = 0
+        let touchendY = 0
 
         function checkDirection() {
-          if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
-          if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
+          console.log(touchstartX);
+          console.log(touchendX);
+          if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
+            if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
+            if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
+          }  
         }
 
         document.addEventListener('touchstart', e => {
           touchstartX = e.changedTouches[0].screenX
+          touchstartY = e.changedTouches[0].screenY
         })
 
         document.addEventListener('touchend', e => {
           touchendX = e.changedTouches[0].screenX
+          touchendY = e.changedTouches[0].screenY
           checkDirection()
         })
