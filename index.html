@@ -179,7 +179,7 @@
             //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/" + headerText.replace(" ","_");
             //var url = "https://raw.githubusercontent.com/frousseu/floreqc/main/Esp%C3%A8ces/Poaceae/Cinna/Cinna_arundinacea.md"
             //console.log(temp);
-            var url = "https://raw.githubusercontent.com/frousseu/floreduquebecsp/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
+            var url = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
 
             fetch(url)
               .then(r=>r.blob()).then(b=>b.text()).then(m => {modalText.innerHTML=marked.parse(m)});
