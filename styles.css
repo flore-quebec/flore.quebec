@@ -171,6 +171,10 @@ body {
     .gallery {
         margin-top: 0px;
     }
+    
+    .selected:hover {
+       transform: none;
+    }
 }
 
 
@@ -203,7 +207,7 @@ body {
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     border-radius: 15px; /* Rounded corners for images */
-    transform: scale(1.00);
+    transform: none;
     background-color: #ddd;
 }
 
@@ -232,9 +236,6 @@ body {
     border-bottom: 0px solid #ccc;
     border-top: 0px solid #ccc;
     text-shadow: 0px 0px #FFF;
-    /* margin-left: 0.25vw;
-    margin-right: 0.25vw;
-    margin-bottom: 0.25vw; */
 }
 
 
@@ -247,7 +248,6 @@ body {
     font-weight: normal; /* Bold title text */
     font-style: normal;
     text-shadow: 0px 0px #777;
-    /* line-height: 0.2vh; */
 }
 
 @media only screen and (max-width: 850px) {
@@ -280,7 +280,6 @@ body {
     font-size: 2.45vh; /* Larger font size for title */
     font-style: italic;
     text-align: center;
-    /* border-radius: 15px 15px 15px 15px;  Rounded corners at the bottom */
     font-weight: normal; /* Bold title text */
 }
 
@@ -304,7 +303,6 @@ body {
         font-size: 2.45vh; /* Larger font size for title */
         font-style: italic;
         text-align: center;
-        /* border-radius: 15px 15px 15px 15px;  Rounded corners at the bottom */
         font-weight: normal; /* Bold title text */
     }
     .image-map-mini {
@@ -461,9 +459,6 @@ h2 {
     transform: scale(1.10);
 }
 
-/* Below for the gallery  */
-
-/* Style for the gallery */
 .gallery2 {
     display: none;
     position: fixed;
@@ -484,7 +479,6 @@ h2 {
     flex-wrap: wrap; /* flush caption to bottom*/
 }
 
-/* Style for the gallery image */
 .gallery-image {
     margin-top: 1vmin;
     height: 85vh;
@@ -502,13 +496,11 @@ h2 {
         max-height: 90vh;
         border-radius: 15px;
     }
+    .modal-image:hover {
+        transform: none;
+    }
 }
 
-
-
-
-
-/* Style for the close button */
 .close_modal {
     position: fixed;
     top: 0.5vw;
@@ -546,9 +538,6 @@ h2 {
     }
 }
 
-
-
-/* Style for the previous and next buttons in gallery */
 .prev, .next {
     position: absolute;
     top: 50%;
@@ -582,16 +571,6 @@ h2 {
 @media only screen and (max-width: 850px) {
     .prev, .next {
         display: none;
-        /* position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 15vmin; /* Larger font size for the arrows
-        color: rgba(255,255,255,0.5);
-        cursor: pointer;
-        padding-top: 5vmin;
-        padding-bottom: 5vmin;
-        padding-left: 5vmin;
-        padding-right: 5vmin; */
     }
 }
 
@@ -632,7 +611,6 @@ h2 {
   justify-content: space-between;
 }
 
-/* Create two equal columns that floats next to each other */
 .column1 {
   display: flex;
   flex-direction: column;
@@ -642,8 +620,6 @@ h2 {
   padding-left: 1%;
   background-color: var(--white);
   border-top: 0px solid #DDDDDD;
-  /* border-top: 10px solid #DDDDDD; */
-  /* border-right: 5px solid #DDDDDD; */
   border-radius: 0px;
 }
 
@@ -719,10 +695,6 @@ h2 {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   align-items: center;
-  /* border: 10px solid #DDDDDD; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* flex-wrap: wrap; */
 }
 
 .links{
@@ -751,6 +723,10 @@ h2 {
   /* text-align: right; */
 }
 
+.fna:hover {
+  transform: scale(1.3);
+}
+
 @media only screen and (max-width: 850px) {
     .fna {
       display: flex;
@@ -761,17 +737,11 @@ h2 {
       transition: transform 0.2s ease-in-out;
       /* text-align: right; */
     }
+    .fna:hover {
+      transform: none;
+    }
 }
 
-.fna:hover {
-  transform: scale(1.3);
-}
-
-/* .row {
-  background-color: #DDDDDD;
-} */
-
-/* Clear floats after the columns */
 
 
 
