@@ -105,7 +105,7 @@ body {
 .dropdown-input {
     width: 225px; /* Adjust the width as needed */
     padding: 8px;
-    border: 2px solid var(--green);
+    border: 1px solid var(--green);
     background-color: white; /* White background */
     font-size: 2vmin; /* Larger font size for dropdowns */
     font-style: italic;
@@ -179,7 +179,7 @@ body {
 
 
 .image-container {
-    width: 30vh; /* 30% of the viewport height */
+    width: 33vh; /* 30% of the viewport height */
     height: 35vh; /* 30% of the viewport height */
     margin: 1.0vw;
     position: relative;
@@ -324,18 +324,18 @@ body {
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(255, 255, 255, 0.99);
     overflow: auto;
 }
 
 .modal-content {
     background-color: var(--white);
     margin: 0% auto;
-    margin-top: 1%;
-    margin-bottom: 1%;
+    margin-top: 0%;
+    margin-bottom: 0%;
     padding: 20px;
     border-radius: 10px;
-    max-width: 80%;
+    max-width: 90%;
 }
 
 @media only screen and (max-width: 850px) {
@@ -398,11 +398,12 @@ body {
 }
 
 .modal-text {
-    font-size: 2.5vmin;
+    font-size: 3vmin;
     font-weight: 300;
     margin-bottom: 1vmin;
     background-color: var(--white);
     color: #555;
+    letter-spacing: 1px;
 }
 
 h2 {
@@ -445,18 +446,19 @@ h2 {
 }
 
 .modal-image {
-    width: 15vh;
-    height: 15vh;
-    margin: 5px;
+    width: 17vw;
+    height: 17vw;
+    margin: 0.5vw;
     border-radius: 10px;
     cursor: pointer;
     object-fit: cover;
     transition: transform 0.2s ease-in-out;
     flex-grow: 1;
+    background-color: #EEE;
 }
 
 .modal-image:hover {
-    transform: scale(1.10);
+    transform: scale(1.05);
 }
 
 .gallery2 {
@@ -504,9 +506,9 @@ h2 {
 .close_modal {
     position: fixed;
     top: 0.5vw;
-    right: 3vw;
+    right: 1vw;
     font-size: 15vmin; /* Larger font size for the close button */
-    color: rgba(255,255,255,0.5);
+    color: rgba(0,0,0,0.5);
     cursor: pointer;
 }
 
@@ -628,6 +630,7 @@ h2 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 3vmin;
 }
 
 .column2 {
@@ -662,7 +665,7 @@ h2 {
 
 .taxonomy {
   color: #999; /* #999; */
-  font-size: 2.5vmin;
+  font-size: 3vmin;
   font-weight: normal;
   font-style: italic;
   text-align: center;
@@ -780,7 +783,7 @@ h2 {
 
 .contributor, .doi, .edit {
   display: flex;
-  font-size: 1.25vmin;
+  font-size: 1.5vmin;
   font-weight: normal;
   color: #888;
   text-align: center;
@@ -795,7 +798,7 @@ h2 {
 
 
 .minioctocat {
-    height: 1.25vmin;
+    height: 1.5vmin;
     margin-left: 0.5vmin;
     opacity: 0.5;
 }
