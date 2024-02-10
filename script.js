@@ -74,6 +74,7 @@
             const statut = document.getElementById('statut');
             const protection = document.getElementById('protection');
             const edit = document.getElementById('edit');
+            const contrib = document.getElementById('contributor');
             //const map = document.getElementById('map');
             //const map = document.getElementById('map');
 
@@ -85,8 +86,15 @@
             statut.innerHTML = data[which].status;
             protection.innerHTML = makeProtection();
 
-            const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
-            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>'
+            if(data[which].contribution === "NA"){ // just fill the column with "" in data
+                contrib.innerHTML = ""; 
+            } else {
+                contrib.innerHTML = data[which].contribution+"&nbsp";
+            };
+            //console.log(data[which]);
+
+            const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
+            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
