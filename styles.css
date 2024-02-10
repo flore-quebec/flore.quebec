@@ -39,7 +39,7 @@ body {
     font-size: 4vmin; /* Larger font size for the header title */
     font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
-    margin-right: 2vmin;
+    margin-right: 4vmin;
     /* overflow: hidden;
     transition: transform 0.2s ease-in-out; */
 }
@@ -179,8 +179,8 @@ body {
 
 
 .image-container {
-    width: 33vh; /* 30% of the viewport height */
-    height: 35vh; /* 30% of the viewport height */
+    width: 40vh; /* 33vh of the viewport height */
+    height: 42vh; /* 35vh of the viewport height */
     margin: 1.0vw;
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
@@ -404,10 +404,11 @@ body {
     background-color: var(--white);
     color: #555;
     letter-spacing: 1px;
+    line-height: 1.25;
 }
 
 h2 {
-    font-size: 3.5vmin;
+    font-size: 4vmin;
     font-weight: normal;
     color: #000;
 }
@@ -446,8 +447,8 @@ h2 {
 }
 
 .modal-image {
-    width: 17vw;
-    height: 17vw;
+    width: 9.5vw; /* 17 */
+    height: 9.5vw;
     margin: 0.5vw;
     border-radius: 10px;
     cursor: pointer;
@@ -458,7 +459,7 @@ h2 {
 }
 
 .modal-image:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
 .gallery2 {
@@ -498,6 +499,11 @@ h2 {
         max-height: 90vh;
         border-radius: 15px;
     }
+    .modal-image {
+        width: 40vw; /* 17 */
+        height: 40vw;
+        margin: 1vw;
+    }
     .modal-image:hover {
         transform: none;
     }
@@ -505,11 +511,12 @@ h2 {
 
 .close_modal {
     position: fixed;
-    top: 0.5vw;
+    top: 0vw;
     right: 1vw;
     font-size: 15vmin; /* Larger font size for the close button */
     color: rgba(0,0,0,0.5);
     cursor: pointer;
+    font-weight: 200;
 }
 
 @media only screen and (max-width: 850px) {
@@ -524,11 +531,12 @@ h2 {
 
 .close_gallery {
     position: absolute;
-    top: 1vw;
+    top: 0vw;
     right: 1vw;
     font-size: 15vmin; /* Larger font size for the close button */
     color: rgba(255,255,255,0.5);
     cursor: pointer;
+    font-weight: 200;
 }
 
 @media only screen and (max-width: 850px) {
@@ -631,6 +639,7 @@ h2 {
   align-items: center;
   justify-content: center;
   margin-top: 3vmin;
+  border-top: 1px solid #DDDDDD;
 }
 
 .column2 {
@@ -695,7 +704,7 @@ h2 {
   padding-bottom: 0.75vh;
   margin-left: 0vmin;
   margin-bottom: 0.5vmin;
-  border-top: 1px solid #ddd;
+  border-top: 0px solid #ddd;
   border-bottom: 1px solid #ddd;
   align-items: center;
 }
@@ -719,7 +728,7 @@ h2 {
 
 .fna {
   display: flex;
-  height: 4vmin;
+  height: 3vmin;
   margin-right: 0.5vw;
   transition: transform 0.2s ease-in-out;
   border-radius: 5px;
@@ -783,7 +792,7 @@ h2 {
 
 .contributor, .doi, .edit {
   display: flex;
-  font-size: 1.5vmin;
+  font-size: 1.75vmin;
   font-weight: normal;
   color: #888;
   text-align: center;
@@ -890,7 +899,7 @@ h2 {
 }
 
 .scientifique, .commun, .commun_en, .status, .protection {
-  font-size: 3.5vmin;
+  font-size: 4vmin;
   margin-left: 1vw;
   margin-right: 0vmin;
   margin-top: 1.5vmin;
@@ -917,7 +926,7 @@ h2 {
 .status {
   font-weight: normal;
   color: var(--green);
-  margin-top: 2vmin;
+  margin-top: 3vmin;
   /* text-shadow: 1px 1px #000; */
 }
 
