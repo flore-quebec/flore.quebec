@@ -483,10 +483,27 @@ h2 {
     flex-wrap: wrap; /* flush caption to bottom*/
 }
 
+.zoom {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.zoomed {
+   transform: scale(2.5); /* Zoom in */
+}
+
 .gallery-image {
     margin-top: 1vmin;
     height: 85vh;
     border-radius: 15px;
+    /* position: absolute; */
+    top: 0; /* to the bottom new stuff for the zooming */
+    left: 0;
+    width: 100%;   
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+    transform-origin: 0 0; /* Set the transform origin to the top left corner */
 }
 
 @media only screen and (max-width: 850px) {

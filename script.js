@@ -252,11 +252,8 @@
             galleryImage.src = imageSrc.replace("medium","original");
             currentImageIndex = index;
             captionText.innerHTML = data[which].credit[index];
-            //linkText.innerHTML = data[which].link[index];
             link = data[which].link[index];
             linkText.innerHTML = '<a class=\"link\" href=\"' + link + '\" target=\"_blank\">' + link + '</a>' ;
-            //captionText.innerHTML = '<a class=\"a3\">' + this.title + '</a>';
-            //linkText.innerHTML = '<a class=\"a2\" href=\"' + this.alt + '\" target=\"_blank\">' + this.alt + '</a>' ;
         }
 
 
@@ -392,8 +389,6 @@
         let touchendY = 0
 
         function checkDirection() {
-          console.log(touchstartX);
-          console.log(touchendX);
           if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
             if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
             if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
@@ -410,3 +405,41 @@
           touchendY = e.changedTouches[0].screenY
           checkDirection()
         })
+        
+          
+        const image = document.getElementById('galleryImage');
+
+        let isClicked = false;
+      
+        image.addEventListener('click', function(event) {
+          if (!isClicked) {
+            image.classList.add('zoomed');
+            isClicked = true;
+            image.style.cursor = 'zoom-out';
+          } else {
+            image.classList.remove('zoomed');
+            isClicked = false;
+            image.style.cursor = 'zoom-in';
+          }
+        });
+      
+        image.addEventListener('mousemove', function(event) {
+          if (isClicked) {
+            let x = event.offsetX;
+            let y = event.offsetY;
+      
+            image.style.transformOrigin = `${x}px ${y}px`; /* Adjust transform origin based on mouse position */
+          }
+        });
+        
+        function zoom_reset() {
+           const image = document.getElementById("galleryImage");
+           image.classList.remove('zoomed');
+           isClicked = false;
+           image.style.cursor = 'zoom-in';
+        } 
+        
+        image.addEventListener('mouseout', function(event) {
+           zoom_reset();
+        });
+        
