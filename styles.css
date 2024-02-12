@@ -311,9 +311,6 @@ body {
     }
 }
 
-
-
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed; /* fixed */
@@ -474,7 +471,6 @@ h2 {
     z-index: 1;
 }
 
-/* Style for the gallery content */
 .gallery-content {
     display: flex;
     justify-content: center;
@@ -606,9 +602,6 @@ h2 {
 
 .map {
     width:95%;
-    /* float: right; */
-    /* object-fit: contain; */
-    /* object-position: top; */
     padding-top: 2vh;
     margin: auto;
     display: block;
@@ -617,9 +610,6 @@ h2 {
 }
 .pheno {
     width: 95%;
-    /* float: right; */
-    /* object-fit: contain; */
-    /* object-position: bottom; */
     padding-top: 3vh;
     padding-bottom: 2vh;
     margin: auto;
@@ -669,8 +659,6 @@ h2 {
   padding: 0px;
   border-top: 0px solid #00640033;
   background-color: var(--white);
-  /* border-top: 10px solid #DDDDDD; */
-  /* border-left: 5px solid #DDDDDD; */
   border-radius: 0px;
 }
 
@@ -687,8 +675,6 @@ h2 {
       width: 100%;
     }
 }
-
-
 
 .taxonomy {
   color: #999; /* #999; */
@@ -708,8 +694,6 @@ h2 {
     display: none;
   }
 }
-
-
 
 .container, .links {
   display: flex;                  /* establish flex container */
@@ -739,7 +723,6 @@ h2 {
   }
 }
 
-
 .container > div {
   /* border: 2px solid red; */
 }
@@ -765,15 +748,11 @@ h2 {
       margin-top: 2vh;
       margin-bottom: 2vh;
       transition: transform 0.2s ease-in-out;
-      /* text-align: right; */
     }
     .fna:hover {
       transform: none;
     }
 }
-
-
-
 
 .caption {
   display: flex;
@@ -841,11 +820,8 @@ h2 {
     }
 }
 
-
-/* The container */
 .container_radio {
   display: block;
-  /* float: left; */
   position: relative;
   padding-left: 35px;
   margin-bottom: 5px;
@@ -934,7 +910,6 @@ h2 {
 
 .commun_en {
   color: #999;
-  /* text-shadow: 1px 1px #000; */
 }
 
 .scientifique {
@@ -945,14 +920,12 @@ h2 {
   font-weight: normal;
   color: var(--green);
   margin-top: 3vmin;
-  /* text-shadow: 1px 1px #000; */
 }
 
 .protection {
   font-weight: normal;
   color: darkred;
   margin-top: 1.5vmin;
-  /* text-shadow: 1px 1px #000; */
 }
 
 @media only screen and (max-width: 850px) {
