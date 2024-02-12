@@ -418,6 +418,9 @@
             image.classList.add('zoomed');
             isClicked = true;
             image.style.cursor = 'zoom-out';
+            let x = event.offsetX;
+            let y = event.offsetY;
+            image.style.transformOrigin = `${x}px ${y}px`; /* Adjust transform origin based on mouse position */
           } else {
             image.classList.remove('zoomed');
             isClicked = false;
@@ -429,7 +432,6 @@
           if (isClicked) {
             let x = event.offsetX;
             let y = event.offsetY;
-      
             image.style.transformOrigin = `${x}px ${y}px`; /* Adjust transform origin based on mouse position */
           }
         });
