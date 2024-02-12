@@ -490,7 +490,7 @@ h2 {
 }
 
 .zoomed {
-   transform: scale(2.5); /* Zoom in */
+   transform: scale(3); /* Zoom in */
 }
 
 .gallery-image {
