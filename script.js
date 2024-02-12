@@ -389,10 +389,12 @@
         let touchendY = 0
 
         function checkDirection() {
-          if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
-            if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
-            if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
-          }  
+          if(isClicked === false){ // swipe pics only if not zoomed in
+            if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
+              if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
+              if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
+            }  
+          }
         }
 
         document.addEventListener('touchstart', e => {
