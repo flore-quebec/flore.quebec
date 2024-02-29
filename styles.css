@@ -28,11 +28,13 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: var(--green); /* Dark green header */
-    padding-top: 1vmin; /* Reduced padding */
+    background-color: var(--white); /* Dark green header */
+    padding-top: 2vmin; /* Reduced padding */
     padding-bottom: 1vmin;
     margin-bottom: 2vmin;
-    color: #fff; /* Header text color */
+    color: var(--green); /* Header text color */
+    border-bottom: 1px dotted var(--green);
+    border-top: 0px solid var(--green);
 }
 
 #tab {
@@ -98,12 +100,12 @@ body {
 .dropdown-label {
     margin-top: 0px; /* Adjust top margin */
     font-weight: italic;
-    font-size: 2.5vmin;
+    font-size: 3vmin; /* 2.5 */
     color: var(--green); /* Dark green label text color */
 }
 
 .dropdown-input {
-    width: 225px; /* Adjust the width as needed */
+    width: 25vmin; /* Adjust the width as needed 225px*/
     padding: 8px;
     border: 1px solid var(--green);
     background-color: white; /* White background */
@@ -192,9 +194,9 @@ body {
 
 @media only screen and (max-width: 850px) {
     .image-container {
-        width: 80vw; /* 30% of the viewport height */
-        height: 80vw; /* 30% of the viewport height */
-        margin: 1vh;
+        width: 45vw; /* 80vw of the viewport height */
+        height: 55vw; /* 80vw of the viewport height */
+        margin: 1vw;
     }
 }
 
@@ -254,13 +256,13 @@ body {
     .image-title {
         text-shadow: 0px 0px #555;
         border-radius: 10px 10px 10px 10px; /* Rounded corners at the bottom */
-        font-size: 5vmin; /* Larger font size for title */
+        font-size: 4vmin; /* Larger font size for title */
         padding-bottom: 0px; /* Larger padding for title */
     }
 
     .image-credit {
         border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-        font-size: 3vmin; /* Larger font size for title */
+        font-size: 2.5vmin; /* Larger font size for title */
     }
 }
 
@@ -270,7 +272,7 @@ body {
 .image-map {
     position: absolute;
     top: 1%;
-    right: 3%;
+    right: 0%;
     width: 25%;
     background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
     color: black; /* Black title text */
@@ -293,7 +295,7 @@ body {
     .image-map {
         position: absolute;
         top: 1%;
-        right: 3%;
+        right: 0%;
         width: 30%;
         background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
         color: black; /* Black title text */
@@ -306,7 +308,7 @@ body {
         font-weight: normal; /* Bold title text */
     }
     .image-map-mini {
-        height: 11vh;
+        height: 7vh;
         opacity: 0.9;
     }
 }
@@ -423,10 +425,11 @@ h2 {
         font-size: 6vmin;
         font-weight: 100;
         color: black;
+        line-height: 1.05;
     }
 
     h2 {
-        font-size: 6vmin;
+        font-size: 7vmin;
         font-weight: normal;
     }
 }
@@ -573,6 +576,7 @@ h2 {
     padding-bottom: 5vmin;
     padding-left: 15vmin;
     padding-right: 15vmin;
+    z-index: 100;
 }
 
 .prev {
@@ -783,8 +787,13 @@ h2 {
   text-decoration: none;
 }
 
-.link:hover {
-  /* transform: scale(1.05); */
+@media only screen and (max-width: 850px) {
+  .caption {
+    font-size: 4vmin;
+  }
+  .link {
+    font-size: 3vmin;
+  }
 }
 
 .contributor, .doi, .edit {
@@ -827,7 +836,7 @@ h2 {
   margin-bottom: 5px;
   cursor: pointer;
   font-weight: normal;
-  font-size: 2.5vh;
+  font-size: 3vh;
   color: var(--green); /* Dark green label text color */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -854,8 +863,8 @@ h2 {
   position: absolute;
   top: 0;
   left: 0;
-  height: 1vmax;
-  width: 1vmax;
+  height: 1.5vmax;
+  width: 1.5vmax;
   background-color: #fff;
   border-radius: 50%;
 }
@@ -885,9 +894,9 @@ h2 {
 /* Style the indicator (dot/circle) */
 .container_radio .checkmark:after {
  	top: 0.25vmax;
-	left: 0.25vmax;
-	width: 0.5vmax;
-	height: 0.5vmax;
+	left: 0.75vmax;
+	width: 0.75vmax;
+	height: 0.75vmax;
 	border-radius: 50%;
 	background: var(--green);
 }
