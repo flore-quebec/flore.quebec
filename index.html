@@ -37,21 +37,21 @@
             <input class="dropdown-input" type="text" id="species" list="filterList3" onfocus="this.value=''" onchange="this.blur();">
             <datalist id="filterList3"></datalist>
         </div>
-        <div class="dropdown-container">
+        <div class="dropdown-container" style="display: none">
             <label class="dropdown-label" for="nom">Nom commun</label>
             <input class="dropdown-input" type="text" id="nom" list="filterList4" onfocus="this.value=''" onchange="this.blur();">
             <datalist id="filterList4"></datalist>
         </div>
         <div class="dropdown-container">
-            <label class="container_radio">Par ordre alphabétique
+            <label class="container_radio">Ordre alphabétique
               <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
               <span class="checkmark"></span>
             </label>
-            <label class="container_radio">Par ordre taxonomique
+            <label class="container_radio">Ordre taxonomique
               <input type="radio" name="order" value="taxonomic" onclick="changeOrder()">
               <span class="checkmark"></span>
             </label>
-            <label class="container_radio">Par nb. d'observations
+            <label class="container_radio">Nb. d'observations&nbsp
               <input type="radio" name="order" value="nobs" onclick="changeOrder()">
               <span class="checkmark"></span>
             </label>
