@@ -28,10 +28,11 @@
 
             // Clear previous images
             modalImages.innerHTML = '';
-
+            modalText.innerHTML = '';
+            
             modal.style.display = 'block';
             modalHeader.innerHTML = headerText.replace(" "," ");
-            //modalText.innerHTML = bodyText;
+            
 
             //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/README.md";
             //fetch(url)
@@ -135,6 +136,8 @@
             //let selected;
             let selected;
             var filteredImages;
+            let indexsp;
+            let indexn;
 
             if (group === "famille") {
               selected = familleSelect.value;
@@ -148,6 +151,7 @@
               filteredImages = data.filter(image => (
                 (selected === image.genre)
               ));
+              //console.log(filteredImages);
             } else if (group === "species") {
               selected = speciesSelect.value;
               //last_value = genreSelect.value;
@@ -156,10 +160,13 @@
               ));
             } else if (group === "nom") {
               selected = nomSelect.value;
+              //console.log(selected);
               //last_value = genreSelect.value;
-              filteredImages = data.filter(image => (
-                (selected === image.vernaculaire)
-              ));
+              indexsp = nom_values.findIndex(p => p == selected);
+              indexn = common_names[indexsp][selected.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
+              console.log(indexn);
+              filteredImages = indexn.map(index => data[index]);
+              //filteredImages = data[common_names[indexn]];              
             } else {
               selected = speciesSelect.value;
               //last_value = speciesSelect.value;
@@ -192,14 +199,21 @@
                 imageElement.className = 'image-container';
                 imageElement.id = image.alt;
                 map = data.filter(index => (
-                (image.alt === index.species)
-              ));
+                  (image.alt === index.species)
+                ));
+                var spnames;
+                if(group === "nom"){
+                  spname = image.vernaculaire;
+                } else {
+                  spname = image.alt;
+                };
+                
                 //const src = if(image.src === "NA"){"Pas de photo"}else{image.src};
 
                 imageElement.innerHTML = `
                       <img class="image" src=${image.src} alt=${image.alt}>
                       <div class="image-title">
-                        ${image.alt}<br>
+                        ${spname}<br>
                         <span class="image-credit">${image.credit[0].replace(', some rights reserved','').replace(', no rights reserved','')}</span>
                       </div>
                       <div class="image-map">
@@ -247,6 +261,7 @@
             const linkText = document.getElementById("link");
             //const linkText = document.getElementById(\"link\");
 
+            galleryImage.src = imageSrc;
             gallery.style.display = "block";
             //galleryImage.src = imageSrc;
             galleryImage.src = imageSrc.replace("medium","original");
@@ -263,6 +278,7 @@
             const galleryImage = document.getElementById("galleryImage");
             const captionText = document.getElementById("caption");
             const linkText = document.getElementById("link");
+            galleryImage.src = thumbnails[currentImageIndex];
             galleryImage.src = thumbnails[currentImageIndex].replace("medium","original");
             captionText.innerHTML = data[which].credit[currentImageIndex];
             //linkText.innerHTML = data[which].link[currentImageIndex];
@@ -390,7 +406,9 @@
 
         function checkDirection() {
           if(isClicked === false){ // swipe pics only if not zoomed in
-            if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
+            const diffX = Math.abs(touchendX - touchstartX);
+            const diffY = Math.abs(touchendY - touchstartY);
+            if( diffX > diffY && diffX > 5){
               if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
               if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
             }  
