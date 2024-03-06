@@ -20,7 +20,6 @@
         var which;
         var last_category = "famille";
         var last_value = "Poaceae";
-
         //console.log(last_category);
         //console.log(last_value);
 
@@ -47,12 +46,25 @@
 
 
             // Add images to modal
+            // var isna; 
             imageArray.forEach(function (imageUrl, index) {
+                console.log(index);
                 const image = document.createElement('img');
                 //const image = document.getElementById('modalImages');
                 image.classList.add('modal-image');
-                image.src = imageUrl.replace("medium","medium");
-                image.onclick = function() {openGallery(imageUrl, index);};
+                if(imageUrl === 'NA') {
+                  image.src = 'https://cdn.hebergix.com/fr/floreqc/blank.jpg';
+                } else {
+                  image.src = imageUrl;//.replace("medium","medium");
+                };
+                //image.onerror="this.style.display='none'";
+                //image.onerror="this.src='https://www.inaturalist.org/photos/355007378?size=small'";
+                //isna = imageUrl;
+                //console.log(isna);
+                if(imageUrl != 'NA') {
+                  image.onclick = function() {openGallery(imageUrl, index);};
+                };
+                
                 modalImages.appendChild(image);
                 //<img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 0)">
             });
@@ -229,23 +241,13 @@
                 container.addEventListener('click', () => {
                     //const title = container.querySelector('.image-title').textContent;
                     const title = container.id;
-                    const text = `
-                        <h2>Traits distinctifs</h2>
-                        <p>Ici, on trouve une description possiblement en liste à points ou en continu des traits distinctifs de l'espèce ou des éléments clés pour repérer l'espèce sur le terrain. En d'autres mots, que remarque-t-on de particulier chez cette espèce par rapport aux autres semblables</p>
-                        <h2>Espèces semblables</h2>
-                        <p>Ici on énumère les critères à regarder pour différencier cette espèces des autres espèces semblables. L'idéal est de cibler les espèces qui sont semblables et de ne pas se perdre dans les espèces qui sont clairement différentes si on regarde attentivement les photos.</p>
-                        <h2>Habitat</h2>
-                        <p>Description sommaire de l'habitat et possiblement de la répartition. On peut se baser sur l'expérience perso.</p>
-                        <h2>Commentaires</h2>
-                        <p>Est-ce qu'il y a des remarques à faire pour l'espèce notamment en lien avec la distribution, la taxonomie, le statut ou autres trucs intéressants? On peut aussi parler des sous-espèces ou des variétés ou de certaines particularités.</p>
-                    `;
+                    const text = '';
 
                     const index = data.findIndex(p => p.espèce == title); // tests
                     const images = data[index].images;
-                    thumbnails = images;
+                    thumbnails = images.filter(z => z != 'NA');
                     which = index;
-
-
+                    
                     openModal(title, text, images);
                 });
             });
@@ -464,4 +466,88 @@
         image.addEventListener('mouseout', function(event) {
            zoom_reset();
         });
+        
+        /*
+        // add the PMTiles plugin to the maplibregl global.
+        const protocol = new pmtiles.Protocol();
+        maplibregl.addProtocol('pmtiles', (request) => {
+            return new Promise((resolve, reject) => {
+                const callback = (err, data) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({data});
+                    }
+                };
+                protocol.tile(request, callback);
+            });
+        });
+
+      // we first fetch the header so we can get the center lon, lat of the map.
+      function species_occs(sp) {
+  
+          const PMTILES_URL = 'https://object-arbutus.cloud.computecanada.ca/bq-io/acer/niches_climatiques/obs/' + sp + '.pmtiles';
+  
+          const p = new pmtiles.PMTiles(PMTILES_URL);
+  
+          // this is so we share one instance across the JS code and the map renderer
+          protocol.add(p);
+  
+          p.getHeader().then(h => {
+              var map2 = new maplibregl.Map({
+                  container: 'map2',
+                  zoom: h.maxZoom -4,
+                  //center: [h.centerLon, h.centerLat],
+                  center: [-73, 45],
+                  style: {
+                      version:8,
+                      sources: {
+                          'example_source': {
+                              type: 'vector',
+                              url: `pmtiles://${PMTILES_URL}`,
+                              attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>'
+                          },
+                          'raster-tiles': {
+                          'type': 'raster',
+                          'tiles': [
+                              // NOTE: Layers from Stadia Maps do not require an API key for localhost development or most production
+                              // web deployments. See https://docs.stadiamaps.com/authentication/ for details.
+                              //'https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}.jpg'
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+                              //'http://c.tile.opentopomap.org/{z}/{x}/{y}.png'
+                          ],
+                          'tileSize': 256,
+                          'attribution':
+                              'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>; Hosting by <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>. Data &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
+                      }
+                      },
+                      layers: [
+                          {
+                              'id': 'simple-tiles',
+                              'type': 'raster',
+                              'source': 'raster-tiles',
+                              'minzoom': 0,
+                              'maxzoom': 22
+                          },
+                          {
+                              'id': 'Setophaga_cerulea',
+                              'source': 'example_source',
+                              'source-layer': sp,
+                              'type': 'circle',
+                              'paint': {
+                                  'circle-color': 'forestgreen',
+                                  'circle-radius': 5,
+                                  'circle-stroke-color': 'black',
+                                  'circle-stroke-opacity': 0.95,
+                                  'circle-stroke-width': 0.5,
+                              }
+                          }
+                      ]
+                  }
+              });
+          });
+      }
+      
+      species_occs("Aquila_chrysaetos");
+      */
         
