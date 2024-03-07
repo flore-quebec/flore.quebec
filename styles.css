@@ -413,6 +413,12 @@ h2 {
     color: #000;
 }
 
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vh;
+} 
+
 @media only screen and (max-width: 850px) {
     .modal-header {
         font-size: 8vmin;
@@ -432,6 +438,10 @@ h2 {
         font-size: 7vmin;
         font-weight: normal;
     }
+    
+    ul {
+       gap: 1vh;
+    } 
 }
 
 .modal-paragraph {
