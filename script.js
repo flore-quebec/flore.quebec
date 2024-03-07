@@ -24,7 +24,7 @@
         //console.log(last_value);
 
         function openModal(headerText, bodyText, imageArray) {
-
+            console.log(imageArray);
             // Clear previous images
             modalImages.innerHTML = '';
             modalText.innerHTML = '';
@@ -220,6 +220,10 @@
                   spname = image.alt;
                 };
                 
+                if(image.src === "NA"){
+                  image.src = 'https://cdn.hebergix.com/fr/floreqc/blank.jpg';
+                };
+                
                 //const src = if(image.src === "NA"){"Pas de photo"}else{image.src};
 
                 imageElement.innerHTML = `
@@ -325,22 +329,17 @@
 
 
         function changeOrder() {
-        //  console.log("changing order");
-          //if(which.length > 1){
-            if(last_category === "famille"){
-              updateGallery("famille");
-            }else{
-              updateGallery("genre");
+            if(last_category !== "species") {
+              updateGallery(last_category);
             };
-          //};
         }
 
 
         function linkExists(link) {
-          if(link === "" || link === "NA"){
+          if(link === "" || link === "NA") {
             //console.log(link);
             link;
-          }else{
+          } else {
             //console.log("no link");
             "";
           };
