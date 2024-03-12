@@ -73,8 +73,16 @@
     <!-- Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close_modal" onclick="closeModal()">&times;</span>
-
+            <span class="close_modal" onclick="closeModal(true)">&times;</span>
+            <!-- <div id="header">
+                <span id="title">Flore du Québec</span>
+                <div>
+                  <span id="tab">Explorer</span>
+                  <span id="tab">Contribuer</span>
+                  <span id="tab">À&nbsp;propos</span>
+                </div>
+                <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/qc.png" alt="Logo">
+            </div> -->
             <div class="container" id="container">
               <div class="taxonomy" id="taxonomy"></div>
               <div class="links" id="links"></div>
@@ -87,12 +95,13 @@
                   <div id="verna_fr">Nom commun</div>
                   <!-- <div id="verna_alternatif_fr">Nom commun alternatif</div> -->
                 </div>
+
+                <div class="commun_en">
+                  <div id="verna_en">Nom commun alternatif</div>
+                </div>
                 <div class="scientifique">
                   <div id="scien_complet">Nom scientifique complet</div>
                   <!-- <div id="scien_alternatif">Nom scientifique alternatif</div> -->
-                </div>
-                <div class="commun_en">
-                  <div id="verna_en">Nom commun alternatif</div>
                 </div>
               </div>
             </div>
@@ -134,10 +143,10 @@
 
     <!-- The gallery -->
     <div class="gallery2" id="myGallery">
-        <span class="close_gallery" onclick="closeGallery()">&times;</span>
+        <span class="close_gallery" onclick="closeGallery(false)">&times;</span>
         <span class="prev" onclick="changeImage(-1)">&#10094;</span>
         <span class="next" onclick="changeImage(1)">&#10095;</span>
-        <div class="gallery-content">
+        <div class="gallery-content" id="gallery-content">
             <div class="zoom" id="zoom">
               <img class="gallery-image" id="galleryImage">
             </div>

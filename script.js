@@ -20,11 +20,8 @@
         var which;
         var last_category = "famille";
         var last_value = "Poaceae";
-        //console.log(last_category);
-        //console.log(last_value);
 
         function openModal(headerText, bodyText, imageArray) {
-            console.log(imageArray);
             // Clear previous images
             modalImages.innerHTML = '';
             modalText.innerHTML = '';
@@ -38,7 +35,6 @@
             //  .then(r=>r.blob()).then(b=>b.text()).then(m=>{document.getElementById("txt").innerHTML=marked.parse(m)});
             //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/" + headerText.replace(" ","_");
             //var url = "https://raw.githubusercontent.com/frousseu/floreqc/main/Esp%C3%A8ces/Poaceae/Cinna/Cinna_arundinacea.md"
-            //console.log(temp);
             var url = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
 
             fetch(url)
@@ -48,7 +44,6 @@
             // Add images to modal
             // var isna; 
             imageArray.forEach(function (imageUrl, index) {
-                console.log(index);
                 const image = document.createElement('img');
                 //const image = document.getElementById('modalImages');
                 image.classList.add('modal-image');
@@ -60,9 +55,12 @@
                 //image.onerror="this.style.display='none'";
                 //image.onerror="this.src='https://www.inaturalist.org/photos/355007378?size=small'";
                 //isna = imageUrl;
-                //console.log(isna);
                 if(imageUrl != 'NA') {
                   image.onclick = function() {openGallery(imageUrl, index);};
+                  //https://stackoverflow.com/questions/52723799/browser-goes-forward-two-steps-with-history-pushstate
+                  //image.addEventListener('click', function(event) {
+                  //  event.preventDefault();
+                  //});
                 };
                 
                 modalImages.appendChild(image);
@@ -70,10 +68,9 @@
             });
 
             const taxonomy = document.getElementById('taxonomy');
-            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+data[which].famille+'&nbsp>&nbsp'+data[which].genre;
+            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>';
             const right = document.getElementById('links');
 
-            //console.log(makeLink(data[which].vascan,"vascan"));
 
             //links.innerHTML='<a target="_blank" href='+data[which].vascan+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/vascanlogo.jpg"></a><a target="_blank" href='+data[which].herbierqc+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/herbier.png"></a><a target="_blank" href='+data[which].inat+'><img class="fna" src="https://static.inaturalist.org/sites/1-favicon.png?1573071870"></a><a target="_blank" href='+data[which].gbif+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a><a target="_blank" href='+data[which].fna+'><img class="fna" src="https://cdn.hebergix.com/fr/floreqc/fna.jpg"></a><a target="_blank" href='+data[which].powo+'><img class="fna" src="https://powo.science.kew.org/img/powo-favicon.ico"></a>';
 
@@ -104,7 +101,6 @@
             } else {
                 contrib.innerHTML = data[which].contribution+"&nbsp";
             };
-            //console.log(data[which]);
 
             const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
             edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
@@ -117,33 +113,38 @@
         }
 
 
-        function closeModal() {
+        function closeModal(back) {
             modalImages.innerHTML = '';
             modal.style.display = 'none';
+            if(back){
+              history.back();
+            };
         }
 
         // Function to close the gallery
-        function closeGallery() {
+        function closeGallery(forward) {
             const gallery = document.getElementById("myGallery");
             gallery.style.display = "none";
+            //if(forward){
+            //  history.forward();
+            //};
         }
 
         window.onclick = function (event) {
-            if (event.target === modal) {
-                closeModal();
-            };
+        //    if (event.target === modal) {
+        //        closeModal(true);
+        //    };
+            const gallery = document.getElementById("gallery-content");
+            console.log(event.target);
             if (event.target === gallery) {
                 closeGallery();
             };
         };
 
 
-        function updateGallery(group) {
+        function updateGallery(group, taxon) {
 
             const order = document.getElementsByName('order');
-
-            //console.log(group);
-            //console.log(familleSelect.value);
 
             //let selected;
             let selected;
@@ -152,55 +153,66 @@
             let indexn;
 
             if (group === "famille") {
-              selected = familleSelect.value;
+              //selected = taxon;//familleSelect.value;
               //last_value = familleSelect.value;
               filteredImages = data.filter(image => (
-                (selected === image.famille)
+                (taxon === image.famille)
               ));
             } else if (group === "genre") {
-              selected = genreSelect.value;
+              //selected = genreSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
-                (selected === image.genre)
+                (taxon === image.genre)
               ));
-              //console.log(filteredImages);
             } else if (group === "species") {
-              selected = speciesSelect.value;
+              //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
-                (selected === image.espèce)
+                (taxon === image.espèce)
               ));
             } else if (group === "nom") {
-              selected = nomSelect.value;
-              //console.log(selected);
+              //selected = nomSelect.value;
               //last_value = genreSelect.value;
-              indexsp = nom_values.findIndex(p => p == selected);
-              indexn = common_names[indexsp][selected.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
-              console.log(indexn);
+              indexsp = nom_values.findIndex(p => p == taxon);
+              indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
               //filteredImages = data[common_names[indexn]];              
             } else {
-              selected = speciesSelect.value;
+              //selected = speciesSelect.value;
               //last_value = speciesSelect.value;
               filteredImages = data.filter(image => (
-                (selected === image.espèce)
+                (taxon === image.espèce)
               ));
             };
 
             last_category = group;
-            last_value = selected;
+            last_value = taxon;
+            
+            //if(push){
+              //updateURL(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
+            //}else{
+              //const params = getURLparams();
+              //const firstKey = Object.keys(params)[0];
+              //const firstValue = params[firstKey];
+              //var newURL = location.pathname+'?'+last_category+'='+last_value;
+              //location.href = newURL;
+            //};
+            //addUrlparameter(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
 
             if(group === "famille" || group === "genre") {
-              document.getElementById("selected").innerHTML = selected;
+              document.getElementById("selected").innerHTML = taxon;
             } else {
               document.getElementById("selected").innerHTML = "";
             }
+
 
             if( order[2].checked ){
                filteredImages = filteredImages.sort((a, b) => Number(b.nobs) - Number(a.nobs));
             } else if (order[1].checked) {
                filteredImages = filteredImages.sort((a, b) => Number(a.taxonomic_order) - Number(b.taxonomic_order));
             };
+
+
 
             // Clear the current gallery
             imageGallery.innerHTML = '';
@@ -240,24 +252,30 @@
             });
 
             const imageContainers = document.querySelectorAll('.image-container');
+            //
+
 
             imageContainers.forEach((container, index) => {
                 container.addEventListener('click', () => {
                     //const title = container.querySelector('.image-title').textContent;
-                    const title = container.id;
-                    const text = '';
-
-                    const index = data.findIndex(p => p.espèce == title); // tests
-                    const images = data[index].images;
-                    thumbnails = images.filter(z => z != 'NA');
-                    which = index;
-                    
-                    openModal(title, text, images);
+                    addModal(container.id);
                 });
             });
 
-
         }
+        
+        function addModal(species) {
+            console.log(species);
+            const title = species;
+            const text = '';
+            const index = data.findIndex(p => p.espèce == title); // tests
+            const images = data[index].images;
+            thumbnails = images.filter(z => z != 'NA');
+            which = index;
+            updateFocusURL(title, text, images);
+            //openModal(title, text, images);
+        }
+
 
         // Function to open the gallery with a specific image
         function openGallery(imageSrc, index) {
@@ -293,10 +311,15 @@
         }
 
 
-        familleSelect.addEventListener("change", () => updateGallery("famille"));
-        genreSelect.addEventListener("change", () => updateGallery("genre"));
-        speciesSelect.addEventListener("change", () => updateGallery("species"));
-        nomSelect.addEventListener("change", () => updateGallery("nom"));
+        //familleSelect.addEventListener("change", () => updateGallery("famille", false));
+        //genreSelect.addEventListener("change", () => updateGallery("genre", false));
+        //speciesSelect.addEventListener("change", () => updateGallery("species", false));
+        //nomSelect.addEventListener("change", () => updateGallery("nom", false));
+        
+        familleSelect.addEventListener("change", () => updateGroupURL("famille", familleSelect.value));
+        genreSelect.addEventListener("change", () => updateGroupURL("genre", genreSelect.value));
+        speciesSelect.addEventListener("change", () => updateGroupURL("species", speciesSelect.value));
+        nomSelect.addEventListener("change", () => updateGroupURL("nom", nomSelect.value));
 
 
         var filter = document.getElementById('filterList1');
@@ -330,17 +353,15 @@
 
         function changeOrder() {
             if(last_category !== "species") {
-              updateGallery(last_category);
+              updateGallery(last_category, last_value);
             };
         }
 
 
         function linkExists(link) {
           if(link === "" || link === "NA") {
-            //console.log(link);
             link;
           } else {
-            //console.log("no link");
             "";
           };
         }
@@ -370,7 +391,6 @@
         function makeProtection() {
           var pro = data[which].LOIEMV + ", " + data[which].SARASTATUS + ", " + data[which].COSEWIC + ", " + data[which].GRANK+", " + data[which].NRANK + ", " + data[which].SRANK;
           pro = pro.replaceAll("NA, ","-").replace("NA","-");
-          //console.log(pro);
           if(pro === ", , , , , "){
             return '';
           } else {
@@ -389,7 +409,8 @@
             const italicizedPart = `<i>${inputString.substring(0, secondSpaceIndex)}</i>`;
 
             // Concatenate the italicized part with the rest of the string
-            const resultString = italicizedPart + inputString.substring(secondSpaceIndex);
+            //const resultString = italicizedPart + inputString.substring(secondSpaceIndex);
+            const resultString = inputString.substring(secondSpaceIndex);
 
             return resultString;
           }
@@ -409,7 +430,7 @@
           if(isClicked === false){ // swipe pics only if not zoomed in
             const diffX = Math.abs(touchendX - touchstartX);
             const diffY = Math.abs(touchendY - touchstartY);
-            if( diffX > diffY && diffX > 5){
+            if( diffX > diffY && diffX > 10){
               if (touchendX < touchstartX) changeImage(1)//alert('swiped left!')
               if (touchendX > touchstartX) changeImage(-1)//alert('swiped right!')
             }  
@@ -429,12 +450,14 @@
         
           
         const image = document.getElementById('galleryImage');
+        //const zoom = document.getElementById('zoom'); // testing
 
         let isClicked = false;
       
         image.addEventListener('click', function(event) {
           if (!isClicked) {
             image.classList.add('zoomed');
+            //zoom.classList.add('zoomeddiv');
             isClicked = true;
             image.style.cursor = 'zoom-out';
             let x = event.offsetX;
@@ -442,6 +465,7 @@
             image.style.transformOrigin = `${x}px ${y}px`; /* Adjust transform origin based on mouse position */
           } else {
             image.classList.remove('zoomed');
+            //zoom.classList.remove('zoomeddiv');
             isClicked = false;
             image.style.cursor = 'zoom-in';
           }
@@ -457,6 +481,7 @@
         
         function zoom_reset() {
            const image = document.getElementById("galleryImage");
+           //image.classList.remove('zoomed');
            image.classList.remove('zoomed');
            isClicked = false;
            image.style.cursor = 'zoom-in';
@@ -550,3 +575,156 @@
       species_occs("Aquila_chrysaetos");
       */
         
+        
+      // Search params  
+      //const queryString = window.location.search;
+      //const urlParams = new URLSearchParams(queryString);
+      
+      //const product = urlParams.get('product')
+      
+      //function addUrlParameter(name, value) {
+      //   var searchParams = new URLSearchParams(window.location.search)
+      //   searchParams.set(name, value)
+      //   window.location.search = searchParams.toString()
+      //   //updateGallery("genre");
+      //}
+      
+      // Function to update URL with selected option
+      function updateGroupURL(param, value) {
+          //var newURL = window.location.href.split('?')[0]; // Get the current URL without parameters
+          var newURL = window.location.pathname; // Get the current URL without parameters
+          newURL += '?' + param + '=' + value; // Add the new parameter with the selected option value
+          //if (!history.state || history.state.page!=newURL){
+          //if (history.state.page!=newURL){
+          var states = {};
+          //if(param !== 'focus'){
+            states['group'] = param;
+            states['taxon'] = value;
+          //};
+          //states[param] = value;
+          history.pushState(states, '', newURL); // Update the URL without reloading the page
+          document.title = value;
+          
+          updateGallery(param, value);
+            //history.pushState({ "page": newURL }, '', newURL); //https://stackoverflow.com/questions/30429172/html5-history-api-cannot-go-backwards-more-than-once
+          //};
+          //https://stackoverflow.com/questions/58039669/how-to-listen-for-changes-to-window-location-search-in-2019
+          //history.forward();
+          //history.back();
+          //window.location.reload();
+          //window.location.href = newURL;
+          //var popStateEvent = new PopStateEvent('popstate', { param: value });
+          //dispatchEvent(popStateEvent);
+          //var urlParams = new URLSearchParams(window.location.search);
+          
+      }
+      
+      function updateFocusURL(value, text, images) {
+          var newURL = window.location.pathname; // Get the current URL without parameters
+          //var states = history.state;
+          var states = {};
+          //states['group'] = param;
+          //states['taxon'] = value;
+          states['focus'] = value;
+          newURL += '?' + 'focus=' + value;//state2querystring(states); // Add the new parameter with the selected option value
+          history.pushState(states, '', newURL); // Update the URL without reloading the page
+          openModal(value, text, images);
+      }
+      
+      
+        
+        function getURLparams() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var params = {};
+
+            // Loop through all parameter keys
+            for (const key of urlParams.keys()) {
+                // Use getAll() method to retrieve all values associated with the key
+                params[key] = urlParams.getAll(key);
+            }
+            return params;
+        }
+
+        // Listen for the popstate event to detect URL changes
+        //window.navigation.addEventListener('navigate', function(event) {
+        //});
+        
+        window.addEventListener('popstate', function(event) {
+            console.log(window.location.search);
+            if(document.getElementById("myGallery").style.display == 'block') {
+                closeGallery(true);
+                console.log(event.state);
+                updateGallery(event.state.group, event.state.taxon);
+            } else if (modal.style.display == 'block') {
+                closeModal(false);
+            } else {
+                const params = getURLparams();
+                //const group = Object.keys(params)["group"];
+                //const taxon = params[group][0];
+                //last_value = taxon;
+                last_value = event.state.taxon;
+                updateGallery(event.state.group, event.state.taxon);
+                if('focus' in params) {
+                  //const imageContainers = document.querySelectorAll('.image-container');
+                  //const imageContainers = document.querySelectorAll('.image-container');
+                  //document.addEventListener('DOMContentLoaded', function() {
+                    //const container = document.getElementById(event.state.focus+'.image-container');
+                    //var event = new MouseEvent('click', {
+                    //  bubbles: true,
+                    //  cancelable: true,
+                    //  view: window
+                    //});
+                    addModal(params['focus'].toString());
+                    //openModal(value, text, images);
+                    //container.dispatchEvent(event);
+                  //});
+                  
+                  //container.click();
+                }
+            };
+        });
+        
+        window.onload = (event) => {
+          //const domain = window.location.href.split('?')[0];  
+          //var urlParams = window.location.search;
+          const querystring = window.location.search.substring(1);
+          //history.pushState({ "page": window.location.href }, '', window.location.href); 
+          if (querystring != '') {
+            var urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has("focus")){
+              addModal(urlParams.get("focus"));
+              document.title = urlParams.get("focus");
+            } else {
+              //window.location = domain;
+              //history.pushState({ "page": window.location.href }, '', window.location.href); 
+              const params = getURLparams();
+              const group = Object.keys(params)[0];
+              const taxon = params[group][0];
+              last_value = taxon;
+              updateGallery(group, taxon);
+              document.title = taxon;
+            };
+
+          }
+          return true;
+        //    const params = getURLparams();
+        //    const firstKey = Object.keys(params)[0];
+        //    const firstValue = params[firstKey];
+        //    updateGallery(firstKey, firstValue);
+        };
+        
+        function state2querystring(state) {
+            let queryString = '';
+            let exclude = ["group", "taxon"];
+            for (const key in state) {
+                if(!(key.includes("group") || key.includes("taxon"))){;
+                    if (state.hasOwnProperty(key)) {
+                        if (queryString.length > 0) {
+                            queryString += '&';
+                        }
+                        queryString += `${encodeURIComponent(key)}=${encodeURIComponent(state[key])}`;
+                    }
+                };
+            }
+            return queryString;
+        }
