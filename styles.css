@@ -1,10 +1,12 @@
 
 :root {
-    --green: #228b22; /* #228b22; */
-    --white: #fdfdfd;/* #fffaf0;  #fff8dc; */
+    --green: #3FA34D; /* #538D22; #40916C; #40916C; #228b22; */
+    --white: #fcfcfc;/* #fdfdfd;
     --black: #111; /* #111111; */
     --gray: #fff8dc77; /* #fff8dc77; */
+    --palegreen: #E9F6EB;
 }
+
 
 body {
     margin: 0;
@@ -14,6 +16,11 @@ body {
     align-items: center;
     background-color: var(--white); /* White background */
     font-family: 'League Spartan', Helvetica, Arial, sans-serif; /* 'Roboto', sans-serif; */ /* Modern font */
+    padding: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
+    /* overflow: hidden; */
+    /* scrollbar-gutter: stable; */
 }
 
 @media only screen and (max-width: 850px) {
@@ -28,20 +35,24 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: var(--white); /* Dark green header */
-    padding-top: 2vmin; /* Reduced padding */
-    padding-bottom: 1vmin;
-    margin-bottom: 2vmin;
+    background-color: #00000011; /* Dark green header */
+    padding-top: 0.5vmin; /* Reduced padding */
+    padding-bottom: 0.0vmin;
+    margin-bottom: 0.0vmin;
     color: var(--green); /* Header text color */
-    border-bottom: 1px dotted var(--green);
+    border-bottom: 0px solid #00000015 ;
+    border-top: 0px solid #00000015 ;
     border-top: 0px solid var(--green);
+    box-shadow: 0px 0px #EEEEEE;
+    border-radius: 5px;
 }
 
 #tab {
-    font-size: 4vmin; /* Larger font size for the header title */
+    font-size: 3vmin; /* Larger font size for the header title */
     font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
     margin-right: 4vmin;
+    text-shadow: 0px 0px var(--white);
     /* overflow: hidden;
     transition: transform 0.2s ease-in-out; */
 }
@@ -57,10 +68,11 @@ body {
 }
 
 #title {
-    font-size: 5vmin; /* Larger font size for the header title */
+    font-size: 4vmin; /* Larger font size for the header title */
     font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
     margin-left: 2vw;
+    text-shadow: 0px 0px var(--white);
 }
 
 #filters {
@@ -181,9 +193,9 @@ body {
 
 
 .image-container {
-    width: 40vh; /* 33vh of the viewport height */
-    height: 42vh; /* 35vh of the viewport height */
-    margin: 1.0vw;
+    width: 38vh; /* 33vh of the viewport height */
+    height: 40vh; /* 35vh of the viewport height */
+    margin: 0.75vw;
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
     /* overflow: hidden; */
@@ -321,11 +333,11 @@ body {
     top: 0;
     bottom: 0;
     right: 0;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.99);
     overflow: auto;
-    border-top: 1px solid #ddd;
+    border-top: 0px solid #ddd;
 }
 
 .modal-content {
@@ -541,6 +553,7 @@ ul {
 }
 
 .close_modal {
+    display: none;
     position: fixed;
     top: 0.5vw;
     right: 2vw;
@@ -552,6 +565,7 @@ ul {
 
 @media only screen and (max-width: 850px) {
     .close_modal {
+        display: block;
         top: 4vw;
         right: 4vw;
         font-size: 15vmin; /* Larger font size for the close button */
@@ -741,7 +755,7 @@ ul {
   justify-content: space-between; /* switched from default (flex-start, see below) */
   background-color: #fff;
   border-radius: 0px;
-  padding-top: 0.75vh;
+  padding-top: 1.25vh;
   padding-bottom: 0.75vh;
   margin-left: 0vmin;
   margin-bottom: 0.5vmin;

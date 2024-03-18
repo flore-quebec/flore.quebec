@@ -20,6 +20,7 @@
         var which;
         var last_category = "famille";
         var last_value = "Poaceae";
+        var currenturl;
 
         function openModal(headerText, bodyText, imageArray) {
             // Clear previous images
@@ -176,7 +177,11 @@
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
-              //filteredImages = data[common_names[indexn]];              
+              //filteredImages = data[common_names[indexn]];    
+            } else if (group === "latest") {
+              //selected = speciesSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = find_latest(taxon);
             } else {
               //selected = speciesSelect.value;
               //last_value = speciesSelect.value;
@@ -279,6 +284,7 @@
 
         // Function to open the gallery with a specific image
         function openGallery(imageSrc, index) {
+            currenturl = window.location.href;
             const gallery = document.getElementById("myGallery");
             const galleryImage = document.getElementById("galleryImage");
             const captionText = document.getElementById("caption");
@@ -652,9 +658,14 @@
         window.addEventListener('popstate', function(event) {
             console.log(window.location.search);
             if(document.getElementById("myGallery").style.display == 'block') {
+                //urlParams = new URLSearchParams(window.location.search);
+                //console.log(currenturl);
+                //const focus = currenturl.split('?')[1];  
+                //var states = {};
+                //states["focus"] = focus; 
                 closeGallery(true);
-                console.log(event.state);
-                updateGallery(event.state.group, event.state.taxon);
+                //updateGallery(event.state.group, event.state.taxon);
+                //history.replaceState(states, '', currenturl);
             } else if (modal.style.display == 'block') {
                 closeModal(false);
             } else {
@@ -694,6 +705,13 @@
             if(urlParams.has("focus")){
               addModal(urlParams.get("focus"));
               document.title = urlParams.get("focus");
+            } else if(urlParams.has("latest")) {
+              const params = getURLparams();
+              const group = Object.keys(params)[0];
+              const taxon = params[group][0];
+              last_value = taxon;
+              updateGallery(group, taxon);
+              document.title = 'Latest';
             } else {
               //window.location = domain;
               //history.pushState({ "page": window.location.href }, '', window.location.href); 
@@ -728,3 +746,25 @@
             }
             return queryString;
         }
+        
+        function find_latest(n) {
+          let array = data;
+          let key = "date";
+          
+          array.sort((a, b) => {
+              if (a[key] < b[key]) {
+                  return 1; // Return 1 to indicate that 'a' comes after 'b'
+              }
+              if (a[key] > b[key]) {
+                  return -1; // Return -1 to indicate that 'a' comes before 'b'
+              }
+              return 0; // Return 0 if the values are equal
+          });
+          return array.slice(0, n);
+        }
+        
+        //console.log(find_latest(5));
+
+        
+        
+        
