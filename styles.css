@@ -19,6 +19,7 @@ body {
     padding: 5px;
     margin-left: 5%;
     margin-right: 5%;
+    /* text-shadow: '1px 1px #000'; */
     /* overflow: hidden; */
     /* scrollbar-gutter: stable; */
 }
@@ -415,7 +416,7 @@ body {
     font-weight: 300;
     margin-bottom: 1vmin;
     background-color: var(--white);
-    color: #555;
+    color: #333;
     letter-spacing: 1px;
     line-height: 1.25;
 }
@@ -424,7 +425,30 @@ h2 {
     font-size: 4vmin;
     font-weight: normal;
     color: #000;
+    font-family: 'League Spartan', Helvetica, Arial, sans-serif;
 }
+
+h3 {
+    font-size: 3.5vmin;
+    font-weight: normal;
+    color: #333;
+}
+
+.textchange {
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 3vh;
+    color: #333;
+    text-align: left;
+    z-index: 1;
+    /* transition: transform 0.15s ease-in-out; */
+}
+
+/* .textchange:hover {
+  transform: scale(1.1);
+} */
 
 ul {
   display: flex;
@@ -639,11 +663,26 @@ ul {
     padding-top: 2vh;
     margin: auto;
     display: block;
+    /*visibility: visible;*/
     background-color: var(--white);
+    transition: transform 0.2s ease-in-out;
+    /*transition: opacity 2s ease;*/
 
 }
 
-/* #map2 { height: 40vh; width: 95%; display: block; border-radius: 15px; margin: 2vmin;} */
+.map:hover {
+  transform: scale(1.08);
+}
+
+#map2 { 
+  height: 45vh; 
+  width: 95%; 
+  display: none;
+  /*visibility: hidden;*/
+  border-radius: 15px; 
+  margin: 2vmin;
+  /*transition: opacity 2s ease;*/
+}
 
 .pheno {
     width: 95%;

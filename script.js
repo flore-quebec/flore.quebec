@@ -36,10 +36,101 @@
             //  .then(r=>r.blob()).then(b=>b.text()).then(m=>{document.getElementById("txt").innerHTML=marked.parse(m)});
             //var url = "https://raw.githubusercontent.com/frousseu/mosquitos/main/" + headerText.replace(" ","_");
             //var url = "https://raw.githubusercontent.com/frousseu/floreqc/main/Esp%C3%A8ces/Poaceae/Cinna/Cinna_arundinacea.md"
-            var url = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md"
+            var url3 = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
 
-            fetch(url)
-              .then(r=>r.blob()).then(b=>b.text()).then(m => {modalText.innerHTML=marked.parse(m)});
+            //fetch(url3)
+            //  .then(r => r.blob())
+            //  .then(b => b.text())
+            //  .then(m => {modalText.innerHTML=marked.parse(m)});
+              
+            //modalText.style.fontFamily = 'Special Elite';
+            //modalText.style.fontColor = '#555';
+            //modalText.style.fontSize = '2.75vh';
+            //modalText.style.textShadow = '1px 1px #eee';
+            //modalText.innerHTML = marked.parse(md); 
+
+            
+
+            var url2 = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
+
+            //fetch(url)
+            //  .then(r => r.blob())
+            //  .then(b => b.text())
+            //  .then(m => {modalText.innerHTML=marked.parse(m)});
+              
+            var md2 = `<p style="font-size: 1.5vh; text-align: right;">FL&#11206</p> <h3>Flore Laurentienne</h3>
+            1. <b>Dactylis glomerata</b> L. — Dactyle pelotonné. — (_Orchard-grass_). — Plante cespiteuse
+à souche fibreuse; chaume (long. 40-150 cm.); feuilles (larg. 2-6 mm.); panicule (long. 8-20
+cm.) à branches solitaires, un peu scabres. Floraison estivale. Champs et lieux ombragés,
+particulièrement dans les vergers. Général dans les lieux habités du Québec. Naturalisé de
+l'Eurasie, où il est souvent cultivé. (Fig. 295). n = 14
+
+Graminée de haute stature qui s'élève au-dessus des autres plantes et les écarte par sa vigueur. Les chaumes,
+presque toujours un peu inclinés, sont terminés par une panicule unilatérale dont les pédicelles inférieurs sont écartés,
+et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
+            //modalText.style.fontFamily = 'Special Elite';
+            //modalText.style.fontColor = '#555';
+            //modalText.style.fontSize = '2.75vh';
+            //modalText.style.textShadow = '1px 1px #eee';
+            //modalText.innerHTML = marked.parse(md);
+
+
+
+
+            var fl = false;
+            var url;
+            var md;
+
+            function changeText(flo) {
+              if(flo) {
+                url = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
+                
+                fetch(url)
+                  .then(r => r.blob())
+                  .then(b => b.text())
+                  .then(m => {modalText.innerHTML=marked.parse(m)});
+                const ct = document.getElementById("textchange");
+                ct.style.fontFamily = 'Special Elite';
+                ct.innerHTML = '<span style="color: #999;">&#11207</span> <span style="color: black;">&#11208</span>';
+                //modalText.appendChild(ct);
+                modalText.style.fontFamily = 'League Spartan';
+                modalText.style.fontColor = '#444';
+                modalText.style.fontSize = '3vh';
+                modalText.style.textShadow = '0px 0px #eee';
+                
+                fl = false;  
+                console.log("***** true *******", fl);
+              } else {
+                md = `<h2>Flore laurentienne (1ère édition)</h2>
+                1. <b>Dactylis glomerata</b> L. — Dactyle pelotonné. — (Orchard-grass). — Plante cespiteuse
+    à souche fibreuse; chaume (long. 40-150 cm.); feuilles (larg. 2-6 mm.); panicule (long. 8-20
+    cm.) à branches solitaires, un peu scabres. Floraison estivale. Champs et lieux ombragés,
+    particulièrement dans les vergers. Général dans les lieux habités du Québec. Naturalisé de
+    l'Eurasie, où il est souvent cultivé. (Fig. 295). n = 14 <br><br>Graminée de haute stature qui s'élève au-dessus des autres plantes et les écarte par sa vigueur. Les chaumes,
+    presque toujours un peu inclinés, sont terminés par une panicule unilatérale dont les pédicelles inférieurs sont écartés,
+    et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
+                const ct = document.getElementById("textchange");
+                ct.style.fontFamily = 'League Spartan';
+                ct.innerHTML = '<span style="color: black;">&#11207</span> <span style="color: #999;">&#11208</span>';
+                modalText.style.fontFamily = 'Special Elite';
+                modalText.style.fontColor = '#555';
+                modalText.style.fontSize = '2.75vh';
+                modalText.style.textShadow = '0px 0px #eee';
+                modalText.innerHTML = marked.parse(md);
+                //modalText.appendChild(ct);
+                fl = true;
+                console.log("***** false *******", fl);
+              };
+            }
+            
+            changeText(true);
+            
+            const tooc = document.getElementById("textchange");
+            tooc.addEventListener('click', () => {
+              changeText(fl);
+            });
+            
+            //changeText(true);
 
 
             // Add images to modal
@@ -118,7 +209,8 @@
             modalImages.innerHTML = '';
             modal.style.display = 'none';
             if(back){
-              history.back();
+              //history.back();
+              console.log("**** back closeModal****", windows.location.href);
             };
         }
 
@@ -136,7 +228,6 @@
         //        closeModal(true);
         //    };
             const gallery = document.getElementById("gallery-content");
-            console.log(event.target);
             if (event.target === gallery) {
                 closeGallery();
             };
@@ -263,21 +354,20 @@
             imageContainers.forEach((container, index) => {
                 container.addEventListener('click', () => {
                     //const title = container.querySelector('.image-title').textContent;
-                    addModal(container.id);
+                    addModal(container.id, true);
                 });
             });
 
         }
         
-        function addModal(species) {
-            console.log(species);
+        function addModal(species, push) {
             const title = species;
             const text = '';
             const index = data.findIndex(p => p.espèce == title); // tests
             const images = data[index].images;
             thumbnails = images.filter(z => z != 'NA');
             which = index;
-            updateFocusURL(title, text, images);
+            updateFocusURL(title, text, images, push);
             //openModal(title, text, images);
         }
 
@@ -497,7 +587,7 @@
            zoom_reset();
         });
         
-        /*
+
         // add the PMTiles plugin to the maplibregl global.
         const protocol = new pmtiles.Protocol();
         maplibregl.addProtocol('pmtiles', (request) => {
@@ -513,11 +603,32 @@
             });
         });
 
+      //let geo = fetch('https://cdn.hebergix.com/fr/floreqc/Ixobrychus_exilis.geojson')
+      //           .then(r => r.json())
+      //           .then(r => console.log("**********", r));
+                 
+      //const fetchPromise = fetch('https://cdn.hebergix.com/fr/floreqc/Ixobrychus_exilis.geojson');
+      //    fetchPromise
+      //      .then((response) => response.json())
+      //      .then((data) => {
+      //        console.log(data);
+      //      });
+
       // we first fetch the header so we can get the center lon, lat of the map.
+      
+      //const test = fetch('https://flore-quebec.nyc3.cdn.digitaloceanspaces.com/Aquila_chrysaetos.pmtiles');
+      //console.log("***** test ******", test);
+      
       function species_occs(sp) {
   
-          const PMTILES_URL = 'https://object-arbutus.cloud.computecanada.ca/bq-io/acer/niches_climatiques/obs/' + sp + '.pmtiles';
-  
+          //const PMTILES_URL = 'https://object-arbutus.cloud.computecanada.ca/bq-io/acer/niches_climatiques/obs/' + sp + '.pmtiles';
+          
+          //https://flore.quebec.nyc3.cdn.digitaloceanspaces.com/Ixobrychus_exilis.pmtiles
+          
+          
+          const PMTILES_URL = 'https://flore-quebec.nyc3.cdn.digitaloceanspaces.com/' + sp + '.pmtiles';
+          //const PMTILES_URL = 'https://nyc3.digitaloceanspaces.com/flore.quebec/Aquila_chrysaetos.pmtiles';
+          //const PMTILES_URL = 'https://flore.quebec.nyc3.cdn.digitaloceanspaces.com/Aquila_chrysaetos.pmtiles';
           const p = new pmtiles.PMTiles(PMTILES_URL);
   
           // this is so we share one instance across the JS code and the map renderer
@@ -528,14 +639,15 @@
                   container: 'map2',
                   zoom: h.maxZoom -4,
                   //center: [h.centerLon, h.centerLat],
-                  center: [-73, 45],
+                  center: [-70, 53],
+                  zoom: 2.75,
                   style: {
                       version:8,
                       sources: {
                           'example_source': {
                               type: 'vector',
                               url: `pmtiles://${PMTILES_URL}`,
-                              attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>'
+                              attribution: '© <a target="_blank" href="https://openstreetmap.org">OpenStreetMap</a> contributors © <a target="_blank" href="https://openmaptiles.org/">OpenMapTiles</a>'
                           },
                           'raster-tiles': {
                           'type': 'raster',
@@ -543,12 +655,13 @@
                               // NOTE: Layers from Stadia Maps do not require an API key for localhost development or most production
                               // web deployments. See https://docs.stadiamaps.com/authentication/ for details.
                               //'https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}.jpg'
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+                              //'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
                               //'http://c.tile.opentopomap.org/{z}/{x}/{y}.png'
+                              'https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png?style=gbif-geyser'
                           ],
                           'tileSize': 256,
                           'attribution':
-                              'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>; Hosting by <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>. Data &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
+                              'GBIF Geyser par <a target="_blank" href="http://stamen.com">GBIF.org</a> | <a target="_blank" href="http://stamen.com">GBIF.org</a>  <a target="_blank" href="https://doi.org/10.15468/dl.3txsdx">https://doi.org/10.15468/dl.3txsdx</a>'
                       }
                       },
                       layers: [
@@ -560,26 +673,55 @@
                               'maxzoom': 22
                           },
                           {
-                              'id': 'Setophaga_cerulea',
+                              'id': 'observations',
                               'source': 'example_source',
                               'source-layer': sp,
                               'type': 'circle',
                               'paint': {
                                   'circle-color': 'forestgreen',
-                                  'circle-radius': 5,
+                                  'circle-radius': 3,
+                                  'circle-opacity': 0.80,
                                   'circle-stroke-color': 'black',
-                                  'circle-stroke-opacity': 0.95,
-                                  'circle-stroke-width': 0.5,
+                                  'circle-stroke-opacity': 0.85,
+                                  'circle-stroke-width': 0.25,
                               }
                           }
                       ]
                   }
               });
+              
+              map2.addControl(new maplibregl.FullscreenControl());
+              
+              map2.on('load', () => {
+                
+                map2.setPaintProperty('observations', 'circle-radius', [
+                  'interpolate', ['exponential', 1.45], ['zoom'],
+                  5,4,
+                  15,9
+                ]);
+                
+                const myBounds = map2.getSource("example_source").bounds;
+                //map2.setMaxBounds(myBounds);
+                map2.fitBounds(myBounds, {padding: {top: 50, bottom:100, left: 100, right: 100}});
+                
+              });
+              
+              
           });
+          
+
       }
-      
-      species_occs("Aquila_chrysaetos");
-      */
+        
+      //const map = document.getElementById('map');
+      map.addEventListener('click', function(event) {  
+        const getsp = getURLparams().focus[0].replace(" ","_");
+        species_occs(getsp);
+        const staticmap = document.getElementById('map');
+        staticmap.style.display = 'none';
+        map2.style.display = 'block';
+        //staticmap.style.visibility = 'hidden';
+        //map2.style.visibility = 'visible';
+      });
         
         
       // Search params  
@@ -609,6 +751,7 @@
           //};
           //states[param] = value;
           history.pushState(states, '', newURL); // Update the URL without reloading the page
+          console.log("**** push updateGroupURL ****",newURL);
           document.title = value;
           
           updateGallery(param, value);
@@ -625,7 +768,7 @@
           
       }
       
-      function updateFocusURL(value, text, images) {
+      function updateFocusURL(value, text, images, push) {
           var newURL = window.location.pathname; // Get the current URL without parameters
           //var states = history.state;
           var states = {};
@@ -633,7 +776,10 @@
           //states['taxon'] = value;
           states['focus'] = value;
           newURL += '?' + 'focus=' + value;//state2querystring(states); // Add the new parameter with the selected option value
-          history.pushState(states, '', newURL); // Update the URL without reloading the page
+          if(push){
+            history.pushState(states, '', newURL); // Update the URL without reloading the page
+          };
+          //console.log("**** push updateFocusURL ****",newURL);
           openModal(value, text, images);
       }
       
@@ -656,10 +802,9 @@
         //});
         
         window.addEventListener('popstate', function(event) {
-            console.log(window.location.search);
+            //console.log("****popstate******", window.location.href);
             if(document.getElementById("myGallery").style.display == 'block') {
                 //urlParams = new URLSearchParams(window.location.search);
-                //console.log(currenturl);
                 //const focus = currenturl.split('?')[1];  
                 //var states = {};
                 //states["focus"] = focus; 
@@ -685,7 +830,7 @@
                     //  cancelable: true,
                     //  view: window
                     //});
-                    addModal(params['focus'].toString());
+                    addModal(params['focus'].toString(), false);
                     //openModal(value, text, images);
                     //container.dispatchEvent(event);
                   //});
@@ -703,7 +848,7 @@
           if (querystring != '') {
             var urlParams = new URLSearchParams(window.location.search);
             if(urlParams.has("focus")){
-              addModal(urlParams.get("focus"));
+              addModal(urlParams.get("focus"), true);
               document.title = urlParams.get("focus");
             } else if(urlParams.has("latest")) {
               const params = getURLparams();
@@ -763,7 +908,6 @@
           return array.slice(0, n);
         }
         
-        //console.log(find_latest(5));
 
         
         
