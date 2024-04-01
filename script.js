@@ -21,6 +21,7 @@
         var last_category = "famille";
         var last_value = "Poaceae";
         var currenturl;
+        //var map2;
 
         function openModal(headerText, bodyText, imageArray) {
             // Clear previous images
@@ -208,9 +209,10 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         function closeModal(back) {
             modalImages.innerHTML = '';
             modal.style.display = 'none';
+            reset_map();
             if(back){
               //history.back();
-              console.log("**** back closeModal****", windows.location.href);
+              //console.log("**** back closeModal****", windows.location.href);
             };
         }
 
@@ -618,6 +620,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
       
       //const test = fetch('https://flore-quebec.nyc3.cdn.digitaloceanspaces.com/Aquila_chrysaetos.pmtiles');
       //console.log("***** test ******", test);
+    
       
       function species_occs(sp) {
   
@@ -630,6 +633,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //const PMTILES_URL = 'https://nyc3.digitaloceanspaces.com/flore.quebec/Aquila_chrysaetos.pmtiles';
           //const PMTILES_URL = 'https://flore.quebec.nyc3.cdn.digitaloceanspaces.com/Aquila_chrysaetos.pmtiles';
           const p = new pmtiles.PMTiles(PMTILES_URL);
+          //console.log(p.getHeader());
   
           // this is so we share one instance across the JS code and the map renderer
           protocol.add(p);
@@ -658,6 +662,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                               //'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
                               //'http://c.tile.opentopomap.org/{z}/{x}/{y}.png'
                               'https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png?style=gbif-geyser'
+                              //'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
                           ],
                           'tileSize': 256,
                           'attribution':
@@ -702,9 +707,25 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 
                 const myBounds = map2.getSource("example_source").bounds;
                 //map2.setMaxBounds(myBounds);
-                map2.fitBounds(myBounds, {padding: {top: 50, bottom:100, left: 100, right: 100}});
+                map2.fitBounds(myBounds, {maxZoom: 8, maxDuration: 0.01, padding: {top: 25, bottom:100, left: 50, right: 50}});
                 
-              });
+                const osmCycle = {
+                    name: "OSM Cycle",
+                    tiles: ['https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png'],
+                }
+                const esriTerrain = {
+                    name: "Esri Terrain",
+                    tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}'],
+                    maxzoom: 13,
+                    attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
+                }
+                const baseLayers = {
+                    osmCycle,
+                    esriTerrain,
+                }
+                const basemapControl = new BasemapControl({ basemaps: baseLayers, initialBasemap: "osmCycle"  });
+                //map2.addControl(basemapControl, 'top-right');
+                });
               
               
           });
@@ -724,6 +745,11 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
       });
         
         
+      //map2.on('fullscreenstart', function(event) {    
+      //  const myBounds = map2.getSource("example_source").bounds;
+      //          //map2.setMaxBounds(myBounds);
+      //  map2.fitBounds(myBounds, {padding: {top: 25, bottom:50, left: 50, right: 50}});
+      //});
       // Search params  
       //const queryString = window.location.search;
       //const urlParams = new URLSearchParams(queryString);
@@ -801,8 +827,35 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         //window.navigation.addEventListener('navigate', function(event) {
         //});
         
+        //window.addEventListener('beforeunload', function(event) {
+        //    if (map2) {
+        //      map2.removeLayer("observations"); // Remove the map
+        //      //map2 = null; // Clear reference to map instance
+        //    }
+        //});
+        
+        function reset_map(){
+            const staticmap = document.getElementById('map');
+            map2.innerHTML='';
+            staticmap.style.display = 'block';
+            map2.style.display = 'none';
+        }
+        
+        
         window.addEventListener('popstate', function(event) {
             //console.log("****popstate******", window.location.href);
+            //map2.remove();
+            //map2.removeSource("example_source");
+            //map2.removeLayer("observations");
+            
+
+            //const staticmap = document.getElementById('map');
+            //if(map2.style.display === 'block') {
+            //    map2.style.display === 'none'
+            //    staticmap.style.display = 'block';
+            //};
+            reset_map();
+            
             if(document.getElementById("myGallery").style.display == 'block') {
                 //urlParams = new URLSearchParams(window.location.search);
                 //const focus = currenturl.split('?')[1];  
