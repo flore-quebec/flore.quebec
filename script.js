@@ -637,7 +637,30 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
   
           // this is so we share one instance across the JS code and the map renderer
           protocol.add(p);
-  
+          //console.log(p.getMetadata().then(result => {console.log(result.tilestats.layers[0].attributes)}));
+          
+          const getMethods = (obj) => {
+  let properties = new Set()
+  let currentObj = obj
+  do {
+    Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+  } while ((currentObj = Object.getPrototypeOf(currentObj)))
+  return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+}
+
+//console.log(getMethods(PMTiles));
+          //console.log(p.getMetadata());
+          //console.log(p);
+          
+          //console.log(p.getOwnPropertyNames());
+          //p.getMetadata()
+          //  .then(result => {
+          //    result
+          //  }).then(result => {console.log(result)});
+          
+           //console.log("*******", p.source.data);
+            
+            
           p.getHeader().then(h => {
               var map2 = new maplibregl.Map({
                   container: 'map2',
@@ -683,7 +706,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                               'source-layer': sp,
                               'type': 'circle',
                               'paint': {
-                                  'circle-color': 'forestgreen',
+                                  'circle-color': [
+                                      "case",
+                                      ["==", ["get", "recordedBy"], "François Rousseu"], "forestgreen",
+                                      ["==", ["get", "dataset_name"], "eButterfly"], "forestgreen",
+                                      ["==", ["get", "dataset_name"], "iNaturalist Research-grade Observations"], "forestgreen", 
+                                      "forestgreen",
+                                    ],
                                   'circle-radius': 3,
                                   'circle-opacity': 0.80,
                                   'circle-stroke-color': 'black',
@@ -697,12 +726,16 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               
               map2.addControl(new maplibregl.FullscreenControl());
               
+              console.log(map2.querySourceFeatures().entries("recordedBy"));
+              
               map2.on('load', () => {
                 
+                //console.log("*** query ***", map2.queryRenderedFeatures()[0].properties);
+              
                 map2.setPaintProperty('observations', 'circle-radius', [
                   'interpolate', ['exponential', 1.45], ['zoom'],
-                  5,4,
-                  15,9
+                  4,4,
+                  15,11
                 ]);
                 
                 const myBounds = map2.getSource("example_source").bounds;
@@ -727,6 +760,39 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 //map2.addControl(basemapControl, 'top-right');
                 });
               
+              
+                map2.on('click', 'observations', (e) => {
+                   //const coordinates = e.features[0].geometry.coordinates..slice();
+                   //const description = e.features[0].properties.description;
+                    const prop = e.features[0].properties;
+                    //console.log(Object.keys(prop));
+                    const popuphtml = popup_text(prop);
+                    const latlon = [prop['longitude'], prop['latitude']];
+                    //console.log(latlon);
+                   
+                    let popup = new maplibregl.Popup()
+                      .setHTML(popuphtml)
+                      .setLngLat(latlon)
+                      .setMaxWidth("250px")
+                      .addTo(map2);
+                      
+                    let popupElem = popup.getElement();
+                    popupElem.style.fontSize = "1.1vmin";  
+                    popupElem.style.fontFamily = "League Spartan";
+                    popupElem.style.overflowWrap = "break-word";
+                   
+                });
+              
+              
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map2.on('mouseenter', 'observations', () => {
+                    map2.getCanvas().style.cursor = 'pointer';
+                });
+        
+                // Change it back to a pointer when it leaves.
+                map2.on('mouseleave', 'observations', () => {
+                    map2.getCanvas().style.cursor = '';
+                });
               
           });
           
@@ -961,7 +1027,20 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           return array.slice(0, n);
         }
         
-
+        function popup_text(e) {
+            
+            const dataset = '<center><b>' + e['datasetName'].replace(" - ","<br>") + '</b></center><hr>';
+            const link = '<hr><a target="_blank" href=' + e['link'] + '>' + e['link'] + '</a><br>';
+          
+            //const dataset = '<center><b>Herbier Louis-Marie (QFA)<br>Collection de plantes vasculaires</b></center><hr>'+ Object.entries(e);
+            console.log(Object.entries(e));
+            const pop = Object.entries(e)
+                          .slice(3, 8)
+                          .map(([key, value]) => '<b>' + key + '</b>   ' + value)
+                          .join('<br>');
+                      
+            return dataset + pop + link;          
+        }
         
         
         
