@@ -777,7 +777,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                       .addTo(map2);
                       
                     let popupElem = popup.getElement();
-                    popupElem.style.fontSize = "1.1vh";  
+                    popupElem.style.fontSize = "clamp(12px, 1.3vh, 22px)";  
                     popupElem.style.fontFamily = "League Spartan";
                     popupElem.style.overflowWrap = "break-word";
                    
