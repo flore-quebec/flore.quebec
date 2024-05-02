@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite:wght@100;200;300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.css'>
@@ -36,6 +36,11 @@
             <label class="dropdown-label" for="genre">Genre</label>
             <input class="dropdown-input" type="text" id="genre" list="filterList2" onfocus="this.value=''" onchange="this.blur();">
             <datalist id="filterList2"></datalist>
+        </div>
+        <div style="display: none;" class="dropdown-container">
+            <label class="dropdown-label" for="section">Section/Tribu</label>
+            <input class="dropdown-input" type="text" id="section" list="filterList5" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList5"></datalist>
         </div>
         <div class="dropdown-container">
             <label class="dropdown-label" for="species">Espèce</label>
@@ -85,8 +90,59 @@
                 </div>
                 <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/qc.png" alt="Logo">
             </div>
+            
+            
+                <div style="display: none;" id="filters">
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="famille">Famille</label>
+            <input class="dropdown-input" type="text" id="famille" list="filterList1" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList1"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="genre">Genre</label>
+            <input class="dropdown-input" type="text" id="genre" list="filterList2" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList2"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="section">Section/Tribu</label>
+            <input class="dropdown-input" type="text" id="section" list="filterList5" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList5"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="species">Espèce</label>
+            <input class="dropdown-input" type="text" id="species" list="filterList3" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList3"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="nom">Nom commun</label>
+            <input class="dropdown-input" type="text" id="nom" list="filterList4" onfocus="this.value=''" onchange="this.blur();">
+            <datalist id="filterList4"></datalist>
+        </div>
+        <div class="dropdown-container">
+            <label class="container_radio">Ordre alphabétique
+              <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container_radio">Ordre taxonomique
+              <input type="radio" name="order" value="taxonomic" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container_radio">Nb. d'observations&nbsp
+              <input type="radio" name="order" value="nobs" onclick="changeOrder()">
+              <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+            
+            
+            
+            
+            
+            
+            
             <div class="container" id="container">
               <div class="taxonomy" id="taxonomy"></div>
+              <!-- <div class="fillline" id="fillline"></div> -->
               <div class="links" id="links"></div>
             </div>
 

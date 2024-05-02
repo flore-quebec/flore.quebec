@@ -639,25 +639,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           protocol.add(p);
           //console.log(p.getMetadata().then(result => {console.log(result.tilestats.layers[0].attributes)}));
           
-          const getMethods = (obj) => {
-  let properties = new Set()
-  let currentObj = obj
-  do {
-    Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
-  } while ((currentObj = Object.getPrototypeOf(currentObj)))
-  return [...properties.keys()].filter(item => typeof obj[item] === 'function')
-}
-
-//console.log(getMethods(PMTiles));
-          //console.log(p.getMetadata());
-          //console.log(p);
-          
-          //console.log(p.getOwnPropertyNames());
-          //p.getMetadata()
-          //  .then(result => {
-          //    result
-          //  }).then(result => {console.log(result)});
-          
            //console.log("*******", p.source.data);
             
             
@@ -724,9 +705,16 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                   }
               });
               
+              
+              
+              
+              
+              
+              
+              
               map2.addControl(new maplibregl.FullscreenControl());
               
-              console.log(map2.querySourceFeatures().entries("recordedBy"));
+              //console.log(map2.querySourceFeatures().entries("recordedBy"));
               
               map2.on('load', () => {
                 
@@ -734,14 +722,22 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               
                 map2.setPaintProperty('observations', 'circle-radius', [
                   'interpolate', ['exponential', 1.45], ['zoom'],
-                  4,4,
-                  15,11
+                  3,4,
+                  13,12
                 ]);
+                
+
                 
                 const myBounds = map2.getSource("example_source").bounds;
                 //map2.setMaxBounds(myBounds);
                 map2.fitBounds(myBounds, {maxZoom: 8, maxDuration: 0.01, padding: {top: 25, bottom:100, left: 50, right: 50}});
                 
+                const geyser = {
+                          name: 'GBIF Geyser',
+                          tiles: ['https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png?style=gbif-geyser'],
+                          attribution:
+                              'GBIF Geyser par <a target="_blank" href="http://stamen.com">GBIF.org</a> | <a target="_blank" href="http://stamen.com">GBIF.org</a>  <a target="_blank" href="https://doi.org/10.15468/dl.3txsdx">https://doi.org/10.15468/dl.3txsdx</a>'
+                }
                 const osmCycle = {
                     name: "OSM Cycle",
                     tiles: ['https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png'],
@@ -753,11 +749,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                     attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
                 }
                 const baseLayers = {
+                    geyser,
                     osmCycle,
                     esriTerrain,
                 }
-                const basemapControl = new BasemapControl({ basemaps: baseLayers, initialBasemap: "osmCycle"  });
-                //map2.addControl(basemapControl, 'top-right');
+                const basemapControl = new BasemapControl({ basemaps: baseLayers, initialBasemap: "geyser"  });
+                //map2.addControl(basemapControl, 'top-left');
                 });
               
               
