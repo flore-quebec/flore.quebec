@@ -124,7 +124,7 @@ body {
 }
 
 .dropdown-input {
-    width: 20vmin; /* Adjust the width as needed 225px*/
+    width: 19vmin; /* Adjust the width as needed 225px*/
     padding: 8px;
     border: 1px solid var(--lightgreen);
     background-color: white; /* White background */
@@ -179,6 +179,7 @@ body {
     padding-top: 2vmin;
     padding-bottom: 1vmin;
     font-style: italic;
+    font-weight: 500;
     transition: transform 0.15s ease-in-out;
 }
 

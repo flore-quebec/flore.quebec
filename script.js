@@ -1,6 +1,7 @@
 
         const familleSelect = document.getElementById("famille");
         const genreSelect = document.getElementById("genre");
+        const sectionSelect = document.getElementById("section");
         const speciesSelect = document.getElementById("species");
         const nomSelect = document.getElementById("nom");
 
@@ -160,8 +161,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 //<img class="thumbnail-image" src=${imageUrl} alt="Image 1" onclick="openGallery(${imageUrl}, 0)">
             });
 
+            //console.log(data[which].section);
+            var section;
+            if(data[which].section === '') {
+              section = '';
+            } else {
+              section = '&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?section='+data[which].section+'>'+data[which].section+'</a>';
+            };
             const taxonomy = document.getElementById('taxonomy');
-            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>';
+            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>'+section;
             const right = document.getElementById('links');
 
 
@@ -247,26 +255,22 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             let indexn;
 
             if (group === "famille") {
-              //selected = taxon;//familleSelect.value;
-              //last_value = familleSelect.value;
               filteredImages = data.filter(image => (
                 (taxon === image.famille)
               ));
             } else if (group === "genre") {
-              //selected = genreSelect.value;
-              //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 (taxon === image.genre)
               ));
+            } else if (group === "section") {
+              filteredImages = data.filter(image => (
+                (taxon === image.section)
+              ));
             } else if (group === "species") {
-              //selected = speciesSelect.value;
-              //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 (taxon === image.espèce)
               ));
             } else if (group === "nom") {
-              //selected = nomSelect.value;
-              //last_value = genreSelect.value;
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
@@ -276,8 +280,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               //last_value = genreSelect.value;
               filteredImages = find_latest(taxon);
             } else {
-              //selected = speciesSelect.value;
-              //last_value = speciesSelect.value;
               filteredImages = data.filter(image => (
                 (taxon === image.espèce)
               ));
@@ -297,7 +299,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //};
             //addUrlparameter(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
 
-            if(group === "famille" || group === "genre") {
+            if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("selected").innerHTML = taxon;
             } else {
               document.getElementById("selected").innerHTML = "";
@@ -416,6 +418,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         familleSelect.addEventListener("change", () => updateGroupURL("famille", familleSelect.value));
         genreSelect.addEventListener("change", () => updateGroupURL("genre", genreSelect.value));
+        sectionSelect.addEventListener("change", () => updateGroupURL("section", sectionSelect.value));
         speciesSelect.addEventListener("change", () => updateGroupURL("species", speciesSelect.value));
         nomSelect.addEventListener("change", () => updateGroupURL("nom", nomSelect.value));
 
@@ -429,6 +432,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
         var filter = document.getElementById('filterList2');
         genus_values.forEach(function(item){
+           var option = document.createElement('option');
+           option.value = item;
+           filter.appendChild(option);
+        });
+        
+        var filter = document.getElementById('filterList5');
+        section_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
            filter.appendChild(option);
