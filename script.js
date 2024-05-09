@@ -425,37 +425,37 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
         var filter1 = document.getElementById('filterList1');
         family_values.forEach(function(item){
-           var option = document.createElement('option');
-           option.value = item;
-           filter1.appendChild(option);
+           var option1 = document.createElement('option');
+           option1.value = item;
+           filter1.appendChild(option1);
         });
 
         var filter2 = document.getElementById('filterList2');
         genus_values.forEach(function(item){
-           var option = document.createElement('option');
-           option.value = item;
-           filter2.appendChild(option);
+           var option2 = document.createElement('option');
+           option2.value = item;
+           filter2.appendChild(option2);
         });
         
-        var filter5 = document.getElementById('filterList5');
-        section_values.forEach(function(item){
-           var option = document.createElement('option');
-           option.value = item;
-           filter5.appendChild(option);
-        });
+        //var filter5 = document.getElementById('filterList5');
+        //section_values.forEach(function(item){
+        //   var option5 = document.createElement('option');
+        //   option5.value = item;
+        //   filter5.appendChild(option5);
+        //});
 
         var filter3 = document.getElementById('filterList3');
         species_values.forEach(function(item){
-           var option = document.createElement('option');
-           option.value = item;
-           filter3.appendChild(option);
+           var option3 = document.createElement('option');
+           option3.value = item;
+           filter3.appendChild(option3);
         });
 
         var filter4 = document.getElementById('filterList4');
         nom_values.forEach(function(item){
-           var option = document.createElement('option');
-           option.value = item;
-           filter4.appendChild(option);
+           var option4 = document.createElement('option');
+           option4.value = item;
+           filter4.appendChild(option4);
         });
 
 
