@@ -423,39 +423,39 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         nomSelect.addEventListener("change", () => updateGroupURL("nom", nomSelect.value));
 
 
-        var filter = document.getElementById('filterList1');
+        var filter1 = document.getElementById('filterList1');
         family_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
-           filter.appendChild(option);
+           filter1.appendChild(option);
         });
 
-        var filter = document.getElementById('filterList2');
+        var filter2 = document.getElementById('filterList2');
         genus_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
-           filter.appendChild(option);
+           filter2.appendChild(option);
         });
         
-        var filter = document.getElementById('filterList5');
+        var filter5 = document.getElementById('filterList5');
         section_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
-           filter.appendChild(option);
+           filter5.appendChild(option);
         });
 
-        var filter = document.getElementById('filterList3');
+        var filter3 = document.getElementById('filterList3');
         species_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
-           filter.appendChild(option);
+           filter3.appendChild(option);
         });
 
-        var filter = document.getElementById('filterList4');
+        var filter4 = document.getElementById('filterList4');
         nom_values.forEach(function(item){
            var option = document.createElement('option');
            option.value = item;
-           filter.appendChild(option);
+           filter4.appendChild(option);
         });
 
 
