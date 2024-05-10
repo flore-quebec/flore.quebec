@@ -839,6 +839,16 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
       // Function to update URL with selected option
       function updateGroupURL(param, value) {
           //var newURL = window.location.href.split('?')[0]; // Get the current URL without parameters
+          
+          familleSelect.value = '';
+          genreSelect.value = '';
+          sectionSelect.value = '';
+          speciesSelect.value = '';
+          nomSelect.value = '';
+          
+          var chosen = document.getElementById(param);
+          chosen.value = value;
+          
           var newURL = window.location.pathname; // Get the current URL without parameters
           newURL += '?' + param + '=' + value; // Add the new parameter with the selected option value
           //if (!history.state || history.state.page!=newURL){
