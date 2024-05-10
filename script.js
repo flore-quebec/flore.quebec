@@ -437,12 +437,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
            filter2.appendChild(option2);
         });
         
-        //var filter5 = document.getElementById('filterList5');
-        //section_values.forEach(function(item){
-        //   var option5 = document.createElement('option');
-        //   option5.value = item;
-        //   filter5.appendChild(option5);
-        //});
+        var filter5 = document.getElementById('filterList5');
+        section_values.forEach(function(item){
+           var option5 = document.createElement('option');
+           option5.value = item;
+           filter5.appendChild(option5);
+        });
 
         var filter3 = document.getElementById('filterList3');
         species_values.forEach(function(item){
