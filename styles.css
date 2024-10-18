@@ -5,7 +5,7 @@
     --black: #111; /* #111111; */
     --gray: #fff8dc77; /* #fff8dc77; */
     --lightgray: #eee;
-    --lightgreen: #3FA34DBB;
+    --lightgreen: #3FA34DDD; /* #3FA34DBB; the previous pale one*/
     --palegreen: #E9F6EB;
 }
 
@@ -213,9 +213,10 @@ body {
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
     /* overflow: hidden; */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for images 4px 6px */
+    box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
     border: 0px solid darkgreen;
     background-color: #ddd;
+    transition: transform 0.2s ease-in-out;
 }
 
 @media only screen and (max-width: 600px) {
@@ -239,7 +240,7 @@ body {
     background-color: #ddd;
 }
 
-.image:hover {
+.image-container:hover {
     transform: scale(1.08);
 }
 
