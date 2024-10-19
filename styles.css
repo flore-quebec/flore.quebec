@@ -748,6 +748,12 @@ ul {
   border-top: 1px solid #DDDDDD;
 }
 
+@media only screen and (max-width: 600px) {
+    .footer1 {
+        border-top: 0px solid #DDDDDD;
+    }
+}
+
 .column2 {
   display: flex;
   flex-direction: column;
