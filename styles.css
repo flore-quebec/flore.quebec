@@ -241,8 +241,15 @@ body {
 }
 
 .image-container:hover {
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
+
+@media only screen and (max-width: 600px) {
+  .image-container:hover {
+      transform: none;
+  }
+}
+
 
 .image-title {
     position: absolute;
