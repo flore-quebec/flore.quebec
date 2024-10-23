@@ -1,11 +1,12 @@
 
 :root {
-    --green: #3FA34D; /* #538D22; #40916C; #40916C; #228b22; */
+    --green: #3FA34D; /* #3FA34D #538D22; #40916C; #40916C; #228b22; */
     --white: #fcfcfc;/* #fdfdfd;
     --black: #111; /* #111111; */
     --gray: #fff8dc77; /* #fff8dc77; */
     --lightgray: #eee;
     --lightgreen: #3FA34DDD; /* #3FA34DBB; the previous pale one*/
+    --transparentgreen: #3FA34D33; /* #3FA34DBB; the previous pale one*/
     --palegreen: #E9F6EB;
 }
 
@@ -18,9 +19,9 @@ body {
     align-items: center;
     background-color: var(--white); /* White background */
     font-family: 'League Spartan', Helvetica, Arial, sans-serif; /* 'Roboto', sans-serif; */ /* Modern font */
-    padding: 5px;
-    margin-left: 5%;
-    margin-right: 5%;
+    padding: 0px; /* 5 */
+    margin-left: 0%; /* 5 */
+    margin-right: 0%; /* 5 */
     /* text-shadow: '1px 1px #000'; */
     /* overflow: hidden; */
     /* scrollbar-gutter: stable; */
@@ -40,15 +41,15 @@ body {
     align-items: center;
     width: 100%;
     background-color: var(--lightgreen);/*#dfdfdf;/* #00000011; /* Dark green header */
-    padding-top: 0.5vmin; /* Reduced padding */
-    padding-bottom: 0.0vmin;
+    padding-top: 2vmin; /* Reduced padding */
+    padding-bottom: 2vmin;
     margin-bottom: 0.0vmin;
     color: var(--white); /* Header text color */
     border-bottom: 0px solid #00000015 ;
     border-top: 0px solid #00000015 ;
     border-top: 0px solid var(--green);
     box-shadow: 0px 0px #EEEEEE;
-    border-radius: 10px 10px 10px 10px;
+    /* border-radius: 10px 10px 10px 10px; */
 }
 
 #tab {
@@ -84,7 +85,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     width: 100%;
-    background-color: #fff;/*var(--white); /* White background */
+    background-color: var(--white);/*var(--white); /* White background */
     padding: 10px 0;
     border-bottom: 0px solid #eee; /* Dark green top border */
     border-left: 0px solid #eee;
@@ -111,8 +112,8 @@ body {
     margin: 0 10px;
     border: 5px solid var(--green); /* Dark green border */
     border-radius: 15px; /* Rounded corners */
-    background: #fff;/* var(--lightgray); /* Rounded corners */
-    border-color: #fff;/* var(--lightgray);
+    background: var(--white);/* var(--lightgray); /* Rounded corners */
+    border-color: var(--white);/* var(--lightgray);
     margin-top: 5px;
 }
 
@@ -127,18 +128,19 @@ body {
     width: 19vmin; /* Adjust the width as needed 225px*/
     padding: 8px;
     border: 1px solid var(--lightgreen);
-    background-color: white; /* White background */
+    background-color: var(--white); /* White background */
     font-size: 2vmin; /* Larger font size for dropdowns */
     font-style: italic;
     color: black; /* Font color for dropdown values (changed to black) */
     border-radius: 10px; /* Rounded corners */
-    border-color: var(--lightgreen);
+    border-color: var(--transparentgreen);
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
     font-family: 'League Spartan';
-    box-shadow: 1px 1px #eee;
+    /* box-shadow: 1px 1px #eee; */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 @media only screen and (max-width: 600px) {
@@ -181,10 +183,21 @@ body {
     font-style: italic;
     font-weight: 500;
     transition: transform 0.15s ease-in-out;
+    width: 82vw;
+    border-radius: 3vmin;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    background-color: var(--white); /* #f2f2f2; */
+    border: 1px solid var(--transparentgreen);
 }
 
 .selected:hover {
-    transform: scale(1.15);
+    transform: scale(1.07);
 }
 
 .gallery {
@@ -367,9 +380,16 @@ body {
     margin: 0% auto;
     margin-top: 0%;
     margin-bottom: 0%;
-    padding: 5px; /* 20 */
+    margin-left: 0%;
+    margin-right: 0%;
+    padding: 0px; /* 20 */
     border-radius: 10px;
-    max-width: 90%;
+    max-width: 100%;
+}
+
+.modal-container { /* to shrink the modal content and keep the banner fullwidth */
+  margin-left: 6%;
+  margin-right: 6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -387,14 +407,21 @@ body {
   }
  .modal-content {
     background-color: var(--white);
-    margin: 1%;
-    padding-left: 2%;
-    padding-right: 4%;
-    border-radius: 15px;
+    margin: 0%;
+    padding-left: 0%;
+    padding-right: 0%;
+    border-radius: 0px;
     max-width: 100%;
     box-sizing: border-box;
     /* white-space: pre-wrap; /* so that it respects paragraphs without the br tag */
   }
+  
+  .modal-container { /* to shrink the modal content and keep the banner fullwidth */
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 0vw;
+  }
+  
 }
 
 .head {
@@ -693,7 +720,7 @@ ul {
 }
 
 .map:hover {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 #map2 { 
@@ -827,7 +854,7 @@ ul {
   flex-direction: row;            /* default value; can be omitted */
   flex-wrap: wrap;              /* default value; can be omitted */
   justify-content: space-between; /* switched from default (flex-start, see below) */
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 0px;
   padding-top: 1.25vh;
   padding-bottom: 0.75vh;
@@ -987,7 +1014,7 @@ ul {
   left: 0;
   height: 1vmax;
   width: 1vmax;
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 50%;
   border: 1px solid var(--lightgreen);
 
@@ -995,12 +1022,12 @@ ul {
 
 /* On mouse-over, add a grey background color */
 .container_radio:hover input ~ .checkmark {
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 /* When the radio button is checked, add a blue background */
 .container_radio input:checked ~ .checkmark {
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
