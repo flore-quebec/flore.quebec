@@ -320,6 +320,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 1'. Épillets glabres et plus court ....................................................... 2<br>
 2 . Épillets plus longs que larges ........................................ Espèce deux<br>
 2'. Épillets plus larges que longs .........................................Espèce trois<br>
+<br>
+<br>
                 </div>
               </div>
               `;

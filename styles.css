@@ -525,7 +525,9 @@ ul {
     }
     
     ul {
-       gap: 1vh;
+       gap: 1.92vh;
+       margin-left: 4vw;
+       padding-left: 1vw;
     } 
 }
 

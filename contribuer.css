@@ -2,7 +2,7 @@
         
         body {
             font-weight: 300;
-            font-size: 2.5vmin;
+            font-size: 2.75vmin;
         }
 
         header {
@@ -93,7 +93,6 @@
           padding-right: 5vw;
           padding-top: 4vh;
           padding-bottom: 0vh;
-          font-size: 2.75vmin;
           margin-bottom: 0vmin;
         }
         
@@ -110,14 +109,52 @@
         }
         
         @media only screen and (max-width: 600px) {
+          
+          body {
+            font-size: 5vmin;
+            font-weight: 100;
+          }
+          
+          .contribinfo {
+            margin-bottom: 3vh;
+          }
+          
+          .profile-container {
+            width: 94vw;
+            margin-left: 3vw;
+            margin-right: 3vw;
+            padding: 0vmin;
+          }
+          
           .profile{
             flex-direction: column-reverse;
             flex-wrap: wrap;
             justify-content: space-around;
             align-items: center;
+            margin-bottom: 8vmin;
           }
+          
           .pic, .stats, .bio {
-            width: 95vw;
+            width: 90%;
+            line-height: 1.05;
+          }
+          
+          .pic {
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;     /* Centers vertically */
+            margin-bottom: 3vh;
+            margin-top: 2vh;
+          }
+
+          .picimg {
+            height: 30vh;
+            width: 25vh;
+            object-fit: cover;
+            border-radius: 2vmin;
+            padding: 0vmin;
+            margin: 0vmin;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
           }
 
         }
