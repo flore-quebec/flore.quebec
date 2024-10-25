@@ -246,6 +246,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
         function updateGallery(group, taxon) {
 
+            document.getElementById("selected").style.display = 'flex';
+
             const order = document.getElementsByName('order');
 
             //let selected;
@@ -255,27 +257,33 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             let indexn;
 
             if (group === "famille") {
+              document.getElementById("selected").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.famille)
               ));
             } else if (group === "genre") {
+              document.getElementById("selected").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.genre)
               ));
             } else if (group === "section") {
+              document.getElementById("selected").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.section)
               ));
             } else if (group === "species") {
+              document.getElementById("selected").style.display = 'none';
               filteredImages = data.filter(image => (
                 (taxon === image.espèce)
               ));
             } else if (group === "nom") {
+              document.getElementById("selected").style.display = 'none';
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
               //filteredImages = data[common_names[indexn]];    
             } else if (group === "latest") {
+              document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = find_latest(taxon);
@@ -300,7 +308,21 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //addUrlparameter(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
 
             if(group === "famille" || group === "genre" || group === "section") {
-              document.getElementById("selected").innerHTML = taxon;
+              document.getElementById("selected").innerHTML = `
+              ${taxon} &#9660
+              <div class = "taxon_container" id = "taxon_container">
+                <div class = "taxon_text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+                </div>
+                <div class = "taxon_key">
+                <h2>Clé d'identification</h2>
+1 . Épillets pubescents et allongés ......................................... Espèce un<br>
+1'. Épillets glabres et plus court ....................................................... 2<br>
+2 . Épillets plus longs que larges ........................................ Espèce deux<br>
+2'. Épillets plus larges que longs .........................................Espèce trois<br>
+                </div>
+              </div>
+              `;
             } else {
               document.getElementById("selected").innerHTML = "";
             }
@@ -1059,5 +1081,25 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             return dataset + pop + link;          
         }
         
+        
+  var tax = document.getElementById("selected");
+  tax.addEventListener('click', () => {
+    console.log("7777");
+    open_taxon();
+  });   
+  
+        
+  function open_taxon() {
+    const x = document.getElementById("taxon_container");
+    const isHidden = window.getComputedStyle(x).display === "none";
+    //if (x.style.display == "none") {
+    //  x.style.display = "flex";
+    //} else {
+    //  x.style.display = "none";
+    //}
+    x.style.display = isHidden ? "flex" : "none";
+  }
+        
+
         
         

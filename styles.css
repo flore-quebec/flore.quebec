@@ -22,6 +22,7 @@ body {
     padding: 0px; /* 5 */
     margin-left: 0%; /* 5 */
     margin-right: 0%; /* 5 */
+    margin-bottom: 5vh;
     /* text-shadow: '1px 1px #000'; */
     /* overflow: hidden; */
     /* scrollbar-gutter: stable; */
@@ -186,7 +187,7 @@ body {
     width: 82vw;
     border-radius: 3vmin;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: none;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -197,7 +198,7 @@ body {
 }
 
 .selected:hover {
-    transform: scale(1.07);
+    transform: scale(1.03);
 }
 
 .gallery {
@@ -1094,3 +1095,29 @@ ul {
     }
 }
 
+
+.taxon_container {
+  background-color: var(--white);
+  border: 0px solid red;
+  width: 86vw;
+  margin-left: 6vw;
+  margin-right: 6vw;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2vmin;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 2.75vmin;
+}
+
+.taxon_key, .taxon_text{
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: 4vh;
+  padding-bottom: 0vh;
+  margin-bottom: 0vmin;  
+}

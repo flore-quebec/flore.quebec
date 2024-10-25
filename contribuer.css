@@ -1,0 +1,123 @@
+        /* CSS Styling */
+        
+        body {
+            font-weight: 300;
+            font-size: 2.5vmin;
+        }
+
+        header {
+            background-color: var(--green);
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 3vmin;
+        }
+
+        main {
+            padding: 10px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: var(--white);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-container {
+          background-color: var(--white);
+          border: 0px solid red;
+          width: 86vw;
+          margin-left: 6vw;
+          margin-right: 6vw;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          padding: 2vmin;
+        }
+        
+        .profile{
+          background-color: #f2f2f2;
+          border: 0px solid #ddd;
+          width: 100%;
+          border-radius: 5vmin;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-items: center;
+          margin-bottom: 4vmin;
+          border: 0px solid blue;
+        }
+        
+        .pic {
+          width: 12vw;
+        }
+        
+        
+        .stats {
+          width: 17vw;
+        }
+        
+        .bio {
+          width: 40vw;
+        }
+        
+        .pic, .bio, .stats, .picimg, .contribinfo {
+          margin: 1vmin;
+          padding: 2vmin;
+          /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
+          border-radius: 2vmin;
+          letter-spacing: 1px;
+          line-height: 1.25;
+        }
+        
+        
+        .picimg {
+          height: 30vh;
+          width: 25vh;
+          object-fit: cover;
+          border-radius: 2vmin;
+          padding: 0vmin;
+          margin: 0vmin;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pic {
+          margin: 2vmin;
+          padding: 0vmin;
+          border-radius: 0vmin;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.0);
+        }
+        
+        .contribinfo {
+          padding-left: 5vw;
+          padding-right: 5vw;
+          padding-top: 4vh;
+          padding-bottom: 0vh;
+          font-size: 2.75vmin;
+          margin-bottom: 0vmin;
+        }
+        
+        .acontrib {
+          text-decoration: none;
+          color: #000;
+          font-weight: 500;
+        }
+        
+        .alink {
+          text-decoration: none;
+          color: #000;
+          font-weight: 500;
+        }
+        
+        @media only screen and (max-width: 600px) {
+          .profile{
+            flex-direction: column-reverse;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+          }
+          .pic, .stats, .bio {
+            width: 95vw;
+          }
+
+        }
