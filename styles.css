@@ -281,10 +281,10 @@ body {
     text-align: center;
     border-radius: 15px 15px 15px 15px; /* Rounded corners at the bottom */
     font-weight: normal; /* Bold title text */
-    border-left: 0px solid #ccc;
-    border-right: 0px solid #ccc;
-    border-bottom: 0px solid #ccc;
-    border-top: 0px solid #ccc;
+    border-left: 0px solid #fff;
+    border-right: 0px solid #fff;
+    border-bottom: 0px solid #fff;
+    border-top: 0px solid #fff;
     text-shadow: 0px 0px #FFF;
 }
 
@@ -319,7 +319,7 @@ body {
 
 .image-map {
     position: absolute;
-    top: 1%;
+    top: 2%;
     right: 0%;
     width: 25%;
     background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
@@ -331,11 +331,12 @@ body {
     font-style: italic;
     text-align: center;
     font-weight: normal; /* Bold title text */
+    border-radius: 10px 10px 10px 10px; /* Rounded corners at the bottom */
 }
 
 .image-map-mini {
     height: 9vh;
-    opacity: 0.9;
+    opacity: 0.90;
 }
 
 
