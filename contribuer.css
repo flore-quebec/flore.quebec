@@ -4,7 +4,7 @@
             font-weight: 300;
             font-size: 2.75vmin;
         }
-
+        
         header {
             background-color: var(--green);
             color: white;
@@ -49,7 +49,7 @@
         }
         
         .pic {
-          width: 12vw;
+          width: 14vw;
         }
         
         
@@ -58,12 +58,12 @@
         }
         
         .bio {
-          width: 40vw;
+          width: 38vw;
         }
         
         .pic, .bio, .stats, .picimg, .contribinfo {
           margin: 1vmin;
-          padding: 2vmin;
+          padding: 1vmin;
           /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
           border-radius: 2vmin;
           letter-spacing: 1px;
@@ -72,8 +72,8 @@
         
         
         .picimg {
-          height: 30vh;
-          width: 25vh;
+          height: 19vw;
+          width: 14vw;
           object-fit: cover;
           border-radius: 2vmin;
           padding: 0vmin;
@@ -102,11 +102,12 @@
           font-weight: 500;
         }
         
-        .alink {
+        .alink, a {
           text-decoration: none;
           color: #000;
-          font-weight: 500;
+          font-weight: 400;
         }
+        
         
         @media only screen and (max-width: 600px) {
           
