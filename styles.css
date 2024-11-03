@@ -183,7 +183,6 @@ body {
     padding-bottom: 1vmin;
     font-style: italic;
     font-weight: 500;
-    transition: transform 0.15s ease-in-out;
     width: 82vw;
     border-radius: 3vmin;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -195,10 +194,6 @@ body {
     margin-bottom: 2vh;
     background-color: var(--white); /* #f2f2f2; */
     border: 1px solid var(--transparentgreen);
-}
-
-.selected:hover {
-    transform: scale(1.03);
 }
 
 .gallery {
@@ -1105,22 +1100,57 @@ ul {
   width: 86vw;
   margin-left: 6vw;
   margin-right: 6vw;
-  display: none;
+  display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2vmin;
+  padding: 0vmin;
   letter-spacing: 1px;
   line-height: 1.25;
   font-style: normal;
   font-weight: 300;
   font-size: 2.75vmin;
+  border: 0px solid red;
 }
 
-.taxon_key, .taxon_text{
+.taxon_name {
+  color: var(--black);
+  font-size: 6vmin; /* Larger font size for dropdowns */
+  font-style: italic;
+  font-weight: 500;
+  transition: transform 0.15s ease-in-out;
+  border: 0px solid blue;
+}
+
+.taxon_name:hover {
+    transform: scale(1.08);
+}
+
+@media only screen and (max-width: 600px) {
+    
+    .taxon_name:hover {
+       transform: none;
+    }
+}
+
+.taxon_key, .taxon_text {
   padding-left: 5vw;
   padding-right: 5vw;
   padding-top: 4vh;
   padding-bottom: 0vh;
-  margin-bottom: 0vmin;  
+  margin-bottom: 0vmin; 
+  display: none;
+  border: 0px solid green;
+}
+
+.taxon_key {
+  font-size: 2.25vmin;
+  display: none;
+  flex-direction: column;
+  border: 0px solid yellow;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
 }
