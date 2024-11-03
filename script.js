@@ -308,7 +308,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //addUrlparameter(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
 
             if(group === "famille" || group === "genre" || group === "section") {
-              document.getElementById("taxon_name").innerHTML = `${taxon} &#9660`;
+              document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
               //<div class = "taxon_container" id = "taxon_container">
                 //<div class = "taxon_text">
                 //Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
@@ -1093,11 +1093,17 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
     const text = document.getElementById("taxon_text");
     const key = document.getElementById("taxon_key");
     const isHidden = window.getComputedStyle(text).display === "none";
-    //if (x.style.display == "none") {
-    //  x.style.display = "flex";
-    //} else {
-    //  x.style.display = "none";
-    //}
+    let header = document.getElementById("taxon_name");
+    let symbol = header.textContent;
+    if (isHidden) {
+      //header.textContent = symbol.replace("▼", "-");
+      header.textContent = symbol.replace("\u25BC", "\u25B2");
+      //header.textContent = symbol.replace("+", "-");
+    } else {
+      //header.textContent = symbol.replace("-", "▼");
+      header.textContent = symbol.replace("\u25B2", "\u25BC");
+      //header.textContent = symbol.replace("-", "+");
+    }
     extractAndDisplay();
     text.style.display = isHidden ? "flex" : "none";
     key.style.display = isHidden ? "flex" : "none";
