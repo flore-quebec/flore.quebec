@@ -12,6 +12,12 @@
         padding-bottom: 1vh;
     }
     
+    @media only screen and (max-width: 600px) {
+      .keyRow {
+          flex-direction: column;
+      }
+    }
+    
     .highlight {
         background-color: #e1e1e1;
         border-left: 0px solid red;

@@ -207,7 +207,14 @@ body {
 @media only screen and (max-width: 600px) {
     .gallery {
         margin-top: 0px;
+        /*margin: 0px;
+        padding: 0px;*/
     }
+    
+    .selected{
+      width: 96vw;
+    }
+    
     
     .selected:hover {
        transform: none;
@@ -230,7 +237,7 @@ body {
 
 @media only screen and (max-width: 600px) {
     .image-container {
-        width: 45vw; /* 80vw of the viewport height */
+        width: 47vw; /* 80vw of the viewport height */
         height: 55vw; /* 80vw of the viewport height */
         margin: 1vw;
     }
@@ -1114,6 +1121,15 @@ ul {
   border: 0px solid red;
 }
 
+@media only screen and (max-width: 600px) {
+    .taxon_container {
+      width: 100%;
+      margin-left: 1vw;
+      margin-right: 1vw;
+      font-size: 5vmin;
+    }
+}
+
 .taxon_name {
   color: var(--black);
   font-size: 6vmin; /* Larger font size for dropdowns */
@@ -1128,6 +1144,10 @@ ul {
 }
 
 @media only screen and (max-width: 600px) {
+
+    .taxon_name {
+      font-size: 4vh; /* Larger font size for dropdowns */
+    }  
     
     .taxon_name:hover {
        transform: none;
@@ -1149,8 +1169,19 @@ ul {
   display: none;
   flex-direction: column;
   border: 0px solid yellow;
-  padding-left: 5vw;
-  padding-right: 5vw;
   padding-top: 5vh;
   padding-bottom: 5vh;
+}
+
+@media only screen and (max-width: 600px) {
+    .taxon_text, .taxon_key {
+      width: 98%;
+      margin-left: 0vw;
+      margin-right: 0vw;
+      padding-left: 0vw;
+      padding-right: 0vw;
+    }
+    .taxon_key {
+      font-size: 4.5vmin;
+    }
 }
