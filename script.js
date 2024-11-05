@@ -229,7 +229,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const gallery = document.getElementById("myGallery");
             gallery.style.display = "none";
             //if(forward){
-            //  history.forward();
+            //  history.back();
             //};
         }
 
@@ -1087,6 +1087,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
     } else {
       //header.textContent = symbol.replace("-", "▼");
       header.textContent = symbol.replace("\u25B2", "\u25BC");
+      window.scrollTo({top: 0, behavior: 'auto'});
       //header.textContent = symbol.replace("-", "+");
     }
     extractAndDisplay();
