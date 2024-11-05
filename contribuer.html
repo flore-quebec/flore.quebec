@@ -44,6 +44,7 @@
         contributions.forEach( cont => {
                 const profile = document.createElement('div');
                 profile.className = 'profile';
+                profile.id = cont.name.replaceAll(" ", "");
                 const stats = document.createElement('div');
                 stats.className = 'stats';
                 stats.innerHTML = 'Nb d\'espèces initiées: ' + cont.nbspinitiated + '<br>Nb d\'espèces modifiées: ' + cont.nbspmodified + '<br>Nb de changements: ' + cont.nbchanges + '<br>Nb de <i>commits</i>: ' + cont.nbcommits + '<br><br><a class="acontrib" href="https://florequebec.ca">Contributions</a><br>';
