@@ -46,6 +46,7 @@
           align-items: center;
           margin-bottom: 4vmin;
           border: 0px solid blue;
+          scroll-margin-top: 10vh;
         }
         
         .pic {

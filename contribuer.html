@@ -38,7 +38,19 @@
     </div>
 
     <script>
-    
+        
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash) {
+                const decodedHash = decodeURIComponent(hash);
+                const element = document.querySelector(decodedHash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });        
+        
+        
     
         const profileContainer = document.getElementById("profile-container");
         contributions.forEach( cont => {

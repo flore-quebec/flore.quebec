@@ -202,12 +202,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 contrib.innerHTML = ''; 
             } else {
                 //contrib.innerHTML = data[which].contribution+"&nbsp;";
-                initiated = '<a style="all: unset; cursor: pointer;" href="https://florequebec.ca/contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">&nbsp;' + initiated + '</a>';
+                initiated = '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">&nbsp;' + initiated + '</a>';
                 initiated = 'Initié par ' + initiated;
                 if(edited[0] !== ''){
                   
                 edited = edited.map(editor => {
-    return '<a style="all: unset; cursor: pointer;" href="https://florequebec.ca/contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">&nbsp;' + editor + '</a>';
+    return '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">&nbsp;' + editor + '</a>';
 });  
                   
                   if(edited.length > 1){
