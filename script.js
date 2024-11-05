@@ -196,15 +196,29 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             verna_en.innerHTML = data[which].vernacularEN;
             statut.innerHTML = data[which].status;
             protection.innerHTML = makeProtection();
-
+            let initiated = data[which].initiated;
+            let edited = data[which].edited;
             if(data[which].contribution === "NA"){ // just fill the column with "" in data
-                contrib.innerHTML = ""; 
+                contrib.innerHTML = ''; 
             } else {
-                contrib.innerHTML = data[which].contribution+"&nbsp";
+                //contrib.innerHTML = data[which].contribution+"&nbsp;";
+                initiated = '<a style="all: unset; cursor: pointer;" href="https://florequebec.ca/contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">&nbsp;' + initiated + '</a>';
+                initiated = 'Initié par ' + initiated;
+                if(edited[0] !== ''){
+                  
+                edited = edited.map(editor => {
+    return '<a style="all: unset; cursor: pointer;" href="https://florequebec.ca/contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">&nbsp;' + editor + '</a>';
+});  
+                  
+                  if(edited.length > 1){
+                    edited = edited.slice(0, -1).join(', ') + 'et ' + edited[edited.length - 1];
+                  }
+                }
+                contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
+                console.log(contrib.innerHTML);
             };
-
             const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
-            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
+            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
