@@ -214,8 +214,11 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                   if(edited.length > 1){
                     edited = edited.slice(0, -1).join(', ') + 'et ' + edited[edited.length - 1];
                   }
+                  contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
+                } else {
+                  contrib.innerHTML = initiated + '. ';
                 }
-                contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
+                //contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
                 console.log(contrib.innerHTML);
             };
             const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
