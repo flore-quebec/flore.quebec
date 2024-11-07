@@ -891,7 +891,7 @@ ul {
   height: 3vmin;
   margin-right: 0.5vw;
   transition: transform 0.2s ease-in-out;
-  border-radius: 5px;
+  border-radius: 1px;
   /* text-align: right; */
 }
 
