@@ -1146,7 +1146,7 @@ ul {
       width: 100%;
       margin-left: 1vw;
       margin-right: 1vw;
-      font-size: 5vmin;
+      font-size: 6vmin;
     }
 }
 
@@ -1206,7 +1206,11 @@ ul {
       padding-left: 0vw;
       padding-right: 0vw;
     }
+    .taxon_stats {
+      justify-content: center;
+      align-items: center;
+    }
     .taxon_key {
-      font-size: 4.5vmin;
+      font-size: 5.5vmin;
     }
 }

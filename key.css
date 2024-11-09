@@ -50,6 +50,11 @@
         border: 0px solid #bbb;
         margin-left: auto;
     }
+    @media only screen and (max-width: 600px) {
+      .keyMiddle {
+          max-width: 90%;
+      }
+    }
     .akey {
       all: unset;
       cursor: pointer;

@@ -331,7 +331,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               if(group === "famille"){
                 const nbspecies = new Set(sub.map(item => item.espèce)).size;
                 const nbgenus = new Set(sub.map(item => item.genre)).size;
-                document.getElementById("taxon_stats").innerHTML = "Nb de genres: " + nbgenus + "&nbsp;&nbsp;/&nbsp;&nbsp;Nb d'espèces: " + nbspecies;
+                let stats;
+                if(window.innerWidth > 600){
+                  stats = "Nb de genres: " + nbgenus + "&nbsp;&nbsp;/&nbsp;&nbsp;Nb d'espèces: " + nbspecies;
+                } else {
+                  stats = "Nb de genres: " + nbgenus + "<br>Nb d'espèces: " + nbspecies;
+                }
+                document.getElementById("taxon_stats").innerHTML = stats;
               } else {
                 const nbspecies = new Set(sub.map(item => item.espèce)).size;
                 document.getElementById("taxon_stats").innerHTML = "Nb d'espèces: " + nbspecies;
