@@ -908,12 +908,16 @@ ul {
 .links{
   margin-left: 2vmin;
   border: 0px solid #ccc;
+  opacity: 0.85;
 }
 
 @media only screen and (max-width: 600px) {
   .container, .links {
     background-color: var(--white);
     justify-content: center;
+  }
+  .links {
+    padding-top: 2.25vh;
   }
 }
 

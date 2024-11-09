@@ -178,7 +178,9 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const spbq = 'https://biodiversite-quebec.ca/fr/atlas?mapCenter=55%2C-72&scale=Nombre+d%27observations&region_type=hex&group=Toutes+les+esp%C3%A8ces&taxon=' + data[which].espèce.replace(" ","+") + '&minyear=1950&maxyear=2024&mapZoom=5&activeTab=2&selected_region_type=hex';
             const spgb = 'https://gobotany.nativeplanttrust.org/species/' + data[which].espèce.replace(" ","/") + '/';
             const spmwf =  'https://www.minnesotawildflowers.info/search?kw=' + data[which].espèce.replace(" ","+") ;
-            links.innerHTML=makeLink(data[which].inat,"inat")+makeLink(data[which].vascan,"vascan")+makeLink(data[which].herbierqc,"herbierqc")+makeLink(spbq,"bq")+makeLink(spgb,"gobotany")+makeLink(spmwf,"minnesota")+makeLink(data[which].gbif,"gbif")+makeLink(data[which].fna,"fna")+makeLink(data[which].powo,"powo");
+            const spmichigan =  'https://www.michiganflora.net/browse';
+            
+            links.innerHTML=makeLink(data[which].inat,"inat")+makeLink(data[which].vascan,"vascan")+makeLink(data[which].herbierqc,"herbierqc")+makeLink(spbq,"bq")+makeLink(spgb,"gobotany")+makeLink(spmwf,"minnesota")+makeLink(spmichigan,"michigan")+makeLink(data[which].gbif,"gbif")+makeLink(data[which].fna,"fna")+makeLink(data[which].powo,"powo");
             const scien_complet = document.getElementById('scien_complet');
             const scien_alternatif = document.getElementById('scien_alternatif');
             const verna_fr = document.getElementById('verna_fr');
@@ -534,6 +536,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               return '<a target="_blank" href='+link+'><img class="fna" src="https://gobotany.nativeplanttrust.org/static/images/branding/gb-favicon-32x32.png"></a>'; 
             case "minnesota":
               return '<a target="_blank" href='+link+'><img class="fna" src="https://www.minnesotawildflowers.info/includes/images/favicon.png"></a>'; 
+            case "michigan":
+              return '<a target="_blank" href='+link+'><img class="fna" src="https://www.michiganflora.net/static/img/um_favicon.ico"></a>';              
             case "gbif":
               return '<a target="_blank" href='+link+'><img class="fna" src="https://images.ctfassets.net/uo17ejk9rkwj/5NcJCYj87sT16tJJlmEuWZ/85058d511b3906fbbb199be27b2d1367/GBIF-2015-mark.svg"></a>';
             case "fna":
