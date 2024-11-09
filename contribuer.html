@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flore Québec</title>
+    <link rel='icon' type='image/png' href='https://cdn.hebergix.com/fr/floreqc/fqlogo.png?v=2'/>
+    <link rel='shortcut icon' type='image/png' href='https://cdn.hebergix.com/fr/floreqc/fqlogo.png?v=2'/>
     <script type='text/javascript' src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +26,7 @@
           <span id="tab"><a style="all: inherit; cursor: pointer;" href="contribuer.html">Contribuer</a></span>
           <span id="tab"><a style="all: inherit; cursor: pointer;" href="apropos.html">À&nbsp;propos</a></span>
         </div>
-        <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/qc.png" alt="Logo">
+        <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/fqlogo.png" alt="Logo">
     </div>
     <div class = "profile-container">
       <div class = "contribinfo">
@@ -39,13 +41,28 @@
 
     <script>
         
+        // check https://chatgpt.com/c/67299d98-79a8-8007-aaaf-d0ec6589885c
         window.addEventListener('load', () => {
             const hash = window.location.hash;
             if (hash) {
                 const decodedHash = decodeURIComponent(hash);
                 const element = document.querySelector(decodedHash);
                 if (element) {
+
+                    // Create a MutationObserver to watch for layout changes
+                    //const observer = new MutationObserver(() => {
+                    //    // Check if the target element is in view after layout changes
+                    //    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    //});
+        
+                    // Configure the observer to watch for changes in the entire document
+                    //observer.observe(document.body, { childList: true, subtree: true });                  
+                  
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Stop observing after the scroll, to avoid unnecessary checks
+                    //observer.disconnect();
+                    
                 }
             }
         });        
