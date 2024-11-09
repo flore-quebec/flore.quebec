@@ -416,7 +416,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //galleryImage.src = imageSrc;
             galleryImage.src = imageSrc.replace("medium","original");
             currentImageIndex = index;
-            captionText.innerHTML = data[which].credit[index];
+            captionText.innerHTML = data[which].credit[index].replaceAll(', some rights reserved',', certains droits réservés').replaceAll(', no rights reserved',', aucun droit réservé');
             link = data[which].link[index];
             linkText.innerHTML = '<a class=\"link\" href=\"' + link + '\" target=\"_blank\">' + link + '</a>' ;
         }
@@ -430,7 +430,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const linkText = document.getElementById("link");
             galleryImage.src = thumbnails[currentImageIndex];
             galleryImage.src = thumbnails[currentImageIndex].replace("medium","original");
-            captionText.innerHTML = data[which].credit[currentImageIndex];
+            captionText.innerHTML = data[which].credit[currentImageIndex].replaceAll(', some rights reserved',', certains droits réservés').replaceAll(', no rights reserved',', aucun droit réservé');
             //linkText.innerHTML = data[which].link[currentImageIndex];
             link = data[which].link[currentImageIndex];
             linkText.innerHTML = '<a class=\"link\" href=\"'+link+'\" target=\"_blank\">'+link+'</a>' ;
