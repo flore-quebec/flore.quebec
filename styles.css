@@ -69,6 +69,8 @@ body {
 
 #logo {
     width: 3vw;
+    margin: 0;
+    padding: 0;
     margin-right: 2vw;
 }
 
@@ -164,12 +166,12 @@ body {
         font-size: 3vh;
     }
     .dropdown-input {
-        font-size: 2.75vh; /* Larger font size for dropdowns */
+        font-size: 2.5vh; /* Larger font size for dropdowns */
         width: 96%; /* Adjust the width as needed */
         padding: 5px;
         padding-left: 15px;
-        padding-top: 7px;
-        padding-bottom: 7px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         border-radius: 10px; /* Rounded corners */
         box-sizing: border-box;
     }
@@ -987,24 +989,18 @@ ul {
 .container_radio {
   display: block;
   position: relative;
-  padding-left: 2vw;
-  margin-bottom: 0px;
+  padding-left: 1.5vw;
+  margin-bottom: 2px;
   cursor: pointer;
   font-weight: normal;
   font-size: 2.5vh; /* 3vh */
-  color: var(--green); /* Dark green label text color */
+  color: var(--lightgreen); /* Dark green label text color */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-@media only screen and (max-width: 600px) {
-    .container_radio {
-      font-size: 3vh;
-      margin-bottom: 0px;
-    }
-}
 
 /* Hide the browser's default radio button */
 .container_radio input {
@@ -1022,8 +1018,21 @@ ul {
   width: 1vmax;
   background-color: var(--white);
   border-radius: 50%;
-  border: 1px solid var(--lightgreen);
+  border: 1px solid var(--transparentgreen);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
 
+@media only screen and (max-width: 600px) {
+    .container_radio {
+      font-size: 3vh;
+      margin-bottom: 0px;
+      padding-left: 7vw;
+    }
+    
+    .checkmark {
+      height: 2vmax;
+      width: 2vmax;
+    }
 }
 
 /* On mouse-over, add a grey background color */
@@ -1055,7 +1064,18 @@ ul {
 	width: 0.6vmax;
 	height: 0.6vmax;
 	border-radius: 50%;
-	background: var(--green);
+	background: var(--lightgreen);
+}
+
+@media only screen and (max-width: 600px) {
+  .container_radio .checkmark:after {
+   	top: 0.4vmax;
+  	left: 0.4vmax;
+  	width: 1.2vmax;
+  	height: 1.2vmax;
+  	border-radius: 50%;
+  	background: var(--lightgreen);
+  }
 }
 
 .scientifique, .commun, .commun_en, .status, .protection {
