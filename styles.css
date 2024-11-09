@@ -53,13 +53,35 @@ body {
     /* border-radius: 10px 10px 10px 10px; */
 }
 
-#tab {
+.tab_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab {
     font-size: 3vmin; /* Larger font size for the header title */
     font-weight: normal;
     letter-spacing: 2px; /* Adjust spacing as needed */
-    margin-right: 4vmin;
+    margin-right: 2vw;
     /* overflow: hidden;
     transition: transform 0.2s ease-in-out; */
+}
+
+@media only screen and (max-width: 600px) {
+  .tab_container {
+    flex-direction: column;
+  }
+  .tab {
+    font-size: 4vmin; /* Larger font size for the header title */
+    font-weight: normal;
+    letter-spacing: 2px; /* Adjust spacing as needed */
+    /*margin-right: 4vmin;*/
+    margin-top: 1px;
+    margin-bottom: 1px;
+    /* overflow: hidden;
+    transition: transform 0.2s ease-in-out; */
+  }
 }
 
 #tab:hover {
@@ -68,7 +90,7 @@ body {
 }
 
 #logo {
-    width: 3vw;
+    width: 3vmax;
     margin: 0;
     padding: 0;
     margin-right: 2vw;
@@ -99,6 +121,10 @@ body {
 
 
 @media only screen and (max-width: 600px) {
+    #title {
+      font-size: 6vmin; /* Larger font size for the header title */
+    }
+  
     #filters {
         padding: 0px 0;
     }
