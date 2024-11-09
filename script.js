@@ -327,6 +327,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
             if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
+              const sub = data.filter(image => ((taxon === image[group])));
+              if(group === "famille"){
+                const nbspecies = new Set(sub.map(item => item.espèce)).size;
+                const nbgenus = new Set(sub.map(item => item.genre)).size;
+                document.getElementById("taxon_stats").innerHTML = "Nb de genres: " + nbgenus + "&nbsp;&nbsp;/&nbsp;&nbsp;Nb d'espèces: " + nbspecies;
+              } else {
+                const nbspecies = new Set(sub.map(item => item.espèce)).size;
+                document.getElementById("taxon_stats").innerHTML = "Nb d'espèces: " + nbspecies;
+              }
             } else {
               document.getElementById("taxon_name").innerHTML = "";
             }
@@ -1095,6 +1104,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
   
         
   function open_taxon() {
+    const stats = document.getElementById("taxon_stats");
     const text = document.getElementById("taxon_text");
     const key = document.getElementById("taxon_key");
     const isHidden = window.getComputedStyle(text).display === "none";
@@ -1111,6 +1121,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
       //header.textContent = symbol.replace("-", "+");
     }
     extractAndDisplay();
+    //stats.style.display = isHidden ? "flex" : "none";
     text.style.display = isHidden ? "flex" : "none";
     key.style.display = isHidden ? "flex" : "none";
   }

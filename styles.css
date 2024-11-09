@@ -1174,7 +1174,7 @@ ul {
     }
 }
 
-.taxon_key, .taxon_text {
+.taxon_stats, .taxon_text, .taxon_key {
   padding-left: 5vw;
   padding-right: 5vw;
   padding-top: 4vh;
@@ -1182,6 +1182,11 @@ ul {
   margin-bottom: 0vmin; 
   display: none;
   border: 0px solid green;
+}
+
+.taxon_stats {
+  display: flex;
+  padding-top: 2vh;
 }
 
 .taxon_key {
@@ -1194,7 +1199,7 @@ ul {
 }
 
 @media only screen and (max-width: 600px) {
-    .taxon_text, .taxon_key {
+    .taxon_stats, .taxon_text, .taxon_key {
       width: 98%;
       margin-left: 0vw;
       margin-right: 0vw;
