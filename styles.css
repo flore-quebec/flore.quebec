@@ -123,10 +123,15 @@ body {
 @media only screen and (max-width: 600px) {
     #title {
       font-size: 6vmin; /* Larger font size for the header title */
+      max-width: 30vw;
     }
   
     #filters {
         padding: 0px 0;
+    }
+    
+    #logo {
+      width: 5vmax;
     }
 }
 
