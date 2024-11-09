@@ -186,7 +186,7 @@ body {
     font-style: italic;
     font-weight: 500;
     width: 82vw;
-    border-radius: 3vmin;
+    border-radius: 2vmin;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     display: none;
     flex-direction: row;
