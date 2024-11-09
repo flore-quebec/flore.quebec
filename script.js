@@ -303,7 +303,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
               //filteredImages = data[common_names[indexn]];    
-            } else if (group === "latest") {
+            } else if (group === "derniers") {
               document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
@@ -860,7 +860,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
       //const map = document.getElementById('map');
       map.addEventListener('click', function(event) {  
-        const getsp = getURLparams().focus[0].replace(" ","_");
+        const getsp = getURLparams().espèce[0].replace(" ","_");
         species_occs(getsp);
         const staticmap = document.getElementById('map');
         staticmap.style.display = 'none';
@@ -906,7 +906,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //if (!history.state || history.state.page!=newURL){
           //if (history.state.page!=newURL){
           var states = {};
-          //if(param !== 'focus'){
+          //if(param !== 'espèce'){
             states['group'] = param;
             states['taxon'] = value;
           //};
@@ -935,8 +935,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           var states = {};
           //states['group'] = param;
           //states['taxon'] = value;
-          states['focus'] = value;
-          newURL += '?' + 'focus=' + value;//state2querystring(states); // Add the new parameter with the selected option value
+          states['espèce'] = value;
+          newURL += '?' + 'espèce=' + value;//state2querystring(states); // Add the new parameter with the selected option value
           if(push){
             history.pushState(states, '', newURL); // Update the URL without reloading the page
           };
@@ -993,9 +993,9 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             
             if(document.getElementById("myGallery").style.display == 'block') {
                 //urlParams = new URLSearchParams(window.location.search);
-                //const focus = currenturl.split('?')[1];  
+                //const espèce = currenturl.split('?')[1];  
                 //var states = {};
-                //states["focus"] = focus; 
+                //states["espèce"] = espèce; 
                 closeGallery(true);
                 //updateGallery(event.state.group, event.state.taxon);
                 //history.replaceState(states, '', currenturl);
@@ -1008,17 +1008,17 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 //last_value = taxon;
                 last_value = event.state.taxon;
                 updateGallery(event.state.group, event.state.taxon);
-                if('focus' in params) {
+                if('espèce' in params) {
                   //const imageContainers = document.querySelectorAll('.image-container');
                   //const imageContainers = document.querySelectorAll('.image-container');
                   //document.addEventListener('DOMContentLoaded', function() {
-                    //const container = document.getElementById(event.state.focus+'.image-container');
+                    //const container = document.getElementById(event.state.espèce+'.image-container');
                     //var event = new MouseEvent('click', {
                     //  bubbles: true,
                     //  cancelable: true,
                     //  view: window
                     //});
-                    addModal(params['focus'].toString(), false);
+                    addModal(params['espèce'].toString(), false);
                     //openModal(value, text, images);
                     //container.dispatchEvent(event);
                   //});
@@ -1035,10 +1035,10 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //history.pushState({ "page": window.location.href }, '', window.location.href); 
           if (querystring != '') {
             var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.has("focus")){
-              addModal(urlParams.get("focus"), true);
-              document.title = urlParams.get("focus");
-            } else if(urlParams.has("latest")) {
+            if(urlParams.has("espèce")){
+              addModal(urlParams.get("espèce"), true);
+              document.title = urlParams.get("espèce");
+            } else if(urlParams.has("derniers")) {
               const params = getURLparams();
               const group = Object.keys(params)[0];
               const taxon = params[group][0];
@@ -1081,9 +1081,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         }
         
         function find_latest(n) {
-          let array = data;
+          let array = data.filter(cont => (('NA' != cont.initiated)));; // only keep what was initiated
           let key = "date";
-          
           array.sort((a, b) => {
               if (a[key] < b[key]) {
                   return 1; // Return 1 to indicate that 'a' comes after 'b'
