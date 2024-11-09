@@ -678,9 +678,10 @@ ul {
 @media only screen and (max-width: 600px) {
     .close_modal {
         display: block;
-        top: 4vw;
-        right: 4vw;
+        top: 9vh;
+        right: 3vw;
         font-size: 15vmin; /* Larger font size for the close button */
+        font-weight: 400; /* Larger font size for the close button */
         color: rgba(0,0,0,0.5);
     }
 }
@@ -699,9 +700,10 @@ ul {
 
 @media only screen and (max-width: 600px) {
     .close_gallery {
-        top: 4vw;
-        right: 4vw;
+        top: 4vh;
+        right: 3vw;
         font-size: 15vmin; /* Larger font size for the close button */
+        font-weight: 400;
         color: rgba(255,255,255,0.5);
     }
 }
