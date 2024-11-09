@@ -74,8 +74,14 @@
                 }
                 keynum.push(ind); 
                 keyoff.push(count);
-                const count2 = count * 1;
-
+                let count2;
+                console.log(window.innerWidth);
+                if(window.innerWidth > 600){
+                  count2 = count * 1;
+                }else{
+                  count2 = 0;
+                }
+                
                 // Determine the style for the third part
                 let keyRightContent;
                 
