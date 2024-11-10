@@ -241,7 +241,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             reset_map();
             if(back){
               //history.back();
-              //console.log("**** back closeModal****", windows.location.href);
+              //console.log("**** back closeModal****", window.location.href);
             };
         }
 
@@ -308,6 +308,20 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = find_latest(taxon);
+            } else if (group === "initiated") {
+              document.getElementById("selected").style.display = 'none';
+              //selected = speciesSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (taxon === image[group])
+              ));
+            } else if (group === 'edited') {
+              document.getElementById("selected").style.display = 'none';
+              //selected = speciesSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (image[group].includes(taxon))
+              ));
             } else {
               filteredImages = data.filter(image => (
                 (taxon === image.espèce)
@@ -941,6 +955,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             history.pushState(states, '', newURL); // Update the URL without reloading the page
           };
           //console.log("**** push updateFocusURL ****",newURL);
+          document.title = value;
           openModal(value, text, images);
       }
       
@@ -1044,7 +1059,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               const taxon = params[group][0];
               last_value = taxon;
               updateGallery(group, taxon);
-              document.title = 'Latest';
+              document.title = 'Ajouts récents';
             } else {
               //window.location = domain;
               //history.pushState({ "page": window.location.href }, '', window.location.href); 

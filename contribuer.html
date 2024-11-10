@@ -76,7 +76,7 @@
                 profile.id = cont.name.replaceAll(" ", "");
                 const stats = document.createElement('div');
                 stats.className = 'stats';
-                stats.innerHTML = 'Nb d\'espèces initiées: ' + cont.nbspinitiated + '<br>Nb d\'espèces modifiées: ' + cont.nbspmodified + '<br>Nb de changements: ' + cont.nbchanges + '<br>Nb de <i>commits</i>: ' + cont.nbcommits + '<br><br><a class="acontrib" href="https://florequebec.ca">Contributions</a><br>';
+                stats.innerHTML = 'Nb d\'espèces initiées: ' + cont.nbspinitiated + '<br>Nb d\'espèces modifiées: ' + cont.nbspmodified + '<br>Nb de changements: ' + cont.nbchanges + '<br>Nb de <i>commits</i>: ' + cont.nbcommits + '<br><br><a class="acontrib" href="https://florequebec.ca?initiated=' + cont.name.replaceAll(' ', '%20') + '">Contributions</a><br>';
                 const bio = document.createElement('div');
                 const pic = document.createElement('div');
                 bio.className = 'bio';
