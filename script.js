@@ -917,6 +917,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           
           var newURL = window.location.pathname; // Get the current URL without parameters
           newURL += '?' + param + '=' + value; // Add the new parameter with the selected option value
+          newURL = newURL.replaceAll(' ','+');
           //if (!history.state || history.state.page!=newURL){
           //if (history.state.page!=newURL){
           var states = {};
@@ -951,6 +952,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //states['taxon'] = value;
           states['espèce'] = value;
           newURL += '?' + 'espèce=' + value;//state2querystring(states); // Add the new parameter with the selected option value
+          newURL = newURL.replaceAll(' ','+');
           if(push){
             history.pushState(states, '', newURL); // Update the URL without reloading the page
           };

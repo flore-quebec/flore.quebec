@@ -92,12 +92,12 @@
                 } else {
                   keyidalt = keyid + "_";
                 }
-                const taxon = result.afterLastCapitalOrNumber.replace(" ", "%20");
+                const taxon = result.afterLastCapitalOrNumber.replaceAll(" ", "+");
                 const keyidto = 'k' + result.afterLastCapitalOrNumber;
                 
                 if (/[A-Z]/.test(result.afterLastCapitalOrNumber[0])) {
                     // Starts with a capital letter
-                    keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?focus=${taxon}">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></em></div>`;
+                    keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?espèce=${taxon}">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></em></div>`;
                 } else if (/\d/.test(result.afterLastCapitalOrNumber[0])) {
                     // Starts with a number
                     keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
