@@ -206,20 +206,20 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 contrib.innerHTML = ''; 
             } else {
                 //contrib.innerHTML = data[which].contribution+"&nbsp;";
-                initiated = '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">&nbsp;' + initiated + '</a>';
+                initiated = '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">' + initiated + '</a>';
                 initiated = 'Initié par ' + initiated;
                 if(edited[0] !== ''){
                   
                 edited = edited.map(editor => {
-    return '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">&nbsp;' + editor + '</a>';
+    return '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
 });  
                   
                   if(edited.length > 1){
                     edited = edited.slice(0, -1).join(', ') + 'et ' + edited[edited.length - 1];
                   }
-                  contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
+                  contrib.innerHTML = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
                 } else {
-                  contrib.innerHTML = initiated + '. ';
+                  contrib.innerHTML = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
                 }
                 //contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
                 console.log(contrib.innerHTML);
