@@ -331,6 +331,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               filteredImages = data.filter(image => (
                 ('' != image["LOIEMV"])
               ));
+            } else if (group === 'type') {
+              document.getElementById("selected").style.display = 'none';
+              //selected = speciesSelect.value;
+              //last_value = genreSelect.value;
+              filteredImages = data.filter(image => (
+                (image[group].includes(taxon))
+              ));              
             } else {
               filteredImages = data.filter(image => (
                 (taxon === image.espèce)
