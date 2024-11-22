@@ -413,13 +413,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 //const src = if(image.src === "NA"){"Pas de photo"}else{image.src};
 
                 imageElement.innerHTML = `
-                      <img class="image" src=${image.src} alt=${image.alt}>
+                      <img class="image" loading="lazy" src=${image.src} alt=${image.alt}>
                       <div class="image-title">
                         ${spname}<br>
                         <span class="image-credit">${image.credit[0].replace(', some rights reserved','').replace(', no rights reserved','')}</span>
                       </div>
                       <div class="image-map">
-                        <img class="image-map-mini" src="https://cdn.hebergix.com/fr/floreqc/${image.alt.replace(" ","_")}_minimap.png"></img>
+                        <img class="image-map-mini" loading="lazy" src="https://cdn.hebergix.com/fr/floreqc/${image.alt.replace(" ","_")}_minimap.png"></img>
                       </div>
                 `;
                 imageGallery.appendChild(imageElement);
