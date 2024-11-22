@@ -304,7 +304,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
-              //filteredImages = data[common_names[indexn]];    
             } else if (group === "derniers") {
               document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
@@ -319,22 +318,16 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               ));
             } else if (group === 'modifié') {
               document.getElementById("selected").style.display = 'none';
-              //selected = speciesSelect.value;
-              //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 (image["edited"].includes(taxon))
               ));
             } else if (group === "statut") {
               document.getElementById("selected").style.display = 'none';
-              //selected = speciesSelect.value;
-              //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 ('' != image["LOIEMV"])
               ));
             } else if (group === 'type') {
               document.getElementById("selected").style.display = 'none';
-              //selected = speciesSelect.value;
-              //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 (image[group].includes(taxon))
               ));              
@@ -346,17 +339,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
             last_category = group;
             last_value = taxon;
-            
-            //if(push){
-              //updateURL(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
-            //}else{
-              //const params = getURLparams();
-              //const firstKey = Object.keys(params)[0];
-              //const firstValue = params[firstKey];
-              //var newURL = location.pathname+'?'+last_category+'='+last_value;
-              //location.href = newURL;
-            //};
-            //addUrlparameter(last_category, last_value.replaceAll(" ", "_").replaceAll("'","_"));
 
             if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
@@ -483,12 +465,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             link = data[which].link[currentImageIndex];
             linkText.innerHTML = '<a class=\"link\" href=\"'+link+'\" target=\"_blank\">'+link+'</a>' ;
         }
-
-
-        //familleSelect.addEventListener("change", () => updateGallery("famille", false));
-        //genreSelect.addEventListener("change", () => updateGallery("genre", false));
-        //speciesSelect.addEventListener("change", () => updateGallery("species", false));
-        //nomSelect.addEventListener("change", () => updateGallery("nom", false));
         
         familleSelect.addEventListener("change", () => updateGroupURL("famille", familleSelect.value));
         genreSelect.addEventListener("change", () => updateGroupURL("genre", genreSelect.value));
