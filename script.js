@@ -310,14 +310,14 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = find_latest(taxon);
-            } else if (group === "initiated") {
+            } else if (group === "initié") {
               document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
                 (taxon === image[group])
               ));
-            } else if (group === 'edited') {
+            } else if (group === 'modifié') {
               document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
