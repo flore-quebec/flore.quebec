@@ -315,14 +315,14 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
-                (taxon === image[group])
+                (taxon === image["initiated"])
               ));
             } else if (group === 'modifié') {
               document.getElementById("selected").style.display = 'none';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
-                (image[group].includes(taxon))
+                (image["edited"].includes(taxon))
               ));
             } else if (group === "statut") {
               document.getElementById("selected").style.display = 'none';
