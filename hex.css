@@ -61,7 +61,6 @@
           .hexagon-gallery {
               margin-top: 5vh;
               margin-left: 2vw;
-              display: flex;
               /* overflow-y: hidden; */
               --s: 16vmax;  /* size  */
               --m: 0.5vmax;    /* margin */

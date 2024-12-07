@@ -49,9 +49,9 @@ function set_hex() {
       const img = hex.querySelector('img');
       img.src = src;
       
-      hex.addEventListener('click', function() { // the a link messes up the layout
-         window.location.href = 'https://florequebec.ca?espèce=' + espèce.replace(" ", "+"); // Redirect to this URL
-      });
+      //hex.addEventListener('click', function() { // the a link messes up the layout
+         //window.location.href = 'https://florequebec.ca?espèce=' + espèce.replace(" ", "+"); // Redirect to this URL
+      //});
     }
   });
   

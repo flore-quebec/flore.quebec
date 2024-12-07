@@ -1104,12 +1104,14 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         window.addEventListener('load', function() {
           console.log('Second function');
+          //document.getElementById("hexagon-gallery").style.display = 'none';
         //window.onload = function() {
         //window.onload = (event) => {
           //load_contributions();
           //const domain = window.location.href.split('?')[0];  
           //var urlParams = window.location.search;
           const querystring = window.location.search.substring(1);
+          console.log("querystring", querystring);
           //history.pushState({ "page": window.location.href }, '', window.location.href); 
           
           if(querystring == ''){
