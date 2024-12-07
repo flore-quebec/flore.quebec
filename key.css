@@ -58,4 +58,15 @@
     .akey {
       all: unset;
       cursor: pointer;
+      position: relative;
+    }
+    
+    .akey::before {
+      position: absolute;
+      content: "";
+      top: -10px; /* Expand area above */
+      bottom: -10px; /* Expand area below */
+      left: -10px; /* Expand area to the left */
+      right: -10px; /* Expand area to the right */
+      background: transparent; /* Keeps it invisible */
     }

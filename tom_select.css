@@ -1,0 +1,120 @@
+
+
+.ts-dropdown [data-selectable] .highlight{
+      background: transparent; /* #3FA34D33; */
+      text-decoration: underline;
+      text-decoration-color: #555;
+      border-radius: 5px;
+      width: 10vw;
+      /* font-weight: bolder; */
+    }
+    
+/* Fix the width of the Tom Select input box */
+.ts-control {
+  width: 22vw; /* Set your desired fixed width */
+  max-width: 22vw; /* Prevent it from stretching */
+  min-width: 22vw; /* Prevent it from shrinking */
+  font-size: 2.5vmin;
+  /*max-height: 10px; /* Prevent it from stretching */
+}
+
+/* Optional: Align the dropdown width with the input */
+.ts-dropdown {
+  width: 22vw; /* Match the input width */
+  font-size: 2.5vmin;
+}
+
+/* Ensure proper wrapping for multi-select */
+.ts-wrapper.multi .ts-control {
+  width: 22vw; /* Match the fixed width */
+  font-size: 2.5vmin;
+}
+
+/* Adjust padding and border-radius if necessary */
+.ts-control {
+  padding: 0.375rem 0.75rem; /* Default Bootstrap input padding */
+  border-radius: 0.25rem; /* Keep the rounded corners consistent */
+}
+
+
+
+
+/* Adjust the height of the input box */
+.ts-control {
+  /* min-height: 4vh; /* Set a smaller height */
+  padding: 0.25rem 0.5rem; /* Reduce padding to decrease overall height */
+  /* line-height: 1.2; /* Adjust line height for text alignment */
+}
+
+/* Optional: Adjust the input inside the control for better alignment */
+.ts-control > input {
+  line-height: inherit; /* Match line-height of the parent */
+  padding: 0; /* Remove extra padding inside the input */
+  height: auto; /* Ensure the input doesn't override the parent's height */
+}
+
+/* Increase the height of the dropdown */
+.ts-dropdown-content {
+  max-height: 65vh; /* Set your desired height */
+  overflow-y: auto; /* Ensure scrolling for large content */
+}
+
+/* Optional: Adjust dropdown appearance */
+.ts-dropdown {
+  padding: 0; /* Adjust padding if needed for cleaner layout */
+  border-radius: 0.25rem; /* Ensure consistent border-radius */
+}
+
+/* Change the highlight color when the input is active */
+.ts-control:focus {
+  border-color: #3FA34D; /* Set your desired border color */
+  box-shadow: 0 0 0 0.2rem #3FA34D33; /* Add a matching shadow */
+  outline: none; /* Remove the default outline */
+}
+
+/* Optional: Adjust for the parent wrapper if needed */
+.ts-wrapper.focus .ts-control {
+  border-color: #3FA34D33; /* Ensure consistent border color */
+  box-shadow: 0 0 0 0.1rem #3FA34D33;
+}
+
+/* Handle additional responsive concerns */
+@media (max-width: 600px) {
+  /* Fix the width of the Tom Select input box */
+  .ts-control {
+    width: 85vw; /* Set your desired fixed width */
+    max-width: 85vw; /* Prevent it from stretching */
+    min-width: 85vw; /* Prevent it from shrinking */
+    font-size: 2.5vmin;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    /*max-height: 10px; /* Prevent it from stretching */
+  }
+  
+  /* Optional: Align the dropdown width with the input */
+  .ts-dropdown {
+    width: 85vw; /* Match the input width */
+    font-size: 2.5vh;
+  }
+  
+  /* Ensure proper wrapping for multi-select */
+  .ts-wrapper.multi .ts-control {
+    width: 85vw; /* Match the fixed width */
+    font-size: 2.5vmin;
+  }
+}
+
+.ts-wrapper.single .ts-control {
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  overflow: hidden; /* Hide overflow */
+  white-space: nowrap; /* Keep text on one line */
+}
+
+/* Target all Tom Select placeholders */
+/* .tom-select .ts-control input::placeholder { */
+.tom-select .ts-dropdown [data-placeholder] {
+  font-weight: 200;              /* Add italics if desired */
+}
+
+.ts-wrapper .option::placeholder { font-weight: 400; }
+

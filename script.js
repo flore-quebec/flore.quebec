@@ -1,9 +1,9 @@
 
-        const familleSelect = document.getElementById("famille");
-        const genreSelect = document.getElementById("genre");
-        const sectionSelect = document.getElementById("section");
-        const speciesSelect = document.getElementById("species");
-        const nomSelect = document.getElementById("nom");
+        //const familleSelect = document.getElementById("famille");
+        //const genreSelect = document.getElementById("genre");
+        //const sectionSelect = document.getElementById("section");
+        //const speciesSelect = document.getElementById("species");
+        //const nomSelect = document.getElementById("nom");
 
         const modal = document.getElementById('myModal');
         const modalHeader = document.getElementById('modalHeader');
@@ -19,17 +19,24 @@
 
         var thumbnails;
         var which;
-        var last_category = "famille";
-        var last_value = "Poaceae";
+        var last_category;
+        var last_value;
         var currenturl;
         //var map2;
 
         function openModal(headerText, bodyText, imageArray) {
             // Clear previous images
+            
+            imageGallery.style.display = 'none';
+            document.getElementById("selected").style.display = 'none';
+            document.getElementById("filters").style.display = 'none';
+            document.getElementById("modal-content").style.display = 'block';
+
+            
             modalImages.innerHTML = '';
             modalText.innerHTML = '';
             
-            modal.style.display = 'block';
+            //modal.style.display = 'none';//'block';
             modalHeader.innerHTML = headerText.replace(" "," ");
             
 
@@ -208,12 +215,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 contrib.innerHTML = ''; 
             } else {
                 //contrib.innerHTML = data[which].contribution+"&nbsp;";
-                initiated = '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">' + initiated + '</a>';
+                initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">' + initiated + '</a>';
+                //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer"' + 'Marc-AurèleVallée' + '">' + initiated + '</a>';                
                 initiated = 'Initié par ' + initiated;
                 if(edited[0] !== ''){
                   
                 edited = edited.map(editor => {
-    return '<a style="all: unset; cursor: pointer;" href="contribuer.html#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
+    return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
 });  
                   
                   if(edited.length > 1){
@@ -224,7 +232,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                   contrib.innerHTML = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
                 }
                 //contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
-                console.log(contrib.innerHTML);
             };
             const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
             edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
@@ -238,8 +245,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
 
         function closeModal(back) {
-            modalImages.innerHTML = '';
-            modal.style.display = 'none';
+            //modalImages.innerHTML = '';
+            document.getElementById("modal-content").style.display = 'none';
+            //modal.style.display = 'none';
+            imageGallery.style.display = 'flex';
+            document.getElementById("selected").style.display = 'flex';
+            document.getElementById("filters").style.display = 'flex';
             reset_map();
             if(back){
               //history.back();
@@ -268,8 +279,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
 
         function updateGallery(group, taxon) {
+          
+            document.getElementById("hexagon-gallery").style.display = 'none';
 
-            document.getElementById("selected").style.display = 'flex';
+            document.getElementById("modal-content").style.display = 'none';
+            //document.getElementById("selected").style.display = 'flex';
+            document.getElementById("imageGallery").style.display = 'flex';
+            //document.getElementById("filters").style.display = 'flex';
 
             const order = document.getElementsByName('order');
 
@@ -281,16 +297,19 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
             if (group === "famille") {
               document.getElementById("selected").style.display = 'flex';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.famille)
               ));
             } else if (group === "genre") {
               document.getElementById("selected").style.display = 'flex';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.genre)
               ));
             } else if (group === "section") {
               document.getElementById("selected").style.display = 'flex';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (taxon === image.section)
               ));
@@ -301,6 +320,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               ));
             } else if (group === "nom") {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
@@ -339,6 +359,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
             last_category = group;
             last_value = taxon;
+            tomselect.addItem(taxon, true);
+            //tomselect.setValue(taxon, true);
 
             if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
@@ -466,47 +488,47 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             linkText.innerHTML = '<a class=\"link\" href=\"'+link+'\" target=\"_blank\">'+link+'</a>' ;
         }
         
-        familleSelect.addEventListener("change", () => updateGroupURL("famille", familleSelect.value));
-        genreSelect.addEventListener("change", () => updateGroupURL("genre", genreSelect.value));
-        sectionSelect.addEventListener("change", () => updateGroupURL("section", sectionSelect.value));
-        speciesSelect.addEventListener("change", () => updateGroupURL("species", speciesSelect.value));
-        nomSelect.addEventListener("change", () => updateGroupURL("nom", nomSelect.value));
+        //familleSelect.addEventListener("change", () => updateGroupURL("famille", familleSelect.value));
+        //genreSelect.addEventListener("change", () => updateGroupURL("genre", genreSelect.value));
+        //sectionSelect.addEventListener("change", () => updateGroupURL("section", sectionSelect.value));
+        //speciesSelect.addEventListener("change", () => updateGroupURL("species", speciesSelect.value));
+        //nomSelect.addEventListener("change", () => updateGroupURL("nom", nomSelect.value));
 
 
-        var filter1 = document.getElementById('filterList1');
-        family_values.forEach(function(item){
-           var option1 = document.createElement('option');
-           option1.value = item;
-           filter1.appendChild(option1);
-        });
+        //var filter1 = document.getElementById('filterList1');
+        //family_values.forEach(function(item){
+        //   var option1 = document.createElement('option');
+        //   option1.value = item;
+        //   filter1.appendChild(option1);
+        //});
 
-        var filter2 = document.getElementById('filterList2');
-        genus_values.forEach(function(item){
-           var option2 = document.createElement('option');
-           option2.value = item;
-           filter2.appendChild(option2);
-        });
+        //var filter2 = document.getElementById('filterList2');
+        //genus_values.forEach(function(item){
+        //   var option2 = document.createElement('option');
+        //   option2.value = item;
+        //   filter2.appendChild(option2);
+        //});
         
-        var filter5 = document.getElementById('filterList5');
-        section_values.forEach(function(item){
-           var option5 = document.createElement('option');
-           option5.value = item;
-           filter5.appendChild(option5);
-        });
+        //var filter5 = document.getElementById('filterList5');
+        //section_values.forEach(function(item){
+        //   var option5 = document.createElement('option');
+        //   option5.value = item;
+        //   filter5.appendChild(option5);
+        //});
 
-        var filter3 = document.getElementById('filterList3');
-        species_values.forEach(function(item){
-           var option3 = document.createElement('option');
-           option3.value = item;
-           filter3.appendChild(option3);
-        });
+        //var filter3 = document.getElementById('filterList3');
+        //species_values.forEach(function(item){
+        //   var option3 = document.createElement('option');
+        //   option3.value = item;
+        //   filter3.appendChild(option3);
+        //});
 
-        var filter4 = document.getElementById('filterList4');
-        nom_values.forEach(function(item){
-           var option4 = document.createElement('option');
-           option4.value = item;
-           filter4.appendChild(option4);
-        });
+        //var filter4 = document.getElementById('filterList4');
+        //nom_values.forEach(function(item){
+        //   var option4 = document.createElement('option');
+        //   option4.value = item;
+        //   filter4.appendChild(option4);
+        //});
 
 
         function changeOrder() {
@@ -773,13 +795,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                   }
               });
               
-              
-              
-              
-              
-              
-              
-              
               map2.addControl(new maplibregl.FullscreenControl());
               
               //console.log(map2.querySourceFeatures().entries("recordedBy"));
@@ -898,14 +913,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
       function updateGroupURL(param, value) {
           //var newURL = window.location.href.split('?')[0]; // Get the current URL without parameters
           
-          familleSelect.value = '';
-          genreSelect.value = '';
-          sectionSelect.value = '';
-          speciesSelect.value = '';
-          nomSelect.value = '';
-          
-          var chosen = document.getElementById(param);
-          chosen.value = value;
+          //familleSelect.value = '';
+          //genreSelect.value = '';
+          //sectionSelect.value = '';
+          //speciesSelect.value = '';
+          //nomSelect.value = '';
+          //var chosen = document.getElementById(param);
+          //chosen.value = value;
           
           var newURL = window.location.pathname; // Get the current URL without parameters
           newURL += '?' + param + '=' + value; // Add the new parameter with the selected option value
@@ -919,7 +933,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //};
           //states[param] = value;
           history.pushState(states, '', newURL); // Update the URL without reloading the page
-          console.log("**** push updateGroupURL ****",newURL);
           document.title = value;
           
           updateGallery(param, value);
@@ -952,6 +965,48 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           document.title = value;
           openModal(value, text, images);
       }
+      
+      
+      function updatePageURL(param, value) {
+          var newURL = window.location.pathname; // Get the current URL without parameters
+          newURL += '?' + param + '=' + value; // Add the new parameter with the selected option value
+          newURL = newURL.replaceAll(' ','+');
+          var states = {};
+          states['group'] = param;
+          states['taxon'] = value;
+          history.pushState(states, '', newURL); // Update the URL without reloading the page
+          document.title = value;
+      }
+      
+      function updatePage(page) {
+        let pages = ["Home", "Explorer", "Contribuer", "Apropos"];
+        //const otherpages = ["Explorer", "Contribuer", "Apropos"];
+        //if(page == 'Home' && reload){
+        //  
+        //} else {
+        //  
+        //}
+        //home.style.display = 'none';
+        //explorer.style.display = 'none';
+        //contribuer.style.display = 'contents';
+        //apropos.style.display = 'none';
+        
+        //const ids = ['id1', 'id2', 'id3']; // List of IDs
+        const ids = pages.filter(item => item !== page);
+        //console.log("pages to open", page);
+        //console.log("pages to close", ids);
+        ids.forEach(id => {
+          const element = document.getElementById(id);
+          if (element) {
+              element.style.display = 'none';
+          };
+        });
+        if(page != 'Homeeee'){
+          document.getElementById(page).style.display = 'contents';
+        };
+        
+      }
+      
       
       
         
@@ -987,61 +1042,80 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         
         window.addEventListener('popstate', function(event) {
-            //console.log("****popstate******", window.location.href);
-            //map2.remove();
-            //map2.removeSource("example_source");
-            //map2.removeLayer("observations");
             
-
-            //const staticmap = document.getElementById('map');
-            //if(map2.style.display === 'block') {
-            //    map2.style.display === 'none'
-            //    staticmap.style.display = 'block';
-            //};
             reset_map();
             
-            if(document.getElementById("myGallery").style.display == 'block') {
+            const pars = new URLSearchParams(window.location.search);
+            
+            const params = getURLparams();
+            console.log("params", Object.keys(params)[0]);
+            // Check if there are any parameters
+            if (!pars.toString()) {
+              window.location.reload();
+            } else if ('page' in params){
+              console.log("param value", params["page"][0]);
+              updatePage(params["page"][0]);
+              document.title = params["page"][0];
+            //} else if (document.getElementById("myGallery").style.display == 'block') {
+            } else if ('espèce' in params){
+              closeGallery(true);
+              //console.log("espèce");
+              //console.log("events", event.state.group, event.state.taxon)
+              tomselect.addItem(params['espèce'].toString(), true);
+              //tomselect.setValue(params['espèce'].toString(), true);
+              addModal(params['espèce'].toString(), false);
+              updatePage("Home");
                 //urlParams = new URLSearchParams(window.location.search);
                 //const espèce = currenturl.split('?')[1];  
                 //var states = {};
                 //states["espèce"] = espèce; 
-                closeGallery(true);
                 //updateGallery(event.state.group, event.state.taxon);
                 //history.replaceState(states, '', currenturl);
-            } else if (modal.style.display == 'block') {
-                closeModal(false);
+            //} else if (modal.style.display == 'block') {
+            //} else if (imageGallery.style.display == 'none') {
+            //  console.log("imageGallery");
             } else {
-                const params = getURLparams();
+                closeModal(false);
+                closeGallery(true);
                 //const group = Object.keys(params)["group"];
                 //const taxon = params[group][0];
                 //last_value = taxon;
-                last_value = event.state.taxon;
-                updateGallery(event.state.group, event.state.taxon);
-                if('espèce' in params) {
-                  //const imageContainers = document.querySelectorAll('.image-container');
-                  //const imageContainers = document.querySelectorAll('.image-container');
-                  //document.addEventListener('DOMContentLoaded', function() {
-                    //const container = document.getElementById(event.state.espèce+'.image-container');
-                    //var event = new MouseEvent('click', {
-                    //  bubbles: true,
-                    //  cancelable: true,
-                    //  view: window
-                    //});
-                    addModal(params['espèce'].toString(), false);
-                    //openModal(value, text, images);
-                    //container.dispatchEvent(event);
-                  //});
-                  
-                  //container.click();
-                }
+                //console.log("event.state", event.state);
+                //last_value = event.state.taxon;
+                //updateGallery(event.state.group, event.state.taxon);
+                
+                last_value = params[Object.keys(params)[0]][0];
+                updateGallery(Object.keys(params)[0], params[Object.keys(params)[0]][0]);                
+                
+                //console.log("event.state.taxon", event.state.taxon);
+                updatePage("Home");
             };
         });
         
-        window.onload = (event) => {
+        
+        
+        //window.addEventListener('load', function() {
+        //  console.log('First function');
+        //  load_contributions();
+        //});
+        
+        
+        
+        
+        window.addEventListener('load', function() {
+          console.log('Second function');
+        //window.onload = function() {
+        //window.onload = (event) => {
+          //load_contributions();
           //const domain = window.location.href.split('?')[0];  
           //var urlParams = window.location.search;
           const querystring = window.location.search.substring(1);
           //history.pushState({ "page": window.location.href }, '', window.location.href); 
+          
+          if(querystring == ''){
+            set_hex();
+          };
+          
           if (querystring != '') {
             var urlParams = new URLSearchParams(window.location.search);
             if(urlParams.has("espèce")){
@@ -1054,6 +1128,14 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               last_value = taxon;
               updateGallery(group, taxon);
               document.title = 'Ajouts récents';
+            } else if(urlParams.has("page")) {
+              load_contributions();
+              const params = getURLparams();
+              const group = Object.keys(params)[0];
+              const taxon = params[group][0];
+              last_value = taxon;
+              updatePage(taxon);
+              document.title = group;  
             } else {
               //window.location = domain;
               //history.pushState({ "page": window.location.href }, '', window.location.href); 
@@ -1071,7 +1153,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         //    const firstKey = Object.keys(params)[0];
         //    const firstValue = params[firstKey];
         //    updateGallery(firstKey, firstValue);
-        };
+        });
         
         function state2querystring(state) {
             let queryString = '';
@@ -1150,5 +1232,195 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
   }
         
 
+  const tomselect = new TomSelect('#select-junk',{
+  	maxItems: 1,
+  	maxOptions: null,
+  	preload: true,
+  	valueField: 'taxa',
+  	labelField: 'taxa',
+  	searchField: 'taxa',
+  	sortField: [{field:'$order'},{field:'$score'}], //'taxa',
+  	options: taxa,
+  	optgroups: [
+  		{value: 'famille', label: 'Famille'},
+  		{value: 'sous-famille', label: 'Sous-famille'},
+  		{value: 'tribu', label: 'Tribu'},
+  		{value: 'sous-tribu', label: 'Sous-tribu'},
+  		{value: 'genre', label: 'Genre'},
+  		{value: 'sous-genre', label: 'Sous-genre'},
+  		{value: 'section', label: 'Section'},
+  		{value: 'série', label: 'Série'},
+  		{value: 'espèce', label: 'Espèce'}
+  	],
+  	optgroupField: 'level',
+  	create: false,
+  	loadThrottle: 0,
+  	closeAfterSelect: true, // Closes the dropdown after a selection
+    createOnBlur: true,
+    onItemAdd: function(){
+      this.blur();
+      eventHandler('onItemAdd');
+    },
+    onFocus: function(){
+      this.clear();
+    }
+  });
+  
+  
+  
+var eventHandler = function(name) {
+  const taxon = tomselect.getValue();
+  const level = tomselect.options[taxon].level;
+	console.log(name, level, taxon);
+	document.getElementById("hexagon-gallery").style.display = 'none';
+	document.getElementById("Home").style.display = 'contents';
+	document.getElementById("Explorer").style.display = 'none';
+	document.getElementById("Contribuer").style.display = 'none';
+	document.getElementById("Apropos").style.display = 'none';
+	if(level != 'espèce'){
+	  updateGroupURL(level, taxon);
+	} else {
+	  addModal(taxon, true);
+	};
+};
         
         
+        
+  //const explorer = document.getElementById("explorer");
+  //explorer.addEventListener('click', () => {
+  //  const explorer = document.getElementById("home").style.display = 'none';
+  //});   
+  
+  const home_tab = document.getElementById("home_tab");
+  //const home = document.getElementById("home");
+  const explorer_tab = document.getElementById("explorer_tab");
+  //const explorer = document.getElementById("explorer");
+  const contribuer_tab = document.getElementById("contribuer_tab");
+  //const contribuer = document.getElementById("contribuer");
+  const apropos_tab = document.getElementById("apropos_tab");
+  //const apropos = document.getElementById("apropos");
+  
+  
+  
+  home_tab.addEventListener('click', () => {
+    //home.style.display = 'none';
+    //explorer.style.display = 'none';
+    //contribuer.style.display = 'none';
+    //apropos.style.display = 'none';
+    updatePageURL("page", "Home");
+    updatePage("Home");
+  });   
+  
+  explorer_tab.addEventListener('click', () => {
+    //home.style.display = 'none';
+    //explorer.style.display = 'contents';
+    //contribuer.style.display = 'none';
+    //apropos.style.display = 'none';
+    updatePageURL("page", "Explorer");
+    updatePage("Explorer");
+  });  
+  
+  contribuer_tab.addEventListener('click', () => {
+    //home.style.display = 'none';
+    //explorer.style.display = 'none';
+    //contribuer.style.display = 'contents';
+    //apropos.style.display = 'none';
+    updatePageURL("page", "Contribuer");
+    updatePage("Contribuer");
+    
+    load_contributions();
+    
+  }); 
+  
+  apropos_tab.addEventListener('click', () => {
+    //home.style.display = 'none';
+    //explorer.style.display = 'none';
+    //contribuer.style.display = 'none';
+    //apropos.style.display = 'contents';
+    updatePageURL("page", "Apropos");
+    updatePage("Apropos");
+  }); 
+  
+  //explorer_tab.addEventListener('click', () => {
+  //  const home = document.getElementById("home");
+  //  const explorer = document.getElementById("explorer");
+  //  if(home.style.display == 'none'){
+  //    home.style.display = 'contents';
+  //    explorer.style.display = 'none';
+  //  } else {
+  //    home.style.display = 'none';
+  //    explorer.style.display = 'contents';
+  //  }
+  //    
+  //}); 
+  
+  
+  function load_contributions(){
+    const profileContainer = document.getElementById("profile-container");
+    contributions.forEach( cont => {
+            const profile = document.createElement('div');
+            profile.className = 'profile';
+            profile.id = cont.name.replaceAll(" ", "");
+            const stats = document.createElement('div');
+            stats.className = 'stats';
+            stats.innerHTML = 'Nb d\'espèces initiées: ' + cont.nbspinitiated + '<br>Nb d\'espèces modifiées: ' + cont.nbspmodified + '<br>Nb de changements: ' + cont.nbchanges + '<br>Nb de <i>commits</i>: ' + cont.nbcommits + '<br><br><a class="acontrib" href="https://florequebec.ca?initié=' + cont.name.replaceAll(' ', '+') + '">Contributions</a><br>';
+            const bio = document.createElement('div');
+            const pic = document.createElement('div');
+            bio.className = 'bio';
+            pic.className = 'pic';
+            url = "https://raw.githubusercontent.com/flore-quebec/species/main/Contributeurs/" + encodeURIComponent(cont.name.replace(" ","_")) + ".md";
+            
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Convert markdown to HTML
+                    bio.innerHTML = marked.parse(data);
+                    // Extract comments for images
+                    const comments = data.match(/<!--(.*?)-->/gs);
+
+                    if (comments) {
+                        comments.forEach(comment => {
+                            const avatar = comment.replace(/<!--|-->/g, '').trim();
+                            pic.innerHTML = `<img class="picimg" src="${avatar}" alt="Logo">`;
+                        });
+                    } else {
+                        console.log('No comments found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching the Markdown file:', error));
+
+            profile.appendChild(stats);
+            profile.appendChild(bio);
+            profile.appendChild(pic);
+            profileContainer.appendChild(profile);
+            //console.log(profile);
+    })  
+    
+    const hash = window.location.hash;
+    if (hash) {
+        const decodedHash = decodeURIComponent(hash);
+        const element = document.querySelector(decodedHash);
+        if (element) {
+
+            // Create a MutationObserver to watch for layout changes
+            //const observer = new MutationObserver(() => {
+            //    // Check if the target element is in view after layout changes
+            //    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            //});
+
+            // Configure the observer to watch for changes in the entire document
+            //observer.observe(document.body, { childList: true, subtree: true });                  
+          
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Stop observing after the scroll, to avoid unnecessary checks
+            //observer.disconnect();
+            
+        }
+    }
+    
+    
+  }
+  //load_contributions();
+  
+            

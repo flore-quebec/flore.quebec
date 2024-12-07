@@ -6,31 +6,60 @@
   <title>Flore Québec</title>
   <link rel='icon' type='image/png' href='https://cdn.hebergix.com/fr/floreqc/fqlogo.png?v=2'/>
   <link rel='shortcut icon' type='image/png' href='https://cdn.hebergix.com/fr/floreqc/fqlogo.png?v=2'/>
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.bootstrap4.min.css" rel="stylesheet">
   <script type='text/javascript' src="https://cdn.hebergix.com/fr/floreqc/data.js"></script>
+  <script type='text/javascript' src="https://cdn.hebergix.com/fr/floreqc/taxa.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tom_select.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="key.css">
+  <link rel="stylesheet" href="hex.css">
+  <link rel="stylesheet" href="contribuer.css">
   <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.css'>
   <script src='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.js'></script>
   <script src="https://unpkg.com/pmtiles@2.11.0/dist/index.js"></script>
   <script src="https://unpkg.com/maplibre-basemaps@0.0.5/dist/maplibre-basemaps.js"></script>
 </head>
 <body>
+  
     <div id="header">
-        <span id="title"><a style="all: inherit; cursor: pointer;" href="index.html">Flore Québec</a></span>
-        <div class="tab_container">
-          <span class="tab"><a style="all: inherit; cursor: pointer;" href="explorer.html">Explorer</a></span>
-          <span class="tab"><a style="all: inherit; cursor: pointer;" href="contribuer.html">Contribuer</a></span>
-          <span class="tab"><a style="all: inherit; cursor: pointer;" href="apropos.html">À&nbsp;propos</a></span>
+        <div id="header_title">
+          <span id="home_tab"><a style="all: inherit; cursor: pointer;" href="index.html">Flore Québec</a></span>
         </div>
-        <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/fqlogo.png" alt="Logo">
+        <div id="header_tomselect" class="tab_container">
+          <select class="form-control form-control-sm" id="select-junk" placeholder="Recherchez un taxon ou un groupe..."></select>
+        </div>
+        <div id="header_tab" class="tab_container">
+          <span id="explorer_tab" class="tab">Explorer</span>
+          <span id="contribuer_tab" class="tab">Contribuer</span>
+          <span id="apropos_tab" class="tab">À&nbsp;propos</span>
+        </div>
+        <div id="header_logo">
+          <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/fqlogo.png" alt="Logo">
+        </div>
     </div>
+    <div id="Home" style="display: contents;">
+    <div class="selected" id="selected">
+      <div class = "taxon_container" id = "taxon_container">
+        <div class = "taxon_name" id = "taxon_name"></div>
+        <div class = "taxon_stats" id = "taxon_stats">
+        </div>
+        <div class = "taxon_text" id = "taxon_text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+        </div>
+        <div class = "taxon_key" id="taxon_key"></div>
+      </div>
+    </div>
+
+
+    
     <div id="filters">
-        <div class="dropdown-container">
+         <!--<div class="dropdown-container">
             <label class="dropdown-label" for="famille">Famille</label>
             <input class="dropdown-input" type="text" id="famille" list="filterList1" onfocus="this.value=''" onchange="this.blur();" autocomplete="none">
             <datalist id="filterList1"></datalist>
@@ -54,7 +83,7 @@
             <label class="dropdown-label" for="nom">Nom commun</label>
             <input class="dropdown-input" type="text" id="nom" list="filterList4" onfocus="this.value=''" onchange="this.blur();" autocomplete="none">
             <datalist id="filterList4"></datalist>
-        </div>
+        </div> -->
         <div class="dropdown-container">
             <label class="container_radio">Ordre alphabétique
               <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
@@ -70,93 +99,39 @@
             </label>
         </div>
     </div>
+    
 
-    <div class="selected" id="selected">
-      <div class = "taxon_container" id = "taxon_container">
-        <div class = "taxon_name" id = "taxon_name"></div>
-        <div class = "taxon_stats" id = "taxon_stats">
-        </div>
-        <div class = "taxon_text" id = "taxon_text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-        </div>
-        <div class = "taxon_key" id="taxon_key"></div>
-      </div>
-    </div>
-
+    
     <div class="gallery" id="imageGallery">
-      <div style="display:flex;" class="taxon_container">
-        <div style="display: flex;" class="taxon_text">
-          Bienvenue sur le site Flore Québec!<br><br>Ce site est présentement en construction. Des erreurs et des problèmes s'y glissent assurément.
+        <div class="accueil">
+          <div class="welcome">Bienvenue sur Flore Québec!</div>
+          <div class="construction">Ce site est présentement en construction</div>
         </div>
+    </div>
+    
+    
+    <div class="hexagon-gallery" id="hexagon-gallery">
+      <div class="hexagon-container">
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
+        <div class="hex"><img class="heximg" src="" alt=""></div>
       </div>
-        
-        <!-- Example Images -->
-        <!-- Add more example images and titles here -->
-        <!-- ... -->
     </div>
+    
     <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
+    <!--<div id="myModal" class="modal"> -->
+        <div class="modal-content" id="modal-content">
             <span class="close_modal" onclick="closeModal(true)">&times;</span>
-            <div id="header">
-                <span id="title"><a style="all: inherit; cursor: pointer;" href="index.html">Flore Québec</a></span>
-                <div class="tab_container">
-                  <span class="tab"><a style="all: inherit; cursor: pointer;" href="explorer.html">Explorer</a></span>
-                  <span class="tab"><a style="all: inherit; cursor: pointer;" href="contribuer.html">Contribuer</a></span>
-                  <span class="tab"><a style="all: inherit; cursor: pointer;" href="apropos.html">À&nbsp;propos</a></span>
-                </div>
-                <img id="logo" src="https://cdn.hebergix.com/fr/floreqc/fqlogo.png" alt="Logo">
-            </div>
-            
-            
-                <div style="display: none;" id="filters">
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="famille">Famille</label>
-            <input class="dropdown-input" type="text" id="famille" list="filterList1" onfocus="this.value=''" onchange="this.blur();">
-            <datalist id="filterList1"></datalist>
-        </div>
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="genre">Genre</label>
-            <input class="dropdown-input" type="text" id="genre" list="filterList2" onfocus="this.value=''" onchange="this.blur();">
-            <datalist id="filterList2"></datalist>
-        </div>
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="section">Section</label>
-            <input class="dropdown-input" type="text" id="section" list="filterList5" onfocus="this.value=''" onchange="this.blur();">
-            <datalist id="filterList5"></datalist>
-        </div>
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="species">Espèce</label>
-            <input class="dropdown-input" type="text" id="species" list="filterList3" onfocus="this.value=''" onchange="this.blur();">
-            <datalist id="filterList3"></datalist>
-        </div>
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="nom">Nom commun</label>
-            <input class="dropdown-input" type="text" id="nom" list="filterList4" onfocus="this.value=''" onchange="this.blur();">
-            <datalist id="filterList4"></datalist>
-        </div>
-        <div class="dropdown-container">
-            <label class="container_radio">Ordre alphabétique
-              <input type="radio" checked="checked" name="order" value="alphabetic" onclick="changeOrder()">
-              <span class="checkmark"></span>
-            </label>
-            <label class="container_radio">Ordre taxonomique
-              <input type="radio" name="order" value="taxonomic" onclick="changeOrder()">
-              <span class="checkmark"></span>
-            </label>
-            <label class="container_radio">Nb. d'observations&nbsp
-              <input type="radio" name="order" value="nobs" onclick="changeOrder()">
-              <span class="checkmark"></span>
-            </label>
-        </div>
-    </div>
-            
-            
-            
-            
             <div class="modal-container">
-            
-            
             <div class="container" id="container">
               <div class="taxonomy" id="taxonomy"></div>
               <!-- <div class="fillline" id="fillline"></div> -->
@@ -216,7 +191,7 @@
         </div>
     </div>
 
-    </div>
+    <!--</div> -->
 
     <!-- The gallery -->
     <div class="gallery2" id="myGallery">
@@ -232,8 +207,62 @@
             <!-- <div id=\"link\"></div> -->
         </div>
     </div>
+    </div>
+    
+    <div id="Explorer" style="display: none;">
+    <div class = "profile-container">
+      <div class = "contribinfo">
+        Éventuellement, il y aura des statistiques et des graphiques (interactifs ou pas) sur le nombre de familles, de genres, d'espèces, la phylogénie, etc.
+        <br><br>
+        <h1>Sélection des espèces par paramètre</h1>
+        <h2>Par date d'ajout ou de modification</h2>
+        &nbsp;&nbsp;Derniers ajouts (les 10 plus récents): <a href = "https://florequebec.ca?derniers=10">florequebec.ca?derniers=10</a>
+        <h2>Par groupe de plantes</h2>
+        &nbsp;&nbsp;Arbres: <a href = "https://florequebec.ca?type=arbre">florequebec.ca?type=arbre</a>
+        <br><br>
+        &nbsp;&nbsp;Arbustes: <a href = "https://florequebec.ca?type=arbuste">florequebec.ca?type=arbuste</a>
+        <br><br>
+        &nbsp;&nbsp;Fougères: <a href = "https://florequebec.ca?type=fougère">florequebec.ca?type=fougère</a>
+        <br><br>
+        &nbsp;&nbsp;Prêles: <a href = "https://florequebec.ca?type=prêle">florequebec.ca?type=prêle</a>
+        <br><br>
+        &nbsp;&nbsp;Lycopodes: <a href = "https://florequebec.ca?type=lycopode">florequebec.ca?type=lycopode</a>
+        <h2>Par contributeur</h2>
+        &nbsp;&nbsp;Initié par: <a href = "https://florequebec.ca?initié=Étienne+Lacroix-Carignan">florequebec.ca?initié=Étienne+Lacroix-Carignan</a>
+        <br><br>
+        &nbsp;&nbsp;Modifié par: <a href = "https://florequebec.ca?modifié=François+Rousseu">florequebec.ca?modifié=François+Rousseu</a>
+        <br><br>
+      </div>
+    </div>  
+    </div>
+    
+    
+    
+    <div id="Contribuer" style="display: none;">
+      <div class = "profile-container">
+        <div class = "contribinfo">
+          Ce site serait impossible sans la contribution de nombreux experts et passionnés prêt à partager leurs connaissances. Flore Québec est un site collaboratif où les utilisateurs avec une expertise sont encouragés à contribuer à l'écriture ou à la révision des comptes-rendus. Les nombreux contributeurs sont présentés ci-dessous.<br><br>
+          Nous tenons aussi à remercier les nombreux observateurs déposant leurs observations sur iNaturalist ce qui facilite grandement l'utilisation d'images pour illustrer les espèces. Sur ce site, nous n'utilisons que des photos ayant une licence CC0, CC BY ou CC BY-NC. Si une de vos photos se trouve sur ce site, mais que vous ne désirez pas la partager, veuillez nous écrire et nous l'enlèverons. <br><br> 
+          Si vous désirez contribuer à ce site, que ce soit pour écrire des comptes-rendus, signaler des erreurs ou faire de la révision linguistique, consultez les instructions sur la page GitHub du site <a class="alink" href="https://github.com/flore-quebec/species" target="_blank">https://github.com/flore-quebec/species</a>. Une autre façon de contribuer à ce site est en versant vos observations sur iNaturalist. Ceci fera en sorte que vos photos seront accessibles et pourront être sélectionnées pour illustrer certaines espèces. Assurez-vous que vos observations et vos photos sont sous une licence CC0, CC BY ou CC BY-NC ce qui permettra leur utilisation et leur partage vers GBIF. Ainsi, vos observations de niveau recherche seront incluses sur les cartes d'occurrences lors des prochaines mises à jour.
+        </div>
+      </div>  
+  
+      <div class = "profile-container" id = "profile-container"></div>
+      </div>
+    
+    
+    <div id="Apropos" style="display: none;">
+      <div class = "profile-container">
+        <div class = "contribinfo">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        </div>
+      </div>  
+    </div>
+    
+    
     <script type='text/javascript' src="key.js"></script>
     <script type='text/javascript' src="script.js"></script>
+    <script type='text/javascript' src="hex.js"></script>
     
     
 </body>
