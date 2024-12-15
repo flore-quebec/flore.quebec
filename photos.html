@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sélecteur photos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 2vw;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            font-size: 2.5vh;
+            font-family: 'League Spartan', Helvetica, Arial, sans-serif; /* 'Roboto', sans-serif; */ /* Modern font */
+            overflow-wrap: break-word;
+        }
+        
+        #head {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .left, .middle, .right {
+          margin: 2vh;
+        }
+        
+        .left {
+          width: 25vw;
+        }
+        
+        .middle {
+          width: 20vw;
+        }
+        
+        .right {
+          width: 35vw;
+          font-size: 2.5vh;
+        }
+        
+        #search-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin: 0px;
+            margin-bottom: 10px;
+            padding: 0px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            font-size: 2.5vh;
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
+            padding: 8px;
+            width: 100%;
+            max-width: 25vw;
+            margin-bottom: 10px;
+        }
+        
+        #button, #region, #observer, #species {
+            width: 100%;
+            margin: 0px;
+            margin-top: 1.5vh;
+        }
+
+        #photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+            /* align-items: center; */
+        }
+        
+        #pic_urls {
+            margin: 2vh;
+            line-height: 1.2em;
+        }
+
+        .photo {
+            border: 2px solid #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: grab;
+            text-align: center;
+            width: 40vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 0px;
+            padding: 0px;
+            flex-grow: 1;
+            background-color: #fff;
+        }
+        
+        .photo.over {
+          opacity: 0.5;
+        }
+        
+        .top {
+          height: auto;
+          width: auto;
+          display: flex;
+          /* align-items: center; */ /* Centers the image vertically */
+          /* justify-content: center; */ /* Centers the image horizontally */
+          /*object-fit: cover; */
+          /* position: relative; */
+          /* flex-wrap: wrap; */
+          margin: 0px;
+          padding: 0px;
+        }
+        
+        .bottom {
+          height: 10vh;
+          display: flex;
+          align-items: center; /* Centers the image vertically */
+          justify-content: center; /* Centers the image horizontally */
+          flex-wrap: wrap;
+          margin: 0px;
+          padding: 0px;
+        }
+
+        .top img {
+            width: 100%;
+            height: 100%; /* auto; */
+            /* display: flex; */
+            object-fit: cover;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .photo p {
+            padding: 5px;
+            margin: 0;
+            background: #f9f9f9;
+        }
+
+        .photo a {
+            color: #3FA34DDD;
+            text-decoration: none;
+            font-size: 1.75vh;
+        }
+
+        .photo a:hover {
+            text-decoration: underline;
+        }
+
+        .dragging {
+            opacity: 0.75;
+        }
+        
+        .draggable:dragging {
+            opacity: 0.5;
+            border-color: red;
+        }
+        
+        ul {
+            list-style-type: disc; 
+            margin-left: 20px; 
+            padding-left: 0; 
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 1.5vh; /* Add spacing between items */
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+    
+    <div id="head">
+      <div class="left">
+        <h2>Sélecteur de photos iNat</h1>
+        <ul>
+          <li>Les 8 urls s'ajusteront au positionnement des 8 premières photos</li>
+          <li>Envoyez les photos en haut avec un clic</li>
+          <li>Déplacez une photo en la bougeant par dessus une autre</li>
+          <li>Une fois les photos sélectionnées, copiez-collez les 8 urls dans les comptes-rendus</li>
+          <li>Seules les photos avec une licence CC0, CC BY ou CC BY-NC sont présentées</li>
+        </ul>
+        
+      </div>
+      <div class="middle">
+        <form id="search-form">
+            <div class="form-group">
+                <label for="region">Région (e.g. Québec)</label>
+                <input type="text" id="region" name="region" value="Québec">
+            </div>      
+            <div class="form-group">
+                <label for="observer">Nom d'utilisateur iNat (e.g. frousseu)</label>
+                <input type="text" id="observer" name="observer" value="frousseu">
+            </div>
+            <div class="form-group">
+                <label for="species">Espèce (e.g. Trillium erectum)</label>
+                <input type="text" id="species" name="species" value="Cyperus lupulinus" required>
+            </div>  
+            <button id="button" type="submit">Rechercher</button>
+        </form>
+      </div>
+      <!-- <button id="myButton">Change layout</button> -->
+      <div class="right">
+        <div id="pic_urls"></div>
+      </div>
+    </div>
+    <div id="photos"></div>
+
+    <script>
+    
+    
+        function update_urls(){
+          let photos = document.querySelectorAll('.photo');
+          const captions = document.querySelectorAll('.photo a');
+          const urls = Array.from(captions).map(caption => caption.textContent.trim());
+          const pic_urls = document.getElementById('pic_urls');
+          pic_urls.innerHTML = urls.slice(0, 8).join('<br>');
+        }
+            
+        // https://web.dev/articles/drag-and-drop    
+            
+        //function handleDragStart(e) {
+        //  this.style.opacity = '0.4';
+        //}
+      
+        //function handleDragEnd(e) {
+        //  this.style.opacity = '1';
+      
+        //  items.forEach(function (item) {
+        //    item.classList.remove('over');
+        //  });
+        //}
+      
+        //function handleDragOver(e) {
+        //  e.preventDefault();
+        //  return false;
+        //}
+      
+        //function handleDragEnter(e) {
+        //  this.classList.add('over');
+        //}
+      
+        //function handleDragLeave(e) {
+        //  this.classList.remove('over');
+        //}
+            
+    
+        document.getElementById('button').addEventListener('click', async function(event) {
+            event.preventDefault();
+
+            const species = document.getElementById('species').value.trim();
+            const region = document.getElementById('region').value.trim();
+            const observer = document.getElementById('observer').value.trim();
+            const photosContainer = document.getElementById('photos');
+
+            // Clear previous results
+            photosContainer.innerHTML = '';
+
+            // Build query parameters
+            const params = new URLSearchParams();
+            if (species) params.append('q', species);
+            if (region) params.append('place_id', 13336);
+            if (observer) params.append('user_id', encodeURIComponent(observer));
+
+            try {
+                // Fetch observations from the iNaturalist API
+                const response = await fetch(`https://api.inaturalist.org/v1/observations?${params}&per_page=200`);
+                const data = await response.json();
+                console.log(encodeURIComponent(observer));
+                let draggedPhoto = null;
+                update_urls();
+
+
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach(observation => {
+                        if (observation.photos && observation.photos.length > 0) {
+                            observation.photos.forEach((photo, index) => {
+                                const licenses = ['cc0', 'cc-by', 'cc-by-nc']
+                                const license = observation.observation_photos[index]["photo"]["license_code"];
+                                if(!licenses.includes(license)){
+                                  return;
+                                };
+                              
+                                const photoDiv = document.createElement('div');
+                                photoDiv.className = 'photo';
+                                photoDiv.draggable = true;
+
+                                const img = document.createElement('img');
+                                img.loading = 'lazy';
+                                img.src = photo.url.replace('square', 'medium');
+                                img.alt = observation.species_guess || 'Unknown species';
+
+                                const caption = document.createElement('p');
+                                const observationLink = document.createElement('a');
+                                observationLink.onclick = (event) => event.stopPropagation();
+                                observationLink.href = observation.uri;
+                                observationLink.target = '_blank';
+                                observationLink.textContent = (+index + 1) + '-' + observation.uri;
+                                caption.innerHTML = `${observation.taxon.name || 'Unknown species'}<br>${observation.user.login} - ${observation.quality_grade} - ${observation.observation_photos[index]["photo"]["license_code"]}<br>`;
+                                caption.appendChild(observationLink);
+
+                                const top = document.createElement('div');
+                                top.className = 'top';
+                                
+                                top.appendChild(img);
+
+                                const bottom = document.createElement('div');
+                                bottom.className = 'bottom';
+                                
+                                bottom.appendChild(caption);
+
+                                photoDiv.appendChild(top);
+                                photoDiv.appendChild(bottom);
+                                photosContainer.appendChild(photoDiv);
+
+                                photoDiv.addEventListener('click', () => {
+                                    photosContainer.prepend(photoDiv);
+                                    update_urls();
+                                });
+                                
+                                photoDiv.addEventListener('dragstart', (e) => {
+                                  draggedPhoto = photoDiv;
+                                  setTimeout(() => photoDiv.classList.add('dragging'), 0);
+                                });
+                            
+                                photoDiv.addEventListener('dragend', () => {
+                                  draggedPhoto.classList.remove('dragging');
+                                  draggedPhoto = null;
+                                });
+                            
+                                photoDiv.addEventListener('dragover', (e) => {
+                                  e.preventDefault();
+                                  //this.classList.add('over');
+                                });
+                                
+                                //photoDiv.addEventListener('dragover', handleDragOver);
+                                //photoDiv.addEventListener('dragenter', handleDragEnter);
+                                //photoDiv.addEventListener('dragleave', handleDragLeave);
+                            
+                                photoDiv.addEventListener('drop', (e) => {
+                                  e.preventDefault();
+                                  console.log(photoDiv);
+                                  if (draggedPhoto && draggedPhoto !== photoDiv) {
+                                    // Swap the contents of the dragged photo and the target photo
+                                    const draggedImg = draggedPhoto.querySelector('img');
+                                    const targetImg = photoDiv.querySelector('img');
+
+                                    const tempSrc = draggedImg.src;
+                                    const tempAlt = draggedImg.alt;
+                            
+                                    draggedImg.src = targetImg.src;
+                                    draggedImg.alt = targetImg.alt;
+                            
+                                    targetImg.src = tempSrc;
+                                    targetImg.alt = tempAlt;
+                                    
+                                    const draggedCaption = draggedPhoto.querySelector('p').innerHTML;
+                                    const targetCaption = photoDiv.querySelector('p').innerHTML;
+
+                                    draggedPhoto.querySelector('p').innerHTML = targetCaption;
+                                    photoDiv.querySelector('p').innerHTML = draggedCaption;
+                                    
+                                  }
+                                  update_urls();
+                                });
+                                
+                            });
+                        }
+                    });
+                  
+                } else {
+                    photosContainer.textContent = 'No results found.';
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                photosContainer.textContent = 'An error occurred while fetching data.';
+            }
+            
+            //document.getElementById('myButton').addEventListener('click', function() {
+              
+            //  //document.getElementById('photos').style.justifyContent = 'center';
+            //  document.getElementById('photos').style.alignItems = 'center';
+              
+            //  let photos = document.querySelectorAll('.photo');
+            //  photos.forEach(function(photo) {
+            //    photo.style.height = '27vw';
+            //    photo.style.height = '27vw';
+            //  });
+              
+            //});
+            
+        });
+    </script>
+</body>
+</html>
