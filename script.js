@@ -326,11 +326,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               filteredImages = indexn.map(index => data[index]);
             } else if (group === "derniers") {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = find_latest(taxon);
             } else if (group === "initié") {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
@@ -338,16 +340,19 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               ));
             } else if (group === 'modifié') {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (image["edited"].includes(taxon))
               ));
             } else if (group === "statut") {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 ('' != image["LOIEMV"])
               ));
             } else if (group === 'type') {
               document.getElementById("selected").style.display = 'none';
+              document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
                 (image[group].includes(taxon))
               ));              

@@ -2,7 +2,7 @@
           margin-top: 10vh;
           margin-left: 2vw;
           display: none;
-          --s: 13.5vmax;  /* size  */
+          --s: 13.6vmax;  /* size  13.5 */
           --m: 0.5vmax;    /* margin */
           --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
         }
