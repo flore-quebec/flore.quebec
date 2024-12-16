@@ -1050,6 +1050,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             
             reset_map();
             
+            const querystring = window.location.search.substring(1);
+            if(querystring == ''){
+              document.getElementById("hexagon-gallery").style.display = 'flex';
+            } else {
+              document.getElementById("hexagon-gallery").style.display = 'none';
+            };
+            
             const pars = new URLSearchParams(window.location.search);
             
             const params = getURLparams();
@@ -1364,6 +1371,7 @@ var eventHandler = function(name) {
   
   function load_contributions(){
     const profileContainer = document.getElementById("profile-container");
+    profileContainer.innerHTML = '';
     contributions.forEach( cont => {
             const profile = document.createElement('div');
             profile.className = 'profile';
