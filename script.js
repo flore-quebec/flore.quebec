@@ -110,7 +110,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 fl = false;  
                 console.log("***** true *******", fl);
               } else {
-                md = `<h2>Flore laurentienne (1ère édition)</h2>
+                md = `<h2 class="fl">Flore laurentienne (1ère édition)</h2>
                 1. <b>Dactylis glomerata</b> L. — Dactyle pelotonné. — (Orchard-grass). — Plante cespiteuse
     à souche fibreuse; chaume (long. 40-150 cm.); feuilles (larg. 2-6 mm.); panicule (long. 8-20
     cm.) à branches solitaires, un peu scabres. Floraison estivale. Champs et lieux ombragés,
@@ -245,16 +245,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
 
         function closeModal(back) {
-            //modalImages.innerHTML = '';
-            document.getElementById("modal-content").style.display = 'none';
-            //modal.style.display = 'none';
-            imageGallery.style.display = 'flex';
-            document.getElementById("selected").style.display = 'flex';
-            document.getElementById("filters").style.display = 'flex';
             reset_map();
             if(back){
-              //history.back();
-              //console.log("**** back closeModal****", window.location.href);
+              history.back();
+              console.log("**** back closeModal****", window.location.href);
+            } else {
+              document.getElementById("modal-content").style.display = 'none';
+              imageGallery.style.display = 'flex';
+              document.getElementById("selected").style.display = 'flex';
+              document.getElementById("filters").style.display = 'flex';
             };
         }
 
@@ -1285,12 +1284,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 var eventHandler = function(name) {
   const taxon = tomselect.getValue();
   const level = tomselect.options[taxon].level;
-	console.log(name, level, taxon);
 	document.getElementById("hexagon-gallery").style.display = 'none';
 	document.getElementById("Home").style.display = 'contents';
 	document.getElementById("Explorer").style.display = 'none';
 	document.getElementById("Contribuer").style.display = 'none';
 	document.getElementById("Apropos").style.display = 'none';
+	reset_map();
 	if(level != 'espèce'){
 	  updateGroupURL(level, taxon);
 	} else {
