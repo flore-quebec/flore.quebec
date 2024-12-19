@@ -225,7 +225,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 });  
                   
                   if(edited.length > 1){
-                    edited = edited.slice(0, -1).join(', ') + 'et ' + edited[edited.length - 1];
+                    edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
                   }
                   contrib.innerHTML = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
                 } else {
