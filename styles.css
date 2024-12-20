@@ -312,7 +312,7 @@ body {
     border-radius: 15px; /* Rounded corners for image containers */
     /* overflow: hidden; */
     box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
-    border: 0px solid darkgreen;
+    border: 0px solid #999;
     background-color: #ddd;
     transition: transform 0.2s ease-in-out;
 }
@@ -554,6 +554,7 @@ body {
     color: #333;
     letter-spacing: 1px;
     line-height: 1.25;
+    /* text-shadow: 10px 10px 25px rgba(0, 0, 0, 0.48); /* https://www.cssportal.com/css3-text-shadow-generator/ */
 }
 
 h1 {
@@ -569,6 +570,14 @@ h2 {
     font-weight: normal;
     color: #000;
     font-family: 'League Spartan', Helvetica, Arial, sans-serif;
+}
+
+.fl {
+    
+    font-size: 4vmin;
+    font-weight: 500;
+    color: #000;
+    font-family: 'Special Elite', Helvetica, Arial, sans-serif;
 }
 
 .accueil {
