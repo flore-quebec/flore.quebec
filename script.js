@@ -294,24 +294,33 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             let indexsp;
             let indexn;
 
-            if (group === "famille") {
+            //if (group === "famille") {
+            //  document.getElementById("selected").style.display = 'flex';
+            //  document.getElementById("filters").style.display = 'flex';
+            //  filteredImages = data.filter(image => (
+            //    (taxon === image[group])
+            //  ));
+            //} else if (group === "genre") {
+            //  document.getElementById("selected").style.display = 'flex';
+            //  document.getElementById("filters").style.display = 'flex';
+            //  filteredImages = data.filter(image => (
+            //    (taxon === image.genre)
+            //  ));
+            //} else if (group === "section") {
+            //  document.getElementById("selected").style.display = 'flex';
+            //  document.getElementById("filters").style.display = 'flex';
+            //  filteredImages = data.filter(image => (
+            //    (taxon === image.section)
+            //  ));
+            
+            const groups = ["famille", "genre", "section"];
+            
+            if (groups.includes(group)) {
               document.getElementById("selected").style.display = 'flex';
               document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
-                (taxon === image.famille)
-              ));
-            } else if (group === "genre") {
-              document.getElementById("selected").style.display = 'flex';
-              document.getElementById("filters").style.display = 'flex';
-              filteredImages = data.filter(image => (
-                (taxon === image.genre)
-              ));
-            } else if (group === "section") {
-              document.getElementById("selected").style.display = 'flex';
-              document.getElementById("filters").style.display = 'flex';
-              filteredImages = data.filter(image => (
-                (taxon === image.section)
-              ));
+                (taxon === image[group])
+              ));  
             } else if (group === "species") {
               document.getElementById("selected").style.display = 'none';
               filteredImages = data.filter(image => (
@@ -1263,7 +1272,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
   		{value: 'sous-genre', label: 'Sous-genre'},
   		{value: 'section', label: 'Section'},
   		{value: 'série', label: 'Série'},
-  		{value: 'espèce', label: 'Espèce'}
+  		{value: 'espèce', label: 'Espèce'},
+  		{value: 'nom', label: 'Nom commun'}
   	],
   	optgroupField: 'level',
   	create: false,
