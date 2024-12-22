@@ -108,7 +108,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 modalText.style.textShadow = '0px 0px #eee';
                 
                 fl = false;  
-                console.log("***** true *******", fl);
               } else {
                 md = `<h2 class="fl">Flore laurentienne (1ère édition)</h2>
                 1. <b>Dactylis glomerata</b> L. — Dactyle pelotonné. — (Orchard-grass). — Plante cespiteuse
@@ -277,7 +276,9 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         };
 
 
-        function updateGallery(group, taxon) {
+        function updateGallery(group, taxon, frompopstate = false) {
+            
+            console.log("*** Entering updateGallery ***");
           
             document.getElementById("hexagon-gallery").style.display = 'none';
 
@@ -332,6 +333,22 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               indexsp = nom_values.findIndex(p => p == taxon);
               indexn = common_names[indexsp][taxon.replaceAll(" ","_").replaceAll("-","_").replaceAll("'","_")];
               filteredImages = indexn.map(index => data[index]);
+              if(filteredImages.length == 1){
+                if(filteredImages[0].vernaculaire == taxon){
+                  //addModal(filteredImages[0].espèce, true);
+                  console.log("**** frompopstate ****", frompopstate);
+                  //addModal(filteredImages[0].vernaculaire, !frompopstate, 'nom');
+                  addModal(filteredImages[0].vernaculaire, false, 'nom');
+                  last_category = group; //
+                  last_value = taxon; //
+                  //tomselect.addItem(taxon, true);
+                  //tomselect.setValue(taxon, true);
+                  return;
+                };
+              };
+              
+              
+              
             } else if (group === "derniers") {
               document.getElementById("selected").style.display = 'none';
               document.getElementById("filters").style.display = 'flex';
@@ -370,9 +387,11 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               ));
             };
 
+            console.log("*** Pass the return ***");
             last_category = group;
             last_value = taxon;
-            tomselect.addItem(taxon, true);
+            //tomselect.addItem(taxon, true);
+            //tomselect.clear(true);
             //tomselect.setValue(taxon, true);
 
             if(group === "famille" || group === "genre" || group === "section") {
@@ -455,14 +474,20 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
         }
         
-        function addModal(species, push) {
-            const title = species;
+        function addModal(species, push, type = 'espèce') {
+            console.log("*** Entering addModal ***", species)
+            //const title = species;
             const text = '';
-            const index = data.findIndex(p => p.espèce == title); // tests
+            let index;
+            if(type == 'espèce'){
+              index = data.findIndex(p => p.espèce == species); // tests
+            } else {
+              index = data.findIndex(p => p.vernaculaire == species); // tests
+            };
             const images = data[index].images;
             thumbnails = images.filter(z => z != 'NA');
             which = index;
-            updateFocusURL(title, text, images, push);
+            updateFocusURL(species, type, text, images, push);
             //openModal(title, text, images);
         }
 
@@ -894,7 +919,20 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
       //const map = document.getElementById('map');
       map.addEventListener('click', function(event) {  
-        const getsp = getURLparams().espèce[0].replace(" ","_");
+        //console.log(getURLparams().has("nom"));
+        
+        var urlParams = new URLSearchParams(window.location.search);
+        let getsp;
+        if(urlParams.has("nom")){
+          const nom = urlParams.get("nom");
+          const spe = data.filter(sp => (
+            (nom === sp.vernaculaire)
+          ))[0].espèce;
+          getsp = spe.replace(" ","_");
+        } else {
+          getsp = getURLparams().espèce[0].replace(" ","_");
+        };
+
         species_occs(getsp);
         const staticmap = document.getElementById('map');
         staticmap.style.display = 'none';
@@ -947,7 +985,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //states[param] = value;
           history.pushState(states, '', newURL); // Update the URL without reloading the page
           document.title = value;
-          
           updateGallery(param, value);
             //history.pushState({ "page": newURL }, '', newURL); //https://stackoverflow.com/questions/30429172/html5-history-api-cannot-go-backwards-more-than-once
           //};
@@ -962,21 +999,39 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           
       }
       
-      function updateFocusURL(value, text, images, push) {
+      function updateFocusURL(value, type, text, images, push) {
           var newURL = window.location.pathname; // Get the current URL without parameters
           //var states = history.state;
           var states = {};
+          var spe;
           //states['group'] = param;
           //states['taxon'] = value;
-          states['espèce'] = value;
-          newURL += '?' + 'espèce=' + value;//state2querystring(states); // Add the new parameter with the selected option value
-          newURL = newURL.replaceAll(' ','+');
+          if(type == 'espèce'){
+            states['espèce'] = value;
+            newURL += '?' + 'espèce=' + value;//state2querystring(states); // Add the new parameter with the selected option value
+            newURL = newURL.replaceAll(' ','+'); 
+            spe = value;
+          } else {
+            states['nom'] = value;
+            newURL += '?' + 'nom=' + value;//state2querystring(states); // Add the new parameter with the selected option value
+            newURL = newURL.replaceAll(' ','+');        
+            spe = data.filter(sp => ((value === sp.vernaculaire)))[0].espèce;
+          };
+
           if(push){
+            //if(replace){
+            //  history.replaceState(states, '', newURL); // replace the URL without reloading the page
+            //} else {
+            //  history.pushState(states, '', newURL); // Update the URL without reloading the page
+            //};
             history.pushState(states, '', newURL); // Update the URL without reloading the page
+            //if(replace){
+            //  history.replaceState(states, '', newURL); // replace the URL without reloading the page
+            //};
           };
           //console.log("**** push updateFocusURL ****",newURL);
           document.title = value;
-          openModal(value, text, images);
+          openModal(spe, text, images);
       }
       
       
@@ -1055,33 +1110,32 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         
         window.addEventListener('popstate', function(event) {
-            
-            reset_map();
-            
-            const querystring = window.location.search.substring(1);
-            if(querystring == ''){
-              document.getElementById("hexagon-gallery").style.display = 'flex';
-            } else {
-              document.getElementById("hexagon-gallery").style.display = 'none';
-            };
-            
+            console.log("Popstate fired:", event.state);
+            //reset_map();
+            //const querystring = window.location.search.substring(1);
+            //if(querystring == ''){
+            //  document.getElementById("hexagon-gallery").style.display = 'flex';
+            //} else {
+            //  document.getElementById("hexagon-gallery").style.display = 'none';
+            //};
             const pars = new URLSearchParams(window.location.search);
-            
             const params = getURLparams();
-            console.log("params", Object.keys(params)[0]);
-            // Check if there are any parameters
+
+
             if (!pars.toString()) {
               window.location.reload();
+              console.log("***** reload ******");
             } else if ('page' in params){
               console.log("param value", params["page"][0]);
               updatePage(params["page"][0]);
               document.title = params["page"][0];
             //} else if (document.getElementById("myGallery").style.display == 'block') {
             } else if ('espèce' in params){
+              console.log("popstate espèce in params");
               closeGallery(true);
               //console.log("espèce");
               //console.log("events", event.state.group, event.state.taxon)
-              tomselect.addItem(params['espèce'].toString(), true);
+              //tomselect.addItem(params['espèce'].toString(), true);
               //tomselect.setValue(params['espèce'].toString(), true);
               addModal(params['espèce'].toString(), false);
               updatePage("Home");
@@ -1095,19 +1149,11 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //} else if (imageGallery.style.display == 'none') {
             //  console.log("imageGallery");
             } else {
+                console.log("popstate else");
                 closeModal(false);
                 closeGallery(true);
-                //const group = Object.keys(params)["group"];
-                //const taxon = params[group][0];
-                //last_value = taxon;
-                //console.log("event.state", event.state);
-                //last_value = event.state.taxon;
-                //updateGallery(event.state.group, event.state.taxon);
-                
                 last_value = params[Object.keys(params)[0]][0];
-                updateGallery(Object.keys(params)[0], params[Object.keys(params)[0]][0]);                
-                
-                //console.log("event.state.taxon", event.state.taxon);
+                updateGallery(Object.keys(params)[0], params[Object.keys(params)[0]][0], true);                
                 updatePage("Home");
             };
         });
@@ -1123,7 +1169,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         
         window.addEventListener('load', function() {
-          console.log('Second function');
+          console.log('*** load event!!! ****');
           //document.getElementById("hexagon-gallery").style.display = 'none';
         //window.onload = function() {
         //window.onload = (event) => {
@@ -1278,6 +1324,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
   	optgroupField: 'level',
   	create: false,
   	loadThrottle: 0,
+  	refreshThrottle: 0,
   	closeAfterSelect: true, // Closes the dropdown after a selection
     createOnBlur: true,
     onItemAdd: function(){
@@ -1446,5 +1493,31 @@ var eventHandler = function(name) {
     
   }
   //load_contributions();
-  
+/*  
+  // Function to log the state and URL
+function logStateAndUrl() {
+  console.log("State:", history.state, "URL:", window.location.href);
+}
+
+// Wrap history.pushState and history.replaceState to intercept calls
+(function () {
+  const originalPushState = history.pushState;
+  const originalReplaceState = history.replaceState;
+
+  // Overwrite pushState
+  history.pushState = function (state, title, url) {
+    originalPushState.apply(this, arguments);
+    logStateAndUrl(); // Log after pushState
+  };
+
+  // Overwrite replaceState
+  history.replaceState = function (state, title, url) {
+    originalReplaceState.apply(this, arguments);
+    logStateAndUrl(); // Log after replaceState
+  };
+
+  // Add popstate listener
+  window.addEventListener("popstate", logStateAndUrl);
+})();
+*/
             
