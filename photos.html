@@ -112,7 +112,7 @@
             padding: 0px;
             flex-grow: 1;
             background-color: #fff;
-            box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
+            box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
         }
         
         .photo.over {
@@ -239,8 +239,9 @@
         <div id="pic_urls"></div>
       </div>
     </div>
-    <div id="stats" style="font-weight: 500; font-size: 3.5vh;"></div>
+    <div id="stats" style="font-weight: 500; font-size: 3.5vh; margin: 1vh;"></div>
     <div id="api" style="font-size: 2vh; margin-top: 1vh;"></div>
+    <div id="inat" style="font-size: 2vh; margin-top: 1vh;"></div>
     <div id="photos"></div>
 
     <script>
@@ -287,6 +288,7 @@
 
             document.getElementById("stats").innerHTML = "Patientez qq instants...";
             document.getElementById("api").innerHTML = "";
+            document.getElementById("inat").innerHTML = "";
 
             const species = document.getElementById('species').value.trim();
             const region = document.getElementById('region').value.trim();
@@ -330,13 +332,17 @@
                 const stats = document.getElementById("stats");
                 stats.innerHTML = data.length + " observations incluses sur un total de " + data1.total_results;
                 const api = document.getElementById("api");
-                api.innerHTML = "URL de l'API: " + url.toString().replace("&page=1", "");
+                api.innerHTML = "API iNaturalist: " + url.toString().replace("&page=1", "");
                 if (data && data.length > 0) {
                     data.forEach(observation => {
                         if (observation.photos && observation.photos.length > 0) {
                             if(!observation.taxon.name.toLowerCase().includes(species.toLowerCase())){
                               return;
                             };
+                            const spinat = observation.taxon.id + '-' + observation.taxon.name.replaceAll(" ", "-");
+                            const inaturl = `https://www.inaturalist.org/taxa/${spinat}/browse_photos?order_by=created_at&photo_license=cc-by-nc&place_id=13336`;
+                            const inat = document.getElementById("inat");
+                            inat.innerHTML = `Explorateur iNaturalist: ` + '<a target="_blank" href=' + inaturl + '>'+ inaturl + '</a>';
                             observation.photos.forEach((photo, index) => {
                                 const licenses = ['cc0', 'cc-by', 'cc-by-nc']
                                 const license = observation.observation_photos[index]["photo"]["license_code"];
