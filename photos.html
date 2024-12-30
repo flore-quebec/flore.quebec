@@ -334,7 +334,7 @@
                 if (data && data.length > 0) {
                     data.forEach(observation => {
                         if (observation.photos && observation.photos.length > 0) {
-                            if(observation.taxon.name.toLowerCase() != species.toLowerCase()){
+                            if(!observation.taxon.name.toLowerCase().includes(species.toLowerCase())){
                               return;
                             };
                             observation.photos.forEach((photo, index) => {
