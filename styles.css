@@ -322,6 +322,7 @@ body {
         width: 47vw; /* 80vw of the viewport height */
         height: 55vw; /* 80vw of the viewport height */
         margin: 1vw;
+        border-radius: 5px; /* Rounded corners for image containers */
     }
 }
 
@@ -343,6 +344,10 @@ body {
 }
 
 @media only screen and (max-width: 600px) {
+  .image {
+    border-radius: 5px; /* Rounded corners for images */
+  }
+  
   .image-container:hover {
       transform: none;
   }
@@ -387,7 +392,7 @@ body {
 @media only screen and (max-width: 600px) {
     .image-title {
         text-shadow: 0px 0px #555;
-        border-radius: 10px 10px 10px 10px; /* Rounded corners at the bottom */
+        border-radius: 5px 5px 5px 5px; /* Rounded corners at the bottom */
         font-size: 4vmin; /* Larger font size for title */
         padding-bottom: 0px; /* Larger padding for title */
     }
@@ -522,6 +527,14 @@ body {
   padding-bottom: 1vmin;
 }
 
+#spname {
+  display: flex;              
+  flex-direction: row;            
+  align-items: baseline;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+
 @media only screen and (max-width: 600px) {
     .head {
       justify-content: center;
@@ -536,14 +549,24 @@ body {
     font-style: italic;
     color: var(--black);
     text-align: center;
-    margin-top: 3vmin;
-    margin-bottom: 3vmin;
-    padding-top: 1vmin;
-    padding-bottom: 1vmin;
+    margin-top: 0vmin;
+    margin-bottom: 0vmin;
+    margin-right: 1vw;
+    padding-top: 0vmin;
+    padding-bottom: 0vmin;
     background-color: var(--white); /* #00640033; */
-    border-radius: 10px;
-    border: 0px solid #ddd;
-    text-shadow: 0px 0px #DDD;
+}
+
+.modal-author {
+    font-size: 2.75vmin;
+    font-weight: 500;
+    font-style: normal;
+    color: var(--black);
+    text-align: center;
+    margin-top: 0vmin;
+    margin-bottom: 0vmin;
+    padding-top: 0vmin;
+    background-color: var(--white); /* #00640033; */
 }
 
 .modal-text {
@@ -1229,7 +1252,7 @@ ul {
   }
 }
 
-.scientifique, .commun, .commun_en, .status, .protection {
+.commun, .commun_en, .status, .protection {
   font-size: 4vmin;
   margin-left: 1vw;
   margin-right: 0vmin;
@@ -1247,10 +1270,7 @@ ul {
 
 .commun_en {
   color: #999;
-}
-
-.scientifique {
-  color: #000;
+  font-style: italic;
 }
 
 .status {
@@ -1266,7 +1286,7 @@ ul {
 }
 
 @media only screen and (max-width: 600px) {
-    .scientifique, .commun, .commun_en, .status, .protection {
+    .commun, .commun_en, .status, .protection {
       font-size: 7vmin;
     }
 }
