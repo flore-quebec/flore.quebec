@@ -83,8 +83,8 @@
         #photos {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 2vh;
+            margin-top: 4vh;
             width: 100%;
             justify-content: center;
             /* align-items: center; */
@@ -96,7 +96,7 @@
         }
 
         .photo {
-            border: 2px solid #eee;
+            border: 1px solid #eee;
             border-radius: 5px;
             overflow: hidden;
             cursor: grab;
@@ -112,6 +112,7 @@
             padding: 0px;
             flex-grow: 1;
             background-color: #fff;
+            box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
         }
         
         .photo.over {
@@ -239,6 +240,7 @@
       </div>
     </div>
     <div id="stats" style="font-weight: 500; font-size: 3.5vh;"></div>
+    <div id="api" style="font-size: 2vh; margin-top: 1vh;"></div>
     <div id="photos"></div>
 
     <script>
@@ -284,6 +286,7 @@
             event.preventDefault();
 
             document.getElementById("stats").innerHTML = "Patientez qq instants...";
+            document.getElementById("api").innerHTML = "";
 
             const species = document.getElementById('species').value.trim();
             const region = document.getElementById('region').value.trim();
@@ -309,6 +312,7 @@
 
             try {
                 // Fetch observations from the iNaturalist API
+                const url = `https://api.inaturalist.org/v1/observations?${params}&page=1&per_page=200`;
                 const response1 = await fetch(`https://api.inaturalist.org/v1/observations?${params}&page=1&per_page=200`);
                 const response2 = await fetch(`https://api.inaturalist.org/v1/observations?${params}&page=2&per_page=200`);
                 //console.log('https://api.inaturalist.org/v1/observations?per_page=200');
@@ -323,9 +327,10 @@
                 data = data.flat();
                 let draggedPhoto = null;
                 update_urls();
-                
                 const stats = document.getElementById("stats");
                 stats.innerHTML = data.length + " observations incluses sur un total de " + data1.total_results;
+                const api = document.getElementById("api");
+                api.innerHTML = "URL de l'API: " + url.toString().replace("&page=1", "");
                 if (data && data.length > 0) {
                     data.forEach(observation => {
                         if (observation.photos && observation.photos.length > 0) {
