@@ -187,7 +187,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const spmichigan =  'https://www.michiganflora.net/browse';
             
             links.innerHTML=makeLink(data[which].inat,"inat")+makeLink(data[which].vascan,"vascan")+makeLink(data[which].herbierqc,"herbierqc")+makeLink(spbq,"bq")+makeLink(spgb,"gobotany")+makeLink(spmwf,"minnesota")+makeLink(spmichigan,"michigan")+makeLink(data[which].gbif,"gbif")+makeLink(data[which].fna,"fna")+makeLink(data[which].powo,"powo");
-            const scien_complet = document.getElementById('scien_complet');
+            const author = document.getElementById('modalAuthor');
             const scien_alternatif = document.getElementById('scien_alternatif');
             const verna_fr = document.getElementById('verna_fr');
             const verna_alternatif_fr = document.getElementById('verna_alternatif_fr');
@@ -196,10 +196,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const protection = document.getElementById('protection');
             const edit = document.getElementById('edit');
             const contrib = document.getElementById('contributor');
-            //const map = document.getElementById('map');
-            //const map = document.getElementById('map');
 
-            scien_complet.innerHTML = italicizeBeforeSecondSpace(data[which].botanic);
+            author.innerHTML = italicizeBeforeSecondSpace(data[which].botanic);
             //scien_alternatif.innerHTML = data[which].alternatif;
             verna_fr.innerHTML = data[which].vernaculaire;
             //verna_alternatif_fr.innerHTML = data[which].vernacularFRalt;
