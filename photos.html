@@ -204,7 +204,7 @@
           <li>Séparez les noms d'observateurs par une virgule</li>
           <li>Si aucun observateur n'est indiqué, tous les observateurs seront considérés</li>
           <li>Seules les photos avec une licence CC0, CC BY ou CC BY-NC sont présentées</li>
-          <li>Seules les 200 premières observations sont considérées (mais toutes les photos de ces observations)</li>
+          <li>Seules les 400 premières observations sont considérées (mais toutes les photos de ces observations)</li>
           <li>Une fois les photos sélectionnées, copiez-collez les 8 urls dans les comptes-rendus</li>
         </ul>
       </div>
@@ -238,6 +238,7 @@
         <div id="pic_urls"></div>
       </div>
     </div>
+    <div id="stats" style="font-weight: 500; font-size: 3.5vh;"></div>
     <div id="photos"></div>
 
     <script>
@@ -282,6 +283,8 @@
         document.getElementById('button').addEventListener('click', async function(event) {
             event.preventDefault();
 
+            document.getElementById("stats").innerHTML = "Patientez qq instants...";
+
             const species = document.getElementById('species').value.trim();
             const region = document.getElementById('region').value.trim();
             const observer = document.getElementById('observer').value.trim();
@@ -306,16 +309,29 @@
 
             try {
                 // Fetch observations from the iNaturalist API
-                const response = await fetch(`https://api.inaturalist.org/v1/observations?${params}&per_page=200`);
-                console.log(params.toString());
-                const data = await response.json();
+                const response1 = await fetch(`https://api.inaturalist.org/v1/observations?${params}&page=1&per_page=200`);
+                const response2 = await fetch(`https://api.inaturalist.org/v1/observations?${params}&page=2&per_page=200`);
+                //console.log('https://api.inaturalist.org/v1/observations?per_page=200');
+                const data1 = await response1.json();
+                const data2 = await response2.json();
+                let data = [];
+                if(data2.results.length == 0){
+                  data.push(data1.results);
+                } else {
+                  data.push(data1.results, data2.results);
+                };  
+                data = data.flat();
                 let draggedPhoto = null;
                 update_urls();
-
-
-                if (data.results && data.results.length > 0) {
-                    data.results.forEach(observation => {
+                
+                const stats = document.getElementById("stats");
+                stats.innerHTML = data.length + " observations incluses sur un total de " + data1.total_results;
+                if (data && data.length > 0) {
+                    data.forEach(observation => {
                         if (observation.photos && observation.photos.length > 0) {
+                            if(observation.taxon.name.toLowerCase() != species.toLowerCase()){
+                              return;
+                            };
                             observation.photos.forEach((photo, index) => {
                                 const licenses = ['cc0', 'cc-by', 'cc-by-nc']
                                 const license = observation.observation_photos[index]["photo"]["license_code"];
