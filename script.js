@@ -1507,9 +1507,11 @@ var eventHandler = function(name) {
     if (matches) {
         let namelist = [...new Set(matches.map(match => match.slice(1, -1)))];
         namelist = namelist.filter(item => !current.includes(item));
+        namelist = namelist.filter(item => /[A-Z]/.test(item)); // remove non capital letters strings (ssp, var)
         let taxalist = [];
         const seen = new Set();
         for (const item of namelist) { // keep first occ when there are duplicates e.g. C. arundinacea and Cinna arundinacea
+          console.log("seen", seen);
           const equivalenceKey = item.split(' ').slice(1).join(' '); // Get the substring after the first space
           if (item.includes('.')) {
             if (!seen.has(equivalenceKey)) {
@@ -1520,6 +1522,7 @@ var eventHandler = function(name) {
             taxalist.push(item);
           }
         }
+        console.log("taxalist", taxalist);
         const taxalistfull = taxalist.map(item => // match with full name otherwise confusion possible e.g. C. latifolia
            item.replace(tax.slice(0, 1) + '.', tax.split(' ')[0])
         );
