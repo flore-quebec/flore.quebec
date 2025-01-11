@@ -1511,7 +1511,7 @@ var eventHandler = function(name) {
         let taxalist = [];
         const seen = new Set();
         for (const item of namelist) { // keep first occ when there are duplicates e.g. C. arundinacea and Cinna arundinacea
-          console.log("seen", seen);
+          //console.log("seen", seen);
           const equivalenceKey = item.split(' ').slice(1).join(' '); // Get the substring after the first space
           if (item.includes('.')) {
             if (!seen.has(equivalenceKey)) {
@@ -1530,7 +1530,9 @@ var eventHandler = function(name) {
         const ints = taxalist.map((_, index) => index);
         ints.forEach(name => {
             const match = taxapoint.find(item => item.taxa === taxalistfull[name] || item.taxap === taxalistfull[name]);
-            mm = mm.replace("_" + taxalist[name] + "_", '<a href="https://florequebec.ca?' + match.level + '=' + match.taxa.replace(" ", "+") + '"><i>' + taxalist[name] + '</i></a>');
+            if(match){
+              mm = mm.replace("_" + taxalist[name] + "_", '<a href="https://florequebec.ca?' + match.level + '=' + match.taxa.replace(" ", "+") + '"><i>' + taxalist[name] + '</i></a>');
+            }
         });
         return(mm);
     } else {
