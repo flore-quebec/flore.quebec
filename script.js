@@ -1511,7 +1511,6 @@ var eventHandler = function(name) {
         let taxalist = [];
         const seen = new Set();
         for (const item of namelist) { // keep first occ when there are duplicates e.g. C. arundinacea and Cinna arundinacea
-          //console.log("seen", seen);
           const equivalenceKey = item.split(' ').slice(1).join(' '); // Get the substring after the first space
           if (item.includes('.')) {
             if (!seen.has(equivalenceKey)) {
@@ -1519,10 +1518,10 @@ var eventHandler = function(name) {
               taxalist.push(item); // Keep the first occurrence
             }
           } else {
+            seen.add(equivalenceKey);
             taxalist.push(item);
           }
         }
-        console.log("taxalist", taxalist);
         const taxalistfull = taxalist.map(item => // match with full name otherwise confusion possible e.g. C. latifolia
            item.replace(tax.slice(0, 1) + '.', tax.split(' ')[0])
         );
