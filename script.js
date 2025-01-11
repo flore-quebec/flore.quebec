@@ -83,9 +83,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //modalText.style.textShadow = '1px 1px #eee';
             //modalText.innerHTML = marked.parse(md);
 
-
-
-
             var fl = false;
             var url;
             var md;
@@ -97,7 +94,10 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 fetch(url)
                   .then(r => r.blob())
                   .then(b => b.text())
-                  .then(m => {modalText.innerHTML=marked.parse(m)});
+                  .then(m => {
+                    let mm = taxa_links(m, headerText);
+                    modalText.innerHTML=marked.parse(mm);
+                  });
                 const ct = document.getElementById("textchange");
                 ct.style.fontFamily = 'Special Elite';
                 ct.innerHTML = '<span style="color: #999;">&#11207</span> <span style="color: black;">&#11208</span>';
@@ -1334,8 +1334,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
     }
   });
   
-  
-  
 var eventHandler = function(name) {
   const taxon = tomselect.getValue();
   const level = tomselect.options[taxon].level;
@@ -1490,6 +1488,53 @@ var eventHandler = function(name) {
     
     
   }
+  
+  
+  function taxa_links(m, tax){
+
+    function transformName(name) {
+      const spaceIndex = name.indexOf(' ');
+      if (spaceIndex === -1) return name; // No space, return as is
+      return name[0] + '.' + name.slice(spaceIndex); // Transform the name
+    }
+    
+    const taxapoint = taxa.map(item => ({
+      ...item, // Spread the existing properties
+      taxap: transformName(item.taxa) // Add the transformed taxa
+    }));
+    const current = [tax, transformName(tax)];
+    const matches = m.match(/_(.*?)_/g);
+    if (matches) {
+        let namelist = [...new Set(matches.map(match => match.slice(1, -1)))];
+        namelist = namelist.filter(item => !current.includes(item));
+        let taxalist = [];
+        const seen = new Set();
+        for (const item of namelist) { // keep first occ when there are duplicates e.g. C. arundinacea and Cinna arundinacea
+          const equivalenceKey = item.split(' ').slice(1).join(' '); // Get the substring after the first space
+          if (item.includes('.')) {
+            if (!seen.has(equivalenceKey)) {
+              seen.add(equivalenceKey);
+              taxalist.push(item); // Keep the first occurrence
+            }
+          } else {
+            taxalist.push(item);
+          }
+        }
+        const taxalistfull = taxalist.map(item => // match with full name otherwise confusion possible e.g. C. latifolia
+           item.replace(tax.slice(0, 1) + '.', tax.split(' ')[0])
+        );
+        let mm = m;
+        const ints = taxalist.map((_, index) => index);
+        ints.forEach(name => {
+            const match = taxapoint.find(item => item.taxa === taxalistfull[name] || item.taxap === taxalistfull[name]);
+            mm = mm.replace("_" + taxalist[name] + "_", '<a href="https://florequebec.ca?' + match.level + '=' + match.taxa.replace(" ", "+") + '"><i>' + taxalist[name] + '</i></a>');
+        });
+        return(mm);
+    } else {
+        return(m);
+    };
+  }
+  
   //load_contributions();
 /*  
   // Function to log the state and URL
