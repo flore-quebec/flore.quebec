@@ -174,8 +174,25 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             } else {
               section = '&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?section='+data[which].section+'>'+data[which].section+'</a>';
             };
+            
             const taxonomy = document.getElementById('taxonomy');
-            taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>'+section;
+            
+            //taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>'+section;
+            
+            const levels = ["class", "ordre", "famille", "genre", "section"];
+            const levelnames = ["Classe", "Ordre", "Famille", "Genre", "Section"];
+            const taxons = levels.map(level => data[which][level]);
+            console.log("taxons", taxons);
+            let tax = levels.map((level, index) => ({
+              level,
+              name: levelnames[index],
+              value: taxons[index],
+            }));
+            tax = tax.filter(item => item.value !== '');
+            console.log("tax", tax);
+            
+            set_taxonomy(tax);
+            
             const right = document.getElementById('links');
 
 
@@ -1538,6 +1555,46 @@ var eventHandler = function(name) {
         return(m);
     };
   }
+  
+  
+  
+  
+  function set_taxonomy(tax){
+        const container = document.getElementById("gridContainer");
+        container.innerHTML = '';
+        const linkit = ["famille", "genre", "section"];
+        tax.forEach((item, index) => {
+            const link = document.createElement("a");
+            link.href = window.location.pathname + "?" + item.level + "=" + item.value; // Set the URL
+            const div = document.createElement("div");
+            div.classList.add("item");
+            const divd = document.createElement("div");
+            divd.classList.add("description");
+            divd.innerHTML = item.name;
+            div.appendChild(divd);
+            const divv = document.createElement("div");
+            divv.classList.add("value");
+            //if(item.name.includes([]))
+            divv.innerHTML = item.value;
+            div.appendChild(divv);
+            if(linkit.includes(item.level)){
+              div.classList.add("clickable");
+              divv.classList.add("linkunderline");
+              link.appendChild(div);
+              container.appendChild(link);
+            } else {
+              container.appendChild(div);
+            }
+            if (index < tax.length - 1) {
+                const separator = document.createElement("div");
+                separator.classList.add("separator");
+                separator.textContent = ">";
+                container.appendChild(separator);
+            }
+        });
+  }
+  
+
   
   //load_contributions();
 /*  
