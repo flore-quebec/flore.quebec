@@ -1424,7 +1424,7 @@ ul {
     .description {
         font-size: 1.65vmin;
         color: #bbb;
-        margin-bottom: 0px;
+        margin-bottom: 2px;
     }
 
     .value {
@@ -1457,7 +1457,7 @@ ul {
         align-items: center;
         font-size: 1.25vw;
         font-weight: light;
-        color: #bbb;
+        color: #fff;
         padding: 0vw;
         margin: 0vw;
     }
