@@ -1439,6 +1439,7 @@ ul {
         text-decoration: underline;
         text-decoration-thickness: 1px;
         text-decoration-style: dotted;
+        text-underline-offset: 2px;
     }
     
     .clickable {
