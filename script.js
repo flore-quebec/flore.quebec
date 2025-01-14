@@ -1471,37 +1471,26 @@ var eventHandler = function(name) {
                         console.log('No comments found.');
                     }
                 })
+                .then(what => {
+                    profile.appendChild(stats);
+                    profile.appendChild(bio);
+                    profile.appendChild(pic);
+                    profileContainer.appendChild(profile);
+                })
+                .then(what => {
+                    const hash = window.location.hash;
+                    if (hash) {
+                        const decodedHash = decodeURIComponent(hash);
+                        const element = document.querySelector(decodedHash);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'auto', block: 'start' });
+                        }
+                    }                 
+                })
                 .catch(error => console.error('Error fetching the Markdown file:', error));
-
-            profile.appendChild(stats);
-            profile.appendChild(bio);
-            profile.appendChild(pic);
-            profileContainer.appendChild(profile);
-            //console.log(profile);
     })  
     
-    const hash = window.location.hash;
-    if (hash) {
-        const decodedHash = decodeURIComponent(hash);
-        const element = document.querySelector(decodedHash);
-        if (element) {
 
-            // Create a MutationObserver to watch for layout changes
-            //const observer = new MutationObserver(() => {
-            //    // Check if the target element is in view after layout changes
-            //    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            //});
-
-            // Configure the observer to watch for changes in the entire document
-            //observer.observe(document.body, { childList: true, subtree: true });                  
-          
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
-            // Stop observing after the scroll, to avoid unnecessary checks
-            //observer.disconnect();
-            
-        }
-    }
     
     
   }
