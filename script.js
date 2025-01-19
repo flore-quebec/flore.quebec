@@ -1438,63 +1438,77 @@ var eventHandler = function(name) {
   //}); 
   
   
-  function load_contributions(){
+  function load_contributions() {
     const profileContainer = document.getElementById("profile-container");
     profileContainer.innerHTML = '';
-    contributions.forEach( cont => {
-            const profile = document.createElement('div');
-            profile.className = 'profile';
-            profile.id = cont.name.replaceAll(" ", "");
-            const stats = document.createElement('div');
-            stats.className = 'stats';
-            stats.innerHTML = 'Nb d\'espèces initiées: ' + cont.nbspinitiated + '<br>Nb d\'espèces modifiées: ' + cont.nbspmodified + '<br>Nb de changements: ' + cont.nbchanges + '<br>Nb de <i>commits</i>: ' + cont.nbcommits + '<br><br><a class="acontrib" href="https://florequebec.ca?initié=' + cont.name.replaceAll(' ', '+') + '">Contributions</a><br>';
-            const bio = document.createElement('div');
-            const pic = document.createElement('div');
-            bio.className = 'bio';
-            pic.className = 'pic';
-            url = "https://raw.githubusercontent.com/flore-quebec/species/main/Contributeurs/" + encodeURIComponent(cont.name.replace(" ","_")) + ".md";
-            
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    // Convert markdown to HTML
-                    bio.innerHTML = marked.parse(data);
-                    // Extract comments for images
-                    const comments = data.match(/<!--(.*?)-->/gs);
 
-                    if (comments) {
-                        comments.forEach(comment => {
-                            const avatar = comment.replace(/<!--|-->/g, '').trim();
-                            pic.innerHTML = `<img class="picimg" src="${avatar}" alt="Logo">`;
-                        });
-                    } else {
-                        console.log('No comments found.');
-                    }
-                })
-                .then(what => {
-                    profile.appendChild(stats);
-                    profile.appendChild(bio);
-                    profile.appendChild(pic);
-                    profileContainer.appendChild(profile);
-                })
-                .then(what => {
-                    const hash = window.location.hash;
-                    if (hash) {
-                        const decodedHash = decodeURIComponent(hash);
-                        const element = document.querySelector(decodedHash);
-                        if (element) {
-                            element.scrollIntoView({ behavior: 'auto', block: 'start' });
-                        }
-                    }                 
-                })
-                .catch(error => console.error('Error fetching the Markdown file:', error));
-    })  
-    
+    const profilePromises = contributions.map(cont => {
+        const profile = document.createElement('div');
+        profile.className = 'profile';
+        profile.id = cont.name.replaceAll(" ", "");
 
-    
-    
+        const stats = document.createElement('div');
+        stats.className = 'stats';
+        stats.innerHTML = `
+            Nb d'espèces initiées: ${cont.nbspinitiated}<br>
+            Nb d'espèces modifiées: ${cont.nbspmodified}<br>
+            Nb de changements: ${cont.nbchanges}<br>
+            Nb de <i>commits</i>: ${cont.nbcommits}<br><br>
+            <a class="acontrib" href="https://florequebec.ca?initié=${cont.name.replaceAll(' ', '+')}">Contributions</a><br>
+        `;
+
+        const bio = document.createElement('div');
+        bio.className = 'bio';
+
+        const pic = document.createElement('div');
+        pic.className = 'pic';
+
+        const url = `https://raw.githubusercontent.com/flore-quebec/species/main/Contributeurs/${encodeURIComponent(cont.name.replace(" ", "_"))}.md`;
+
+        // Fetch Markdown content and process it
+        return fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                // Convert Markdown to HTML
+                bio.innerHTML = marked.parse(data);
+
+                // Extract comments for images
+                const comments = data.match(/<!--(.*?)-->/gs);
+                if (comments) {
+                    comments.forEach(comment => {
+                        const avatar = comment.replace(/<!--|-->/g, '').trim();
+                        pic.innerHTML = `<img class="picimg" src="${avatar}" alt="Logo">`;
+                    });
+                }
+            })
+            .catch(error => console.error('Error fetching the Markdown file:', error))
+            .then(() => {
+                // Append stats, bio, and pic to the profile
+                profile.appendChild(stats);
+                profile.appendChild(bio);
+                profile.appendChild(pic);
+
+                return profile; // Return the complete profile element
+            });
+    });
+
+    // Use Promise.all to ensure all profiles are created and appended in order
+    Promise.all(profilePromises).then(profiles => {
+        profiles.forEach(profile => profileContainer.appendChild(profile));
+
+        // Handle hash scrolling after all profiles are loaded
+        const hash = window.location.hash;
+        if (hash) {
+            const decodedHash = decodeURIComponent(hash);
+            const element = document.querySelector(decodedHash);
+            if (element) {
+                element.scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        }
+    });
   }
-  
+
+
   
   function taxa_links(m, tax){
 
