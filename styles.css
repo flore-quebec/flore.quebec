@@ -410,7 +410,7 @@ body {
     position: absolute;
     top: 2%;
     right: 0%;
-    width: 25%;
+    width: 23%;
     background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
     color: black; /* Black title text */
     padding: 0px; /* Larger padding for title */
@@ -741,7 +741,7 @@ ul {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.95);
-    z-index: 1;
+    z-index: 100;
 }
 
 .gallery-content {
@@ -1327,6 +1327,7 @@ ul {
   font-weight: 500;
   transition: transform 0.15s ease-in-out;
   border: 0px solid blue;
+  cursor: pointer;
 }
 
 .taxon_name:hover {
@@ -1388,6 +1389,8 @@ ul {
 
 
     .box{
+        /* transform: scale(0.8); /* Shrinks to 80% of its original size */
+        /* transform-origin: top left; /* Optional: Sets the point where scaling starts */
         /* display: flex; */
         /* justify-content: left; */
         /*align-items: center;*/
