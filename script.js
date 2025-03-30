@@ -408,8 +408,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //tomselect.addItem(taxon, true);
             //tomselect.clear(true);
             //tomselect.setValue(taxon, true);
-
-            if(group === "famille" || group === "genre" || group === "section") {
+            if(groups.includes(group)){
+            //if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
               const sub = data.filter(image => ((taxon === image[group])));
               if(group === "famille"){
