@@ -179,8 +179,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             
             //taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>'+section;
             
-            const levels = ["class", "ordre", "famille", "genre", "section"];
-            const levelnames = ["Classe", "Ordre", "Famille", "Genre", "Section"];
+            const levels = ["class", "ordre", "famille", "sous-famille", "tribu", "sous-tribu", "genre", "sous-genre", "section"];
+            const levelnames = ["Classe", "Ordre", "Famille", "Sous-famille", "Tribu", "Sous-tribu", "Genre", "Sous-genre", "Section"];
             const taxons = levels.map(level => data[which][level]);
             console.log("taxons", taxons);
             let tax = levels.map((level, index) => ({
@@ -1565,10 +1565,10 @@ var eventHandler = function(name) {
   function set_taxonomy(tax){
         const container = document.getElementById("gridContainer");
         container.innerHTML = '';
-        const linkit = ["famille", "genre", "section"];
+        const linkit = ["famille", "sous-famille", "tribu", "sous-tribu", "genre", "sous-genre", "section", "sous-section", "série"];
         tax.forEach((item, index) => {
             const link = document.createElement("a");
-            link.href = window.location.pathname + "?" + item.level + "=" + item.value; // Set the URL
+            link.href = window.location.pathname + "?" + item.level + "=" + item.value.replaceAll("_", "+"); // Set the URL
             const div = document.createElement("div");
             div.classList.add("item");
             const divd = document.createElement("div");
@@ -1578,7 +1578,7 @@ var eventHandler = function(name) {
             const divv = document.createElement("div");
             divv.classList.add("value");
             //if(item.name.includes([]))
-            divv.innerHTML = item.value;
+            divv.innerHTML = item.value.replace(/^([^_]*_[^_]*_)/, '');
             div.appendChild(divv);
             if(linkit.includes(item.level)){
               div.classList.add("clickable");
