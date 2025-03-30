@@ -1389,9 +1389,10 @@ ul {
 
 
     .box{
-        /* transform: scale(0.8); /* Shrinks to 80% of its original size */
+        /* transform: scale(0.35); /* Shrinks to 80% of its original size */
         /* transform-origin: top left; /* Optional: Sets the point where scaling starts */
-        /* display: flex; */
+        display: flex;
+        max-width: 50vw;
         /* justify-content: left; */
         /*align-items: center;*/
         /*min-height: 100vh; */
@@ -1405,10 +1406,12 @@ ul {
 
     .containertax {
         display: flex;
+        flex-shrink: 1; /* Allows shrinking */
         grid-auto-flow: column; /* Flow content into columns */
         grid-auto-columns: auto; /* Columns adjust to fit content */
         align-items: center; /* Align all items to center */
         gap: 0.5vw; /* Spacing between items */
+        /* transform: scale(calc(300px / var(--natural-width))); /* not sure what this does */
     }
 
     .item {
@@ -1425,13 +1428,13 @@ ul {
     }
 
     .description {
-        font-size: 1.65vmin;
+        font-size: 1.4vmin;
         color: #bbb;
         margin-bottom: 2px;
     }
 
     .value {
-        font-size: 3vmin;
+        font-size: 2.5vmin;
         color: #aaa;
         font-style: italic;
         font-weight: 400;
