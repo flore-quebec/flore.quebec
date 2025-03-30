@@ -329,13 +329,13 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //    (taxon === image.section)
             //  ));
             
-            const groups = ["famille", "genre", "section"];
+            const groups = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série"];
             
             if (groups.includes(group)) {
               document.getElementById("selected").style.display = 'flex';
               document.getElementById("filters").style.display = 'flex';
               filteredImages = data.filter(image => (
-                (taxon === image[group])
+                (taxon === image[group].replaceAll("_"," "))
               ));  
             } else if (group === "species") {
               document.getElementById("selected").style.display = 'none';
