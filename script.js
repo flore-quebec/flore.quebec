@@ -412,7 +412,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //if(group === "famille" || group === "genre" || group === "section") {
               document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
               const sub = data.filter(image => ((taxon === image[group])));
-              if(group === "famille"){
+              if(group === "famille" || group === "sous-famille" || group === "tribu" || group === "sous-tribu"){
                 const nbspecies = new Set(sub.map(item => item.espèce)).size;
                 const nbgenus = new Set(sub.map(item => item.genre)).size;
                 let stats;
