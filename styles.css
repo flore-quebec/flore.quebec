@@ -1406,7 +1406,7 @@ ul {
 
     .containertax {
         display: flex;
-        flex-shrink: 1; /* Allows shrinking */
+        flex-shrink: 0; /* Allows shrinking */
         grid-auto-flow: column; /* Flow content into columns */
         grid-auto-columns: auto; /* Columns adjust to fit content */
         align-items: center; /* Align all items to center */
