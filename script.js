@@ -1574,7 +1574,8 @@ var eventHandler = function(name) {
             div.classList.add("item");
             const divd = document.createElement("div");
             divd.classList.add("description");
-            divd.innerHTML = item.name;
+            const nsp = data.filter(image => ((item.value === image[item.level]))).length;
+            divd.innerHTML = item.name + ' (' + nsp + ')';
             div.appendChild(divd);
             const divv = document.createElement("div");
             divv.classList.add("value");
