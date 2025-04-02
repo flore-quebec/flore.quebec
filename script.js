@@ -279,6 +279,26 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //  history.back();
             //};
         }
+        
+        
+        function resetKey(){
+            const key = document.getElementById("taxon_key");
+            const text = document.getElementById("taxon_text");
+            key.innerHTML = "";
+            text.innerHTML = "";
+        }
+        
+        
+        function disableKey(){
+            const key = document.getElementById("taxon_key");
+            const text = document.getElementById("taxon_text");
+            text.style.display = "none";
+            key.style.display = "none";
+            resetKey();
+            var tax = document.getElementById("selected");
+            tax.removeEventListener('click', taxonClick);
+        }
+        
 
         window.onclick = function (event) {
         //    if (event.target === modal) {
@@ -301,6 +321,19 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //document.getElementById("selected").style.display = 'flex';
             document.getElementById("imageGallery").style.display = 'flex';
             //document.getElementById("filters").style.display = 'flex';
+            
+            const groups = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série"];
+            
+            resetKey();
+            //const text = document.getElementById("taxon_text");
+            const key = document.getElementById("taxon_key");
+            const isHidden = window.getComputedStyle(key).display === "none";
+            if(groups.includes(group)){
+              if (!isHidden) {
+                extractAndDisplay(taxon);
+              };
+            }
+            
 
             const order = document.getElementsByName('order');
 
@@ -329,7 +362,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //    (taxon === image.section)
             //  ));
             
-            const groups = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série"];
             
             if (groups.includes(group)) {
               document.getElementById("selected").style.display = 'flex';
@@ -410,7 +442,18 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //tomselect.setValue(taxon, true);
             if(groups.includes(group)){
             //if(group === "famille" || group === "genre" || group === "section") {
-              document.getElementById("taxon_name").innerHTML = `${taxon} \u25BC`;
+              var tax = document.getElementById("selected");
+              const haskey = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0].key !== "";
+              let sym;
+              if(haskey){
+                sym = "\u25BC";
+                tax.addEventListener('click', taxonClick);
+              } else {
+                sym = "\u0020";
+                tax.removeEventListener('click', taxonClick);
+              };
+            
+              document.getElementById("taxon_name").innerHTML = `${taxon} ${sym}`;
               console.log("sub", taxon);
               const sub = data.filter(image => ((taxon === image[group].replaceAll("_", " "))));
               if(group === "famille" || group === "sous-famille" || group === "tribu" || group === "sous-tribu"){
@@ -1287,11 +1330,11 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         
   var tax = document.getElementById("selected");
-  tax.addEventListener('click', () => {
+  const taxonClick = () => {
     open_taxon();
-  });   
-  
-        
+  };
+  //tax.addEventListener('click', taxonClick);
+ 
   function open_taxon() {
     const stats = document.getElementById("taxon_stats");
     const text = document.getElementById("taxon_text");
@@ -1300,16 +1343,17 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
     let header = document.getElementById("taxon_name");
     let symbol = header.textContent;
     if (isHidden) {
-      //header.textContent = symbol.replace("▼", "-");
       header.textContent = symbol.replace("\u25BC", "\u25B2");
-      //header.textContent = symbol.replace("+", "-");
     } else {
-      //header.textContent = symbol.replace("-", "▼");
       header.textContent = symbol.replace("\u25B2", "\u25BC");
       window.scrollTo({top: 0, behavior: 'auto'});
-      //header.textContent = symbol.replace("-", "+");
     }
-    extractAndDisplay();
+    
+    const params = getURLparams();
+    const group = Object.keys(params)[0];
+    const taxon = params[group][0];
+    console.log("taxon param", taxon);
+    extractAndDisplay(taxon);
     //stats.style.display = isHidden ? "flex" : "none";
     text.style.display = isHidden ? "flex" : "none";
     key.style.display = isHidden ? "flex" : "none";

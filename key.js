@@ -33,101 +33,109 @@
   }
 
 
-  function extractAndDisplay() {
+  function extractAndDisplay(taxon) {
       
-      const url = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/Cyperus.md";
-      fetch(url)
-        .then(response => response.text())
-        .then(texte => {
-            // Regular expression to match italicized text (text wrapped in * or _)
-            const italicRegex = /(\*([^*]+)\*|_([^_]+)_)/g;
-            
-            // Replace italic Markdown with <i> HTML tags manually
-            let text = texte.replaceAll("__", "").replaceAll("**", "");
-            //let text = document.getElementById('userInput').value;
-            text = text.replace(italicRegex, (match, p1, p2, p3) => {
-                const italicText = p2 || p3; // Capture text inside * or _
-                return `<i>${italicText}</i>`; // Change <em> to <i>
-            });                      
-          
-          
-            const lines = text.split(/\n{2,}/);
-            const keyContainer = document.getElementById("taxon_key");
-
-            // Clear previous results
-            keyContainer.innerHTML = '';
-
-            const keynum = [];
-            const keyoff = [];
-            let count = -1;
-            // Process each line and display the results
-            lines.forEach(line => {
+      const path = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0].key;
+      //const url = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/Cyperus.md";
+      const url = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + path;
+      if(path === ""){
+        document.getElementById("taxon_key").innerHTML = '';
+        document.getElementById("taxon_text").innerHTML = '';
+        disableKey();
+      } else {
+        fetch(url)
+          .then(response => response.text())
+          .then(texte => {
+              // Regular expression to match italicized text (text wrapped in * or _)
+              const italicRegex = /(\*([^*]+)\*|_([^_]+)_)/g;
               
-              
-                const result = extractParts(line.trim());
-                const ind = Number(result.beforeFirstPoint.match(/\d+/));
-                const off = keynum.indexOf(ind);
-                if(off !== -1){
-                  count = keyoff[off];
-                } else {
-                  count = count + 1;
-                }
-                keynum.push(ind); 
-                keyoff.push(count);
-                let count2;
-                console.log(window.innerWidth);
-                if(window.innerWidth > 600){
-                  count2 = count * 1;
-                }else{
-                  count2 = 0;
-                }
-                
-                // Determine the style for the third part
-                let keyRightContent;
-                
-                const keyid = 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
-                let keyidalt;
-                if(keyid.includes("_")){
-                  keyidalt = keyid.replace("_","");
-                } else {
-                  keyidalt = keyid + "_";
-                }
-                const taxon = result.afterLastCapitalOrNumber.replaceAll(" ", "+");
-                const keyidto = 'k' + result.afterLastCapitalOrNumber;
-                
-                if (/[A-Z]/.test(result.afterLastCapitalOrNumber[0])) {
-                    // Starts with a capital letter
-                    keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?espèce=${taxon}">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></em></div>`;
-                } else if (/\d/.test(result.afterLastCapitalOrNumber[0])) {
-                    // Starts with a number
-                    keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
-                } else {
-                    // Default to bold only
-                    keyRightContent = `<div class="keyRight">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</div>`;
-                }
-                
-                
-                const lineOutput = `
-                    <div class="keyRow"  id=${keyid} style="margin-left: ${count2}vw;">
-                        <div class="keyPart keyLeft"><a class="akey" href=#${keyidalt}>${result.beforeFirstPoint}</a></div>
-                        <div class="keyPart keyMiddle">${result.betweenFirstPointAndLastCapitalOrNumber}</div>
-                        ${keyRightContent}
-                    </div>
-                `;
-                keyContainer.innerHTML += lineOutput;
-            });
-            attachHighlightListeners();
+              // Replace italic Markdown with <i> HTML tags manually
+              let text = texte.replaceAll("__", "").replaceAll("**", "");
+              //let text = document.getElementById('userInput').value;
+              text = text.replace(italicRegex, (match, p1, p2, p3) => {
+                  const italicText = p2 || p3; // Capture text inside * or _
+                  return `<i>${italicText}</i>`; // Change <em> to <i>
+              });                      
             
-              // Add stopPropagation to all anchor tags with the class "link"
-            document.querySelectorAll('#taxon_key .akey').forEach(link => {
-              link.addEventListener('click', function(event) {
-                event.stopPropagation();
+            
+              const lines = text.split(/\n{2,}/);
+              const keyContainer = document.getElementById("taxon_key");
+    
+              // Clear previous results
+              keyContainer.innerHTML = '';
+    
+              const keynum = [];
+              const keyoff = [];
+              let count = -1;
+              // Process each line and display the results
+              lines.forEach(line => {
+                
+                
+                  const result = extractParts(line.trim());
+                  const ind = Number(result.beforeFirstPoint.match(/\d+/));
+                  const off = keynum.indexOf(ind);
+                  if(off !== -1){
+                    count = keyoff[off];
+                  } else {
+                    count = count + 1;
+                  }
+                  keynum.push(ind); 
+                  keyoff.push(count);
+                  let count2;
+                  console.log(window.innerWidth);
+                  if(window.innerWidth > 600){
+                    count2 = count * 1;
+                  }else{
+                    count2 = 0;
+                  }
+                  
+                  // Determine the style for the third part
+                  let keyRightContent;
+                  
+                  const keyid = 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
+                  let keyidalt;
+                  if(keyid.includes("_")){
+                    keyidalt = keyid.replace("_","");
+                  } else {
+                    keyidalt = keyid + "_";
+                  }
+                  const taxon = result.afterLastCapitalOrNumber.replaceAll(" ", "+");
+                  const keyidto = 'k' + result.afterLastCapitalOrNumber;
+                  
+                  if (/[A-Z]/.test(result.afterLastCapitalOrNumber[0])) {
+                      // Starts with a capital letter
+                      keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?espèce=${taxon}">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></em></div>`;
+                  } else if (/\d/.test(result.afterLastCapitalOrNumber[0])) {
+                      // Starts with a number
+                      keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
+                  } else {
+                      // Default to bold only
+                      keyRightContent = `<div class="keyRight">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</div>`;
+                  }
+                  
+                  
+                  const lineOutput = `
+                      <div class="keyRow"  id=${keyid} style="margin-left: ${count2}vw;">
+                          <div class="keyPart keyLeft"><a class="akey" href=#${keyidalt}>${result.beforeFirstPoint}</a></div>
+                          <div class="keyPart keyMiddle">${result.betweenFirstPointAndLastCapitalOrNumber}</div>
+                          ${keyRightContent}
+                      </div>
+                  `;
+                  keyContainer.innerHTML += lineOutput;
               });
-            });
-            
-            //const key = document.getElementById("taxon_key");
-            //key.innerHTML = keyContainer;
-      });
+              attachHighlightListeners();
+              
+                // Add stopPropagation to all anchor tags with the class "link"
+              document.querySelectorAll('#taxon_key .akey').forEach(link => {
+                link.addEventListener('click', function(event) {
+                  event.stopPropagation();
+                });
+              });
+              
+              //const key = document.getElementById("taxon_key");
+              //key.innerHTML = keyContainer;
+        });
+      };
   }
   
   

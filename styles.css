@@ -1364,7 +1364,7 @@ ul {
   font-size: 2.25vmin;
   display: none;
   flex-direction: column;
-  border: 0px solid yellow;
+  border: 0px solid red;
   padding-top: 5vh;
   padding-bottom: 5vh;
 }
