@@ -1378,6 +1378,12 @@ ul {
   padding-top: 2vh;
 }
 
+.taxon_text {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
 .taxon_key {
   font-size: 2.25vmin;
   display: none;

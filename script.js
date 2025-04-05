@@ -92,7 +92,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 url = "https://raw.githubusercontent.com/flore-quebec/species/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
                 
                 fetch(url)
-                  .then(r => r.blob())
+                  //.then(r => r.blob()) # useful if what is read is not necessarily text?
                   .then(b => b.text())
                   .then(m => {
                     let mm = taxa_links(m, headerText);
@@ -1668,7 +1668,6 @@ var eventHandler = function(name) {
     const statsn = {'Familles': [nbfamily, "#35E369"], 'Genres': [nbgenus, "#35E369"], 'Espèces': [nbspecies, "#35E369"], 'Comptes-rendus': [nbaccounts, "seagreen"], 'Clés': [nbkeys, "seagreen"], 'Contributeurs': [nbcontributors, "seagreen"], 'Photos': [nbphotos, "yellowgreen"], 'Photographes': [nbphotographers, "yellowgreen"], 'Observations iNat': [nblinks, "yellowgreen"]};
     const stats = document.getElementById("sitestats");
     Object.entries(statsn).forEach(([key, value]) => {
-      console.log(value);
       const div = document.createElement("div");
       div.classList.add("statselement");
       div.style.border = '0px solid ' + value[1];

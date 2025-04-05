@@ -36,16 +36,33 @@
 
 
   function extractAndDisplay(taxon) {
-      const path = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0].key;
+      
+      const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
+      const pathkey = gettaxon.key;
+      const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
       //const url = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/Cyperus.md";
-      const url = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + path;
-      if(path === ""){
+      const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
+      const urltaxon = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathtaxon;
+      if(pathkey === ""){
         document.getElementById("taxon_key").innerHTML = '';
         document.getElementById("taxon_text").innerHTML = '';
         disableKey();
       } else {
-        fetch(url)
-          .then(response => response.text())
+        Promise.all([
+          fetch(urltaxon),
+          fetch(urlkey)
+        ])
+          .then(responses => {
+              return Promise.all([
+                responses[0].text(),  // Resolve the first response's text
+                responses[1].text()   // Resolve the second response's text
+              ]);
+          })
+          .then(([taxonText, keyText])  => {
+            console.log(taxonText);
+            document.getElementById("taxon_text").innerHTML = marked.parse(taxonText);
+            return keyText;
+          })
           .then(texte => {
               // Regular expression to match italicized text (text wrapped in * or _)
               const italicRegex = /(\*([^*]+)\*|_([^_]+)_)/g;
