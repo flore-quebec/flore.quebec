@@ -334,7 +334,6 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               };
             }
             
-
             const order = document.getElementsByName('order');
 
             //let selected;

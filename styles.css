@@ -1380,7 +1380,7 @@ ul {
 
 .taxon_text {
   align-self: flex-start;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 
