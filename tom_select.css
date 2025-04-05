@@ -11,22 +11,22 @@
     
 /* Fix the width of the Tom Select input box */
 .ts-control {
-  width: 22vw; /* Set your desired fixed width */
-  max-width: 22vw; /* Prevent it from stretching */
-  min-width: 22vw; /* Prevent it from shrinking */
+  width: 25vw; /* Set your desired fixed width */
+  max-width: 25vw; /* Prevent it from stretching */
+  min-width: 25vw; /* Prevent it from shrinking */
   font-size: 2.5vmin;
   /*max-height: 10px; /* Prevent it from stretching */
 }
 
 /* Optional: Align the dropdown width with the input */
 .ts-dropdown {
-  width: 22vw; /* Match the input width */
+  width: 25vw; /* Match the input width */
   font-size: 2.5vmin;
 }
 
 /* Ensure proper wrapping for multi-select */
 .ts-wrapper.multi .ts-control {
-  width: 22vw; /* Match the fixed width */
+  width: 25vw; /* Match the fixed width */
   font-size: 2.5vmin;
 }
 
