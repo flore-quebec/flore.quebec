@@ -6,8 +6,10 @@
       const firstPointIndex = text.indexOf('.');
       const beforeFirstPoint = firstPointIndex !== -1 ? text.slice(0, firstPointIndex + 1) : text;
 
+      const wordsList = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série", "espèce"]; 
+      const regex = new RegExp(wordsList.join("|"), "g");
       // Find everything from after the first period up to the last capital letter or last number
-      const lastCapitalIndex = Math.max(...Array.from(text.matchAll(/[A-Z]/g), match => match.index));
+      const lastCapitalIndex = Math.max(...Array.from(text.matchAll(regex), match => match.index));
       //const lastNumberIndex = text.match(/\d$/) ? text.length - 1 : -1;
       const match = text.match(/(\d+)\D*$/);
       const lastNumberIndex = match ? text.lastIndexOf(match[1]) : -1;
@@ -34,7 +36,6 @@
 
 
   function extractAndDisplay(taxon) {
-      
       const path = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0].key;
       //const url = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/Cyperus.md";
       const url = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + path;
@@ -70,7 +71,6 @@
               // Process each line and display the results
               lines.forEach(line => {
                 
-                
                   const result = extractParts(line.trim());
                   const ind = Number(result.beforeFirstPoint.match(/\d+/));
                   const off = keynum.indexOf(ind);
@@ -88,7 +88,6 @@
                   }else{
                     count2 = 0;
                   }
-                  
                   // Determine the style for the third part
                   let keyRightContent;
                   
@@ -99,19 +98,21 @@
                   } else {
                     keyidalt = keyid + "_";
                   }
-                  const taxon = result.afterLastCapitalOrNumber.replaceAll(" ", "+");
+                  const withgenus = ["sous-genre", "section", "sous-section", "série"];
+                  let taxonq = result.afterLastCapitalOrNumber.replace(" ", "=").replaceAll(" ", "+");
+                  if(withgenus.includes(taxonq.split("=")[0])) {
+                    taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
+                  };
+                  const [, ...rest] = result.afterLastCapitalOrNumber.split(" ");
+                  const taxond = rest.join(" ").replaceAll(" ", "&nbsp");
                   const keyidto = 'k' + result.afterLastCapitalOrNumber;
-                  
-                  if (/[A-Z]/.test(result.afterLastCapitalOrNumber[0])) {
-                      // Starts with a capital letter
-                      keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?espèce=${taxon}">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></em></div>`;
-                  } else if (/\d/.test(result.afterLastCapitalOrNumber[0])) {
+                  if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
                       // Starts with a number
                       keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
                   } else {
-                      // Default to bold only
-                      keyRightContent = `<div class="keyRight">${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</div>`;
-                  }
+                      // Starts with a letter
+                      keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
+                  };
                   
                   
                   const lineOutput = `
