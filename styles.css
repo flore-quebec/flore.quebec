@@ -610,7 +610,7 @@ h2 {
   flex-wrap: nowrap; 
   align-items: center; 
   justify-content: center; 
-  margin-top: 12vh;
+  margin-top: 4vh;
 }
 
 .welcome {
@@ -628,6 +628,25 @@ h2 {
     color: var(--green);
     flex-wrap: wrap;
     text-align: center;
+}
+
+.sitestats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 70%;
+    margin: 1vh;
+    font-size: 3vmin;
+    color: var(--green);
+}
+
+.statselement {
+    width: 15 vw;
+    margin: 0.5vw;
+    padding: 0.5vw;
+    border: 1px solid var(--green);
+    border-radius: 1vw;
 }
 
 

@@ -1177,6 +1177,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //} else {
             //  document.getElementById("hexagon-gallery").style.display = 'none';
             //};
+            
+            const querystring = window.location.search.substring(1);
+            if(querystring !== ''){
+              document.getElementById("hexagon-gallery").style.display = 'none';
+            };
+            //  document.getElementById("hexagon-gallery").style.display = 'none';
+            //};
+            
+            
             const pars = new URLSearchParams(window.location.search);
             const params = getURLparams();
 
@@ -1241,6 +1250,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           
           if(querystring == ''){
             set_hex();
+            get_stats();
           };
           
           if (querystring != '') {
@@ -1643,6 +1653,30 @@ var eventHandler = function(name) {
         });
   }
   
+  function get_stats(){
+    const nbfamily = new Set(data.map(item => item.famille)).size;
+    const nbgenus = new Set(data.map(item => item.genre)).size;
+    const nbspecies = new Set(data.map(item => item.espèce)).size;
+    const nbaccounts = new Set(data.map(item => item.date)).size - 1;
+    const nbkeys = taxa.filter(item => item.key !== "").length;
+    const nbcontributors = new Set(data.map(item => item.initiated)).size - 1;
+    const nbphotos = new Set(data.flatMap(item => item.images)).size;
+    const nbphotographers = new Set(data.flatMap(item => item.credit)).size;
+    const nblinks = new Set(data.flatMap(item => item.link)).size;
+    //const statslabel = [nbfamily, nbgenus, nbspecies, nbaccounts, nbkeys, nbcontributors, nbphotos, nbphotographers, nblinks];
+    const cols = [];
+    const statsn = {'Familles': nbfamily, 'Genres': nbgenus, 'Espèces': nbspecies, 'Comptes-rendus': nbaccounts, 'Clés': nbkeys, 'Contributeurs': nbcontributors, 'Photos': nbphotos, 'Photographes': nbphotographers, 'Observations iNat': nblinks};
+    const stats = document.getElementById("sitestats");
+    Object.entries(statsn).forEach(([key, value]) => {
+      const div = document.createElement("div");
+      div.classList.add("statselement");
+      div.innerHTML = `${key}: ${value}`;
+      stats.appendChild(div);
+    });
+    
+    
+  }
+  //get_stats();
 
   
   //load_contributions();
