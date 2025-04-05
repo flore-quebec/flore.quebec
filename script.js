@@ -1665,16 +1665,18 @@ var eventHandler = function(name) {
     const nblinks = new Set(data.flatMap(item => item.link)).size;
     //const statslabel = [nbfamily, nbgenus, nbspecies, nbaccounts, nbkeys, nbcontributors, nbphotos, nbphotographers, nblinks];
     const cols = [];
-    const statsn = {'Familles': nbfamily, 'Genres': nbgenus, 'Espèces': nbspecies, 'Comptes-rendus': nbaccounts, 'Clés': nbkeys, 'Contributeurs': nbcontributors, 'Photos': nbphotos, 'Photographes': nbphotographers, 'Observations iNat': nblinks};
+    const statsn = {'Familles': [nbfamily, "#35E369"], 'Genres': [nbgenus, "#35E369"], 'Espèces': [nbspecies, "#35E369"], 'Comptes-rendus': [nbaccounts, "seagreen"], 'Clés': [nbkeys, "seagreen"], 'Contributeurs': [nbcontributors, "seagreen"], 'Photos': [nbphotos, "yellowgreen"], 'Photographes': [nbphotographers, "yellowgreen"], 'Observations iNat': [nblinks, "yellowgreen"]};
     const stats = document.getElementById("sitestats");
     Object.entries(statsn).forEach(([key, value]) => {
+      console.log(value);
       const div = document.createElement("div");
       div.classList.add("statselement");
-      div.innerHTML = `${key}: ${value}`;
+      div.style.border = '0px solid ' + value[1];
+      div.style.color = value[1];
+      div.style.boxShadow = '1px 1px 3px rgba(0, 0, 0, 0.2)';
+      div.innerHTML = key + ': ' + value[0];
       stats.appendChild(div);
     });
-    
-    
   }
   //get_stats();
 

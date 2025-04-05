@@ -625,7 +625,7 @@ h2 {
     width: 100%;
     margin-top: 1vh;
     font-size: 3vmin;
-    color: var(--green);
+    color: #ccc;
     flex-wrap: wrap;
     text-align: center;
 }
@@ -638,7 +638,6 @@ h2 {
     width: 70%;
     margin: 1vh;
     font-size: 3vmin;
-    color: var(--green);
 }
 
 .statselement {
