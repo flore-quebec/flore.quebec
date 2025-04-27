@@ -40,8 +40,9 @@
       const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
       const pathkey = gettaxon.key;
       const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
-      //const url = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/Cyperus.md";
       const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
+      //const urlkey = "https://cdn.hebergix.com/fr/floreqc/viola.md";
+      //const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/viola.md";
       const urltaxon = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathtaxon;
       if(pathkey === ""){
         document.getElementById("taxon_key").innerHTML = '';
@@ -94,7 +95,7 @@
                   if(off !== -1){
                     count = keyoff[off];
                   } else {
-                    count = count + 1;
+                    count = count + 0.5;
                   }
                   keynum.push(ind); 
                   keyoff.push(count);
