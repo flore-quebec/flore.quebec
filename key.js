@@ -36,7 +36,6 @@
 
 
   function extractAndDisplay(taxon) {
-      
       const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
       const pathkey = gettaxon.key;
       const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
@@ -60,7 +59,7 @@
               ]);
           })
           .then(([taxonText, keyText])  => {
-            console.log(taxonText);
+            //console.log(taxonText);
             document.getElementById("taxon_text").innerHTML = marked.parse(taxonText);
             return keyText;
           })
@@ -76,72 +75,108 @@
                   return `<i>${italicText}</i>`; // Change <em> to <i>
               });                      
             
-            
-              const lines = text.split(/\n{2,}/);
               const keyContainer = document.getElementById("taxon_key");
     
               // Clear previous results
               keyContainer.innerHTML = '';
-    
-              const keynum = [];
-              const keyoff = [];
-              let count = -1;
+              
+              
+              //console.log(texte);
+              
+              let splittedKey = splitKey(text);
+              //console.log(splittedKey);
+              
+              let letterCode = "A".charCodeAt(0);
+              
+              splittedKey.forEach((keyPart, i) => {
+                  let margintop;
+                  if(i === 0){
+                    margintop = 0;
+                  } else {
+                    margintop = 10;
+                  }
+                  const letter = String.fromCharCode(letterCode + i);
+              
+                  const lines = keyPart.text.split(/\n{2,}/);
+                  const keyTitle = keyPart.title.trim();
+        
+                  const keynum = [];
+                  const keyoff = [];
+                  let count = -1;
+                  keyContainer.innerHTML += `<div style="margin-top: ${margintop}vh; margin-bottom: 2vh; font-size: 5vh; color: var(--green);">${keyTitle}</div>`;
               // Process each line and display the results
-              lines.forEach(line => {
-                
-                  const result = extractParts(line.trim());
-                  const ind = Number(result.beforeFirstPoint.match(/\d+/));
-                  const off = keynum.indexOf(ind);
-                  if(off !== -1){
-                    count = keyoff[off];
-                  } else {
-                    count = count + 0.5;
-                  }
-                  keynum.push(ind); 
-                  keyoff.push(count);
-                  let count2;
-                  console.log(window.innerWidth);
-                  if(window.innerWidth > 600){
-                    count2 = count * 1;
-                  }else{
-                    count2 = 0;
-                  }
-                  // Determine the style for the third part
-                  let keyRightContent;
-                  
-                  const keyid = 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
-                  let keyidalt;
-                  if(keyid.includes("_")){
-                    keyidalt = keyid.replace("_","");
-                  } else {
-                    keyidalt = keyid + "_";
-                  }
-                  const withgenus = ["sous-genre", "section", "sous-section", "série"];
-                  let taxonq = result.afterLastCapitalOrNumber.replace(" ", "=").replaceAll(" ", "+");
-                  if(withgenus.includes(taxonq.split("=")[0])) {
-                    taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
-                  };
-                  const [, ...rest] = result.afterLastCapitalOrNumber.split(" ");
-                  const taxond = rest.join(" ").replaceAll(" ", "&nbsp");
-                  const keyidto = 'k' + result.afterLastCapitalOrNumber;
-                  if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
-                      // Starts with a number
-                      keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
-                  } else {
-                      // Starts with a letter
-                      keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
-                  };
-                  
-                  
-                  const lineOutput = `
-                      <div class="keyRow"  id=${keyid} style="margin-left: ${count2}vw;">
-                          <div class="keyPart keyLeft"><a class="akey" href=#${keyidalt}>${result.beforeFirstPoint}</a></div>
-                          <div class="keyPart keyMiddle">${result.betweenFirstPointAndLastCapitalOrNumber}</div>
-                          ${keyRightContent}
-                      </div>
-                  `;
-                  keyContainer.innerHTML += lineOutput;
-              });
+                  lines.forEach((line, j) => {
+                      //console.log(line);
+                      const result = extractParts(line.trim());
+                      let ind;
+                      if(result.beforeFirstPoint.startsWith("Section ")){
+                        ind = Number(extractParts(lines[j+1].trim()).beforeFirstPoint.match(/\d+/)); // look ahead for the next offset
+                      } else {
+                        ind = Number(result.beforeFirstPoint.match(/\d+/));
+                      }
+                      const off = keynum.indexOf(ind);
+                      if(off !== -1){
+                        count = keyoff[off];
+                      } else {
+                        count = count + 0.35;
+                      }
+                      keynum.push(ind); 
+                      keyoff.push(count);
+                      let count2;
+                      //console.log(window.innerWidth);
+                      if(window.innerWidth > 600){
+                        count2 = count * 1;
+                      }else{
+                        count2 = 0;
+                      }
+                      let potentialTitle = result.beforeFirstPoint.trim();
+                      if(potentialTitle.startsWith('Section ')){
+                        
+                        keyContainer.innerHTML += `<div class="keyRow" style="margin-left: ${count2}vw; padding-top: 2vh; padding-bottom: 2vh; color: var(--green); font-weight: 300; font-size: 3vh;">${potentialTitle.replace('Section ','')}</div>`;
+                        
+                      } else {
+                        
+                        // Determine the style for the third part
+                        let keyRightContent;
+                        
+                        const keyid = letter + 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
+                        //console.log('keyid',keyid);
+                        let keyidalt;
+                        if(keyid.includes("_")){
+                          keyidalt = keyid.replace("_","");
+                        } else {
+                          keyidalt = keyid + "_";
+                        }
+                        //console.log('keyidalt',keyidalt);
+                        const withgenus = ["sous-genre", "section", "sous-section", "série"];
+                        let taxonq = result.afterLastCapitalOrNumber.replace(" ", "=").replaceAll(" ", "+");
+                        if(withgenus.includes(taxonq.split("=")[0])) {
+                          taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
+                        };
+                        const [, ...rest] = result.afterLastCapitalOrNumber.split(" ");
+                        const taxond = rest.join(" ").replaceAll(" ", "&nbsp");
+                        const keyidto = letter + 'k' + result.afterLastCapitalOrNumber;
+                        //console.log('keyidto',keyidto);
+                        if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
+                            // Starts with a number
+                            keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
+                        } else {
+                            // Starts with a letter
+                            keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
+                        };
+                        
+                        
+                        const lineOutput = `
+                            <div class="keyRow"  id=${keyid} style="margin-left: ${count2}vw;">
+                                <div class="keyPart keyLeft"><a class="akey" href=#${keyidalt}>${result.beforeFirstPoint}</a></div>
+                                <div class="keyPart keyMiddle">${result.betweenFirstPointAndLastCapitalOrNumber}</div>
+                                ${keyRightContent}
+                            </div>
+                        `;
+                        keyContainer.innerHTML += lineOutput;
+                      };
+                  });
+              });    
               attachHighlightListeners();
               
                 // Add stopPropagation to all anchor tags with the class "link"
@@ -198,5 +233,37 @@
   }        
   
   
+  function splitKey(input) {
+    const lines = input.split(/\r?\n/);
+    //console.log('lines', lines);
+    const blocks = [];
+    let current = { title: "", text: "" }; // default first block
   
+    for (const line of lines) {
+      if (line.trim().startsWith("Clé")) {
+  
+        // If the default block has content, push it
+        if (current.text.trim() !== "") {
+          current.text = current.text.trim();
+          blocks.push(current);
+        }
+  
+        // Start new block
+        current = { title: line.trim(), text: "" };
+  
+      } else {
+        current.text += line + "\n";
+      }
+    }
+  
+    // push last one
+    if (current.text.trim() !== "") {
+      current.text = current.text.trim();
+      blocks.push(current);
+    }
+  
+    return blocks;
+  }
+
+
   
