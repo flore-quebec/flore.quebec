@@ -289,15 +289,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         }
         
         
-        function disableKey(){
-            const key = document.getElementById("taxon_key");
-            const text = document.getElementById("taxon_text");
-            text.style.display = "none";
-            key.style.display = "none";
-            resetKey();
-            var tax = document.getElementById("selected");
-            tax.removeEventListener('click', taxonClick);
-        }
+        //function disableKey(){
+        //    const key = document.getElementById("taxon_key");
+        //    const text = document.getElementById("taxon_text");
+        //    text.style.display = "none";
+        //    key.style.display = "none";
+        //    resetKey();
+        //    var tax = document.getElementById("selected");
+        //    tax.removeEventListener('click', taxonClick);
+        //}
         
 
         window.onclick = function (event) {
@@ -1340,9 +1340,23 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
   var tax = document.getElementById("selected");
   const taxonClick = () => {
+    if (event.target.id !== 'taxon_name') { // this part forces to click on the taxon/triangle to open/close
+      return; // ignore clicks inside
+    }
     open_taxon();
   };
-  //tax.addEventListener('click', taxonClick);
+
+  // not sure if the below part actually work without bugs
+  document.addEventListener("click", (event) => {
+    const isOpen = window.getComputedStyle(document.getElementById("taxon_key")).display !== "none";
+    if (isOpen && !tax.contains(event.target)) {
+      open_taxon(); // will close it because open_taxon toggles
+    }
+  });
+
+
+
+
  
   function open_taxon() {
     const stats = document.getElementById("taxon_stats");
@@ -1495,7 +1509,6 @@ var eventHandler = function(name) {
   function load_contributions() {
     const profileContainer = document.getElementById("profile-container");
     profileContainer.innerHTML = '';
-
     const profilePromises = contributions.map(cont => {
         const profile = document.createElement('div');
         profile.className = 'profile';
@@ -1504,8 +1517,9 @@ var eventHandler = function(name) {
         const stats = document.createElement('div');
         stats.className = 'stats';
         stats.innerHTML = `
-            Nb d'espèces initiées: ${cont.nbspinitiated}<br>
-            Nb d'espèces modifiées: ${cont.nbspmodified}<br>
+            Espèces initiées/modifiées: ${cont.nbspinitiated}/${cont.nbspmodified}<br>
+            Taxons initiés/modifiés: ${cont.nbtaxoninitiated}/${cont.nbtaxonmodified}<br>
+            Clés initiées/modifiées: ${cont.nbkeyinitiated}/${cont.nbkeymodified}<br>
             Nb de changements: ${cont.nbchanges}<br>
             Nb de <i>commits</i>: ${cont.nbcommits}<br><br>
             <a class="acontrib" href="https://florequebec.ca?initié=${cont.name.replaceAll(' ', '+')}">Contributions</a><br>
@@ -1678,6 +1692,49 @@ var eventHandler = function(name) {
   }
   //get_stats();
 
+  
+  
+  function load_attributions(init, edit){
+  
+    let initiated;
+    let edited;
+    let contrib;
+    if(init === ''){ // just fill the column with "" in data
+        contrib = '';
+    } else {
+        //contrib.innerHTML = data[which].contribution+"&nbsp;";
+        initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(init.replaceAll(" ", "")) + '">' + init + '</a>';
+        //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer"' + 'Marc-AurèleVallée' + '">' + initiated + '</a>';                
+        initiated = 'Initié par ' + initiated;
+        if(edit[0] !== ''){
+          
+          edited = edit.map(editor => {
+return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
+});  
+          if(edited.length > 1){
+             edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
+          }
+          contrib = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+        } else {
+          contrib = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+        }
+    
+    const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
+    edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
+    
+    
+    
+    };
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   //load_contributions();
 /*  

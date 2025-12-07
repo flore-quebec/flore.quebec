@@ -56,10 +56,12 @@
         
         .stats {
           width: 17vw;
+          font-size: 2.0vmin;
         }
         
         .bio {
           width: 38vw;
+          font-size: 2.5vmin;
         }
         
         .pic, .bio, .stats, .picimg, .contribinfo {
@@ -101,6 +103,7 @@
           text-decoration: none;
           color: #000;
           font-weight: 500;
+          font-size: 2.5vmin;
         }
         
         .alink, a {
