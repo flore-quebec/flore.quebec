@@ -44,14 +44,7 @@
       const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
       const pathkey = gettaxon.key;
       const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
-      let urlkey;
-      //console.log('taxon', taxon);
-      if(taxon === 'Viola'){
-        const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/violakey.md";
-      } else {
-        const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
-      };
-      
+      const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
       //const urlkey = "https://cdn.hebergix.com/fr/floreqc/viola.md";
       //const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/viola.md";
       const urltaxon = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathtaxon;
