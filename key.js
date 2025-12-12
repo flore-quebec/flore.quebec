@@ -6,7 +6,7 @@
       const firstPointIndex = text.indexOf('.');
       const beforeFirstPoint = firstPointIndex !== -1 ? text.slice(0, firstPointIndex + 1) : text;
 
-      const wordsList = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série", "espèce"]; 
+      const wordsList = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série", "espèce", "Clé"]; 
       const regex = new RegExp(wordsList.join("|"), "g");
       // Find everything from after the first period up to the last capital letter or last number
       const lastCapitalIndex = Math.max(...Array.from(text.matchAll(regex), match => match.index));
@@ -27,11 +27,16 @@
 
       //console.log(beforeFirstPoint.match(/\d+/) + '_' + afterLastCapitalOrNumber.match(/\d+/)); 
 
+      //console.log("afterLastCapitalOrNumber", afterLastCapitalOrNumber);
+
       return {
           beforeFirstPoint,
           betweenFirstPointAndLastCapitalOrNumber,
           afterLastCapitalOrNumber
       };
+      
+
+      
   }
 
 
@@ -39,7 +44,14 @@
       const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
       const pathkey = gettaxon.key;
       const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
-      const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
+      let urlkey;
+      //console.log('taxon', taxon);
+      if(taxon === 'Viola'){
+        const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/violakey.md";
+      } else {
+        const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
+      };
+      
       //const urlkey = "https://cdn.hebergix.com/fr/floreqc/viola.md";
       //const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/viola.md";
       const urltaxon = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathtaxon;
@@ -62,6 +74,12 @@
             //console.log(taxonText);
             document.getElementById("taxon_text").innerHTML = marked.parse(taxonText);
             return keyText;
+            
+            //let tex;
+            //tex = ``;
+          //return tex;
+            
+   
           })
           .then(texte => {
               // Regular expression to match italicized text (text wrapped in * or _)
@@ -87,7 +105,8 @@
               //console.log(splittedKey);
               
               let letterCode = "A".charCodeAt(0);
-              
+             
+             
               splittedKey.forEach((keyPart, i) => {
                   let margintop;
                   if(i === 0){
@@ -95,19 +114,48 @@
                   } else {
                     margintop = 10;
                   }
-                  const letter = String.fromCharCode(letterCode + i);
-              
+
+                  //const letter = String.fromCharCode(letterCode + i);
+                  //console.log('letter', letter);
                   const lines = keyPart.text.split(/\n{2,}/);
                   const keyTitle = keyPart.title.trim();
-        
+                  console.log('keyTitle', keyTitle);
+                  let letter;
+                  let borderBottom;
+                  if(keyTitle === '') {
+                    letter = 0;
+                    borderBottom = '0px solid red';
+                  } else {
+                    letter = String.fromCharCode(letterCode + i - 1);
+                    borderBottom = 'inherit';
+                  }
+                  console.log('letter' + i, letter);
+                  
+                  const keyRef = 'Clé' + letter;
+                  //console.log('keyRef' + i, keyRef);
                   const keynum = [];
                   const keyoff = [];
                   let count = -1;
-                  keyContainer.innerHTML += `<div style="margin-top: ${margintop}vh; margin-bottom: 2vh; font-size: 5vh; color: var(--green);">${keyTitle}</div>`;
+                  keyContainer.innerHTML += `<div class="keyRow" id=${keyRef} style="margin-top: ${margintop}vh; margin-bottom: 2vh; border-bottom: ${borderBottom}; font-size: 5vh; color: var(--green);">${keyTitle}</div>`;
+                  
+                  
+                  
+                  // the idea is to find where each number comes from and index to get the from and adjust the offset
+                  //const elements = lines.map(line => extractParts(line.trim()));
+                  //const numbers = elements.map(line => Number(line.beforeFirstPoint)).filter(n => !isNaN(n));
+                  //const from = elements.map(beg => Number(beg.beforeFirstPoint.replace(`'.`,'')));
+                  //const to = elements.map(end => Number(end.afterLastCapitalOrNumber));
+                  //const w = numbers.map(num => to.indexOf(num));
+                  //console.log('from', from);
+                  //console.log('to', to);
+                  //console.log('numbers', numbers);
+                  //console.log('w', w);
+                  
               // Process each line and display the results
                   lines.forEach((line, j) => {
                       //console.log(line);
                       const result = extractParts(line.trim());
+                      //console.log(result);
                       let ind;
                       if(result.beforeFirstPoint.startsWith("Section ")){
                         ind = Number(extractParts(lines[j+1].trim()).beforeFirstPoint.match(/\d+/)); // look ahead for the next offset
@@ -115,6 +163,10 @@
                         ind = Number(result.beforeFirstPoint.match(/\d+/));
                       }
                       const off = keynum.indexOf(ind);
+                      
+                      
+                      
+                      
                       if(off !== -1){
                         count = keyoff[off];
                       } else {
@@ -122,6 +174,7 @@
                       }
                       keynum.push(ind); 
                       keyoff.push(count);
+                      //console.log(keynum);
                       let count2;
                       //console.log(window.innerWidth);
                       if(window.innerWidth > 600){
@@ -161,8 +214,15 @@
                             // Starts with a number
                             keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
                         } else {
-                            // Starts with a letter
-                            keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
+                            if (result.afterLastCapitalOrNumber.startsWith('Clé')) {
+                              const tokey = result.afterLastCapitalOrNumber.replaceAll("Clé ", "");
+                              const moveto = 'Clé' + String.fromCharCode(tokey.charCodeAt(0)); 
+                              keyRightContent = `<div class="keyRight"><a class="akey" href=#${moveto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
+                              //console.log('keyRightContent', keyRightContent);
+                            } else {
+                              // Starts with a letter
+                              keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
+                            }
                         };
                         
                         
@@ -196,6 +256,7 @@
   // Function to highlight the div temporarily
   function highlightDiv(id) {
       const div = document.getElementById(id);
+      //console.log(div);
       if (div) {
           div.classList.add('highlight'); // Add highlight class
           setTimeout(() => {
@@ -207,11 +268,14 @@
   // Attach click event listeners to all anchor links
   function attachHighlightListeners() {
   const links = document.querySelectorAll('a[href^="#"]');
+  //console.log('links', links);
   links.forEach(link => {
       link.addEventListener('click', function(event) {
           event.preventDefault(); // Prevent default anchor behavior
           const targetId = this.getAttribute('href').substring(1); // Get the target id
+          //console.log('this.getAttribute(href)', this.getAttribute('href').substring(1));
           const targetElement = document.getElementById(targetId);
+          console.log('targetElement', targetElement);
           if (!isElementInViewport(targetElement)) {
             targetElement.scrollIntoView({ behavior: 'smooth' });
           }
