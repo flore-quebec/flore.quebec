@@ -69,9 +69,8 @@
             return keyText;
             
             //let tex;
-            //tex = ``;
-          //return tex;
-            
+            //const tex = ``;
+            //return tex;
    
           })
           .then(texte => {
@@ -99,6 +98,9 @@
               
               let letterCode = "A".charCodeAt(0);
              
+              const parts = [];
+              let to;
+              let from;
              
               splittedKey.forEach((keyPart, i) => {
                   let margintop;
@@ -113,25 +115,48 @@
                   const lines = keyPart.text.split(/\n{2,}/);
                   const keyTitle = keyPart.title.trim();
                   console.log('keyTitle', keyTitle);
+                  console.log('i', i);
                   let letter;
                   let borderBottom;
                   if(keyTitle === '') {
                     letter = 0;
                     borderBottom = '0px solid red';
                   } else {
-                    letter = String.fromCharCode(letterCode + i - 1);
-                    borderBottom = 'inherit';
+                    borderBottom = 'inherit'; 
+                    if(keyTitle.includes('Clé A')) {
+                      letter = 'A';//String.fromCharCode(letterCode + i - 1);
+                    } else {
+                      if(i === 0){
+                        letter = 0;
+                      } else {
+                        letter = String.fromCharCode(letterCode + i - 1);
+                      }
+                    }
                   }
-                  console.log('letter' + i, letter);
+                  console.log('letter', letter);
                   
                   const keyRef = 'Clé' + letter;
                   //console.log('keyRef' + i, keyRef);
                   const keynum = [];
                   const keyoff = [];
                   let count = -1;
-                  keyContainer.innerHTML += `<div class="keyRow" id=${keyRef} style="margin-top: ${margintop}vh; margin-bottom: 2vh; border-bottom: ${borderBottom}; font-size: 5vh; color: var(--green);">${keyTitle}</div>`;
+
+                  const kindex = parts.findIndex(row => row[1] === keyRef);
+                  console.log('kindex', kindex);
+                  let keyTo;
+                  if(kindex === -1){
+                    parts.push([keyRef, 'none']);
+                    keyTo = keyRef;
+                  } else {
+                    parts.push([keyRef, parts[kindex][0]]);
+                    keyTo = parts[kindex][0];
+                  }
+                  //console.log('matched', parts[kindex][0]);
+
+                  keyContainer.innerHTML += `<div class="keyRow" id=${keyRef} style="margin-top: ${margintop}vh; margin-bottom: 2vh; border-bottom: ${borderBottom}; font-size: 5vh; color: var(--green);"><a class="akey" href=#${keyTo}>${keyTitle}</a></div>`;                  
                   
-                  
+                  //console.log('key lines', lines);
+                  console.log('parts', parts[parts.length - 1]);
                   
                   // the idea is to find where each number comes from and index to get the from and adjust the offset
                   //const elements = lines.map(line => extractParts(line.trim()));
@@ -157,9 +182,6 @@
                       }
                       const off = keynum.indexOf(ind);
                       
-                      
-                      
-                      
                       if(off !== -1){
                         count = keyoff[off];
                       } else {
@@ -184,14 +206,29 @@
                         
                         // Determine the style for the third part
                         let keyRightContent;
-                        
                         const keyid = letter + 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
-                        //console.log('keyid',keyid);
                         let keyidalt;
+                        let kindex;
                         if(keyid.includes("_")){
                           keyidalt = keyid.replace("_","");
                         } else {
-                          keyidalt = keyid + "_";
+                          //keyidalt = keyid + "_";
+                          //const index = parts.findIndex(row => row[1] === x);
+                          kindex = parts.findIndex(row => row[1] === keyid);
+                          if(kindex === -1){
+                            //keyidalt = keyid;
+                            if(i !== 0){
+                              keyidalt = parts[parts.length - 1][1];
+                            } else {
+                              if(keyTitle === ''){
+                                keyidalt = '#'; // hacky just to remove the highlighted empty title
+                              } else {
+                                keyidalt = parts[0][0];
+                              }
+                            }
+                          } else {
+                            keyidalt = parts[kindex][0];
+                          }
                         }
                         //console.log('keyidalt',keyidalt);
                         const withgenus = ["sous-genre", "section", "sous-section", "série"];
@@ -206,15 +243,17 @@
                         if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
                             // Starts with a number
                             keyRightContent = `<div class="keyRight"><a class="akey" href=#${keyidto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
+                            from = keyidto;
                         } else {
                             if (result.afterLastCapitalOrNumber.startsWith('Clé')) {
                               const tokey = result.afterLastCapitalOrNumber.replaceAll("Clé ", "");
                               const moveto = 'Clé' + String.fromCharCode(tokey.charCodeAt(0)); 
                               keyRightContent = `<div class="keyRight"><a class="akey" href=#${moveto}>${result.afterLastCapitalOrNumber.replaceAll(" ", "&nbsp")}</a></div>`;
-                              //console.log('keyRightContent', keyRightContent);
+                              from = moveto;
                             } else {
                               // Starts with a letter
                               keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
+                              from = taxond
                             }
                         };
                         
@@ -227,6 +266,8 @@
                             </div>
                         `;
                         keyContainer.innerHTML += lineOutput;
+                        parts.push([keyid, from]);
+                        //console.log('parts', parts[parts.length - 1]);
                       };
                   });
               });    
@@ -268,7 +309,7 @@
           const targetId = this.getAttribute('href').substring(1); // Get the target id
           //console.log('this.getAttribute(href)', this.getAttribute('href').substring(1));
           const targetElement = document.getElementById(targetId);
-          console.log('targetElement', targetElement);
+          //console.log('targetElement', targetElement);
           if (!isElementInViewport(targetElement)) {
             targetElement.scrollIntoView({ behavior: 'smooth' });
           }
@@ -277,17 +318,19 @@
       });
   });        
   }
-     
+
   
-  function isElementInViewport(el) {
-      const rect = el.getBoundingClientRect();
-      return (
-          rect.top >= 0 &&
-          rect.left >= 0 &&
-          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-          rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-      );
-  }        
+  function isElementInViewport(el, marginVh = 20) {
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+  
+    const marginPx = (marginVh / 100) * vh;
+  
+    return (
+      rect.top    >= marginPx &&
+      rect.bottom <= vh - marginPx
+    );
+  }
   
   
   function splitKey(input) {
