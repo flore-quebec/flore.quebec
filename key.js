@@ -86,15 +86,15 @@
               });                      
             
               const keyContainer = document.getElementById("taxon_key");
-    
+
               // Clear previous results
               keyContainer.innerHTML = '';
               
               let splittedKey = splitKey(text);
               let letterCode = "A".charCodeAt(0);
-             
+
               const parts = [];
-              let to;
+              //let to;
               let from;
              
               splittedKey.forEach((keyPart, i) => {
@@ -204,12 +204,12 @@
                         }
                         //console.log('keyidalt',keyidalt);
                         const withgenus = ["sous-genre", "section", "sous-section", "série"];
-                        let taxonq = result.afterLastCapitalOrNumber.replace(" ", "=").replaceAll(" ", "+");
+                        let taxonq = result.afterLastCapitalOrNumber.replace(/\s*var\..*$/, "").replace(" ", "=").replaceAll(" ", "+");
                         if(withgenus.includes(taxonq.split("=")[0])) {
                           taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
                         };
                         const [, ...rest] = result.afterLastCapitalOrNumber.split(" ");
-                        const taxond = rest.join(" ").replaceAll(" ", "&nbsp");
+                        const taxond = rest.join(" ").replaceAll(" ", "&nbsp").replace(/-/g, '\u2011').replace("(en&nbsppartie)",'<span style="font-style: normal; font-weight: 300;">(en&nbsppartie)</span>');
                         const keyidto = letter + 'k' + result.afterLastCapitalOrNumber;
                         //console.log('keyidto',keyidto);
                         if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
@@ -224,8 +224,12 @@
                               from = moveto;
                             } else {
                               // Starts with a letter
-                              keyRightContent = `<div class="keyRight"><em><a class="akey" href="https://florequebec.ca?${taxonq}">${taxond}</a></em></div>`;
-                              from = taxond
+                              if(taxond.includes('×')){
+                                keyRightContent = `<div class="keyRight"><em><div class="akeynotclickable">${taxond}</div></em></div>`;
+                              } else {
+                                keyRightContent = `<div class="keyRight"><em><a class="akey" href="?${taxonq}">${taxond}</a></em></div>`;
+                              }
+                              from = taxond;
                             }
                         };
                         

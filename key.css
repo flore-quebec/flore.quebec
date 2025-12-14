@@ -56,10 +56,14 @@
           max-width: 90%;
       }
     }
-    .akey {
+    .akey, .akeynotclickable {
       all: unset;
       cursor: pointer;
       position: relative;
+    }
+    
+    .akeynotclickable {
+      cursor: auto;
     }
     
     .akey::before {
