@@ -213,7 +213,11 @@
                           taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
                         };
                         const [, ...rest] = result.afterLastCapitalOrNumber.split(" ");
-                        const taxond = rest.join(" ").replaceAll(" ", "&nbsp").replace(/-/g, '\u2011').replace("(en&nbsppartie)",'<span style="font-style: normal; font-weight: 300;">(en&nbsppartie)</span>');
+                        const taxond = rest.join(" ")
+                          .replaceAll(" ", "&nbsp")
+                          .replace(/-/g, '\u2011')
+                          .replace("&nbspvar.&nbsp",'<span style="font-style: normal;">&nbspvar.&nbsp</span>')
+                          .replace("(en&nbsppartie)",'<span style="font-style: normal; font-weight: 300;">(en&nbsppartie)</span>');
                         const keyidto = letter + 'k' + result.afterLastCapitalOrNumber;
                         //console.log('keyidto',keyidto);
                         if (/\d/.test(result.afterLastCapitalOrNumber[0])) {  
