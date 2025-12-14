@@ -90,12 +90,7 @@
               // Clear previous results
               keyContainer.innerHTML = '';
               
-              
-              //console.log(texte);
-              
               let splittedKey = splitKey(text);
-              //console.log(splittedKey);
-              
               let letterCode = "A".charCodeAt(0);
              
               const parts = [];
@@ -109,13 +104,8 @@
                   } else {
                     margintop = 10;
                   }
-
-                  //const letter = String.fromCharCode(letterCode + i);
-                  //console.log('letter', letter);
                   const lines = keyPart.text.split(/\n{2,}/);
                   const keyTitle = keyPart.title.trim();
-                  console.log('keyTitle', keyTitle);
-                  console.log('i', i);
                   let letter;
                   let borderBottom;
                   if(keyTitle === '') {
@@ -133,75 +123,57 @@
                       }
                     }
                   }
-                  console.log('letter', letter);
+                  //console.log('letter', letter);
                   
                   const keyRef = 'Clé' + letter;
                   //console.log('keyRef' + i, keyRef);
-                  const keynum = [];
-                  const keyoff = [];
-                  let count = -1;
+                  let count = 0; //-1
 
                   const kindex = parts.findIndex(row => row[1] === keyRef);
-                  console.log('kindex', kindex);
+                  //console.log('kindex', kindex);
                   let keyTo;
                   if(kindex === -1){
-                    parts.push([keyRef, 'none']);
+                    parts.push([keyRef, 'none', 0]);
                     keyTo = keyRef;
                   } else {
-                    parts.push([keyRef, parts[kindex][0]]);
+                    parts.push([keyRef, parts[kindex][0], 0]);
                     keyTo = parts[kindex][0];
                   }
                   //console.log('matched', parts[kindex][0]);
 
                   keyContainer.innerHTML += `<div class="keyRow" id=${keyRef} style="margin-top: ${margintop}vh; margin-bottom: 2vh; border-bottom: ${borderBottom}; font-size: 5vh; color: var(--green);"><a class="akey" href=#${keyTo}>${keyTitle}</a></div>`;                  
                   
-                  //console.log('key lines', lines);
-                  console.log('parts', parts[parts.length - 1]);
-                  
-                  // the idea is to find where each number comes from and index to get the from and adjust the offset
-                  //const elements = lines.map(line => extractParts(line.trim()));
-                  //const numbers = elements.map(line => Number(line.beforeFirstPoint)).filter(n => !isNaN(n));
-                  //const from = elements.map(beg => Number(beg.beforeFirstPoint.replace(`'.`,'')));
-                  //const to = elements.map(end => Number(end.afterLastCapitalOrNumber));
-                  //const w = numbers.map(num => to.indexOf(num));
-                  //console.log('from', from);
-                  //console.log('to', to);
-                  //console.log('numbers', numbers);
-                  //console.log('w', w);
-                  
-              // Process each line and display the results
+                  //console.log('parts', parts[parts.length - 1]);
+
                   lines.forEach((line, j) => {
                       //console.log(line);
                       const result = extractParts(line.trim());
-                      //console.log(result);
-                      let ind;
-                      if(result.beforeFirstPoint.startsWith("Section ")){
-                        ind = Number(extractParts(lines[j+1].trim()).beforeFirstPoint.match(/\d+/)); // look ahead for the next offset
+                      const keyid = letter + 'k' + result.beforeFirstPoint.replace(".","").replace("'","_");
+                      let keyidnext;
+                      let potentialTitle = result.beforeFirstPoint.trim();
+                      const off = 1;
+                      if(potentialTitle.startsWith('Section ')){
+                        keyidnext = letter + 'k' + extractParts(lines[j+1].trim()).beforeFirstPoint.replace(".","").replace("'","_");
+                        count = parts[parts.findIndex(row => row[1] === keyidnext.replace("_",""))][2] + off//[2];
                       } else {
-                        ind = Number(result.beforeFirstPoint.match(/\d+/));
+                        if(keyid.endsWith('k1') || keyid.endsWith('k1_')){
+                          count = 0; //parts[parts.findIndex(row => row[1] === keyid.replace("_",""))][2];
+                        } else {
+                          count = parts[parts.findIndex(row => row[1] === keyid.replace("_",""))][2] + off//[2];
+                        }
                       }
-                      const off = keynum.indexOf(ind);
                       
-                      if(off !== -1){
-                        count = keyoff[off];
-                      } else {
-                        count = count + 0.35;
-                      }
-                      keynum.push(ind); 
-                      keyoff.push(count);
-                      //console.log(keynum);
                       let count2;
                       //console.log(window.innerWidth);
-                      if(window.innerWidth > 600){
+                      if(window.innerWidth > 600){ // ignore key offset if on mobile
                         count2 = count * 1;
                       }else{
                         count2 = 0;
                       }
-                      let potentialTitle = result.beforeFirstPoint.trim();
+                      
+                      
                       if(potentialTitle.startsWith('Section ')){
-                        
                         keyContainer.innerHTML += `<div class="keyRow" style="margin-left: ${count2}vw; padding-top: 2vh; padding-bottom: 2vh; color: var(--green); font-weight: 300; font-size: 3vh;">${potentialTitle.replace('Section ','')}</div>`;
-                        
                       } else {
                         
                         // Determine the style for the third part
@@ -266,8 +238,8 @@
                             </div>
                         `;
                         keyContainer.innerHTML += lineOutput;
-                        parts.push([keyid, from]);
-                        //console.log('parts', parts[parts.length - 1]);
+                        parts.push([keyid, from, count2]);
+                        //console.log('parts', parts[parts.length - 1], count2);
                       };
                   });
               });    
