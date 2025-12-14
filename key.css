@@ -39,6 +39,7 @@
         /*flex-grow: 1; /* Allow the middle part to grow and take remaining space */
         max-width: 80%;
         margin: 0px;
+        margin-left: 0.25vw;
         border: 0px solid #bbb;
     }
     .keyRight {
@@ -64,9 +65,9 @@
     .akey::before {
       position: absolute;
       content: "";
-      top: -10px; /* Expand area above */
-      bottom: -10px; /* Expand area below */
-      left: -10px; /* Expand area to the left */
-      right: -10px; /* Expand area to the right */
+      top: -15px; /* Expand area above */
+      bottom: -15px; /* Expand area below */
+      left: -15px; /* Expand area to the left */
+      right: -15px; /* Expand area to the right */
       background: transparent; /* Keeps it invisible */
     }
