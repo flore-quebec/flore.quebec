@@ -232,7 +232,8 @@
                               from = moveto;
                             } else {
                               // Starts with a letter
-                              if(taxond.includes('×')){
+                              const wi = taxa.findIndex(tax => taxonq.split("=")[1].replace('+', ' ') === tax.taxa);
+                              if(taxond.includes('×') || wi === -1){
                                 keyRightContent = `<div class="keyRight"><em><div class="akeynotclickable">${taxond}</div></em></div>`;
                               } else {
                                 keyRightContent = `<div class="keyRight"><em><a class="akey" href="?${taxonq}">${taxond}</a></em></div>`;
