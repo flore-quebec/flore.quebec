@@ -204,7 +204,11 @@
                         }
                         //console.log('keyidalt',keyidalt);
                         const withgenus = ["sous-genre", "section", "sous-section", "série"];
-                        let taxonq = result.afterLastCapitalOrNumber.replace(/\s*var\..*$/, "").replace(" ", "=").replaceAll(" ", "+");
+                        let taxonq = result.afterLastCapitalOrNumber
+                          .replace(' (en partie)', '')
+                          .replace(/\s*var\..*$/, "")
+                          .replace(" ", "=")
+                          .replaceAll(" ", "+");
                         if(withgenus.includes(taxonq.split("=")[0])) {
                           taxonq = taxonq.replace("=", "=" + taxon + "+" + taxonq.split("=")[0] + "+");
                         };
