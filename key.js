@@ -104,7 +104,7 @@
                   } else {
                     margintop = 10;
                   }
-                  const lines = keyPart.text.split(/\n{2,}/);
+                  const lines = keyPart.text.split(/\n\s*\n+/); // ignore blank space between newlines (e.g. Polygonatum key)
                   const keyTitle = keyPart.title.trim();
                   let letter;
                   let borderBottom;
