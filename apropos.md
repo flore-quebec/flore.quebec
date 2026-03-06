@@ -9,6 +9,7 @@ Les comptes-rendus et les clés d’identifications, rédigés par une équipe d
   <img src="https://cdn.hebergix.com/fr/floreqc/retraite_nov2025.jpg" alt="Retraite Novembre 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;  border-radius: 0.5vh;">
   <figcaption>Une partie de l’équipe de rédaction de Flore Québec lors de la retraite de rédaction de Novembre 2025 organisée par Flora Quebeca</figcaption>
 </figure>
+
 <br>
 Pour toutes questions, commentaires ou suggestions, merci de contacter <a href="mailto:francoisrousseu@hotmail.com?subject=[Flore Québec]">François Rousseu</a> (ou frousseu sur iNaturalist) ou un autre membre de l'équipe de rédaction. Il est également possible de contribuer par Github où le site et le code est hébergé https://github.com/flore-quebec.
 
