@@ -1266,6 +1266,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               document.title = 'Ajouts récents';
             } else if(urlParams.has("page")) {
               load_contributions();
+              load_apropos();
               const params = getURLparams();
               const group = Object.keys(params)[0];
               const taxon = params[group][0];
@@ -1490,6 +1491,9 @@ var eventHandler = function(name) {
     //apropos.style.display = 'contents';
     updatePageURL("page", "Apropos");
     updatePage("Apropos");
+    
+    load_apropos();
+    
   }); 
   
   //explorer_tab.addEventListener('click', () => {
@@ -1728,12 +1732,19 @@ return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encod
   }
   
   
-  
-  
-  
-  
-  
-  
+  function load_apropos() {
+    const profileContainer = document.getElementById("apropos_content");
+    profileContainer.innerHTML = '';
+    //const url = `https://raw.githubusercontent.com/flore-quebec/species/refs/heads/main/Esp%C3%A8ces/Asparagaceae/Polygonatum/Polygonatum_multiflorum.md`;
+    const url = `https://raw.githubusercontent.com/flore-quebec/flore.quebec/refs/heads/main/apropos.md`;
+    
+
+    return fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            profileContainer.innerHTML = marked.parse(data);
+        })
+  }
   
   
   //load_contributions();
