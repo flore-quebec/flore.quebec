@@ -9,7 +9,7 @@ Pour toutes questions, commentaires ou suggestions, merci de contacter <a href="
 
 <figure style="width: 75%; margin: 0 auto; text-align: center;">
   <img src="https://cdn.hebergix.com/fr/floreqc/retraite_nov2025.jpg" alt="Retraite Novembre 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;  border-radius: 0.5vh;">
-  <figcaption style="font-size: 1.25vh;">Une partie de l’équipe de rédaction de Flore Québec lors de la retraite de rédaction de Novembre 2025 organisée par Flora Quebeca</figcaption>
+  <figcaption style="font-size: 2vh;">Une partie de l’équipe de rédaction de Flore Québec lors de la retraite de rédaction de Novembre 2025 organisée par Flora Quebeca</figcaption>
 </figure>
 
 ## VASCAN
@@ -29,7 +29,7 @@ Les photos présentées dans les comptes-rendus servent à donner une idée de l
 Pour les espèces ayant un compte-rendu,les photos ont été soigneusement sélectionnées par l'auteur ou l'autrice du compte-rendu. Pour les espèces n'ayant pas encore de compte-rendu, les photos ont été choisies aléatoirement en favorisant certains critères:
 
 - observation effectuée sur le territoire québécois
-- observation validée par un membre de l'équipe de rédation ou un ou une botaniste reconnu
+- observation validée par un membre de l'équipe de rédation ou un ou une botaniste reconnue
 - observation iNaturalist de niveau recherche (_RG_, _Research Grade_)
 
 Bien que ces critères soient respectés pour la majorité des photos, certaines espèces n'ont pas assez d'observations pour respecter ces critères et des photos à l'identification plus incertaine ont été utilisées. Dans tous les cas, des erreurs d'identification sont possibles (voire assurées!) et il convient donc de rester prudent lors de l'interprétation. Veuillez nous contacter si vous voyez une erreur d'identification sur le site et n'hésitez pas à modifier une identification erronée sur iNaturalist. À noter que l'ensemble des photos présentées sur le site sont susceptibles d'être remplacées ou modifiées en fonction de l'évolution du site, du contenu des comptes-rendus et de la disponibilité des observations.  
@@ -59,7 +59,6 @@ L'objectif premier des cartes de répartition est de donner une idée approximat
    - des problèmes taxonomiques peuvent être à l'origine d'absences ou de surplus d'occurrences; 
    - etc.
    
-Malgré ces multiples précautions à prendre, ces cartes demeurent utiles pour se faire une idée rapide de la répartition de chaque espèce. Par exemple, la saxifrage jaune ([_Saxifraga aizoides_](https://florequebec.ca/?espèce=Saxifraga+aizoides)) et le saule glauque ([_Salix glauca_](https://florequebec.ca/?espèce=Salix+glauca)) sont deux espèces plutôt abondantes dans le nord du Québec et en Gaspésie, mais complètement absentes du Québec méridional. Pour sa part, le caryer ovale ([_Carya ovata_](https://florequebec.ca/?espèce=Carya+ovata)) est retrouvé uniquement dans l’extrême sud du Québec, alors que l'ériocaulon de Parker ([Eriocaulon parkeri](https://florequebec.ca/?espèce=Eriocaulon+parkeri)) ne se retrouve que le long de l'estuaire d’eau douce du St-Laurent. Quelques espèces n'ont aucune mention ce qui peut indiquer qu'elles sont rares, localisées, difficiles à identifier, négligées, ou tout simplement qu'aucune observation n'a été intégrée dans les bases de données utilisées. 
+Malgré ces multiples précautions à prendre, ces cartes demeurent utiles pour se faire une idée rapide de la répartition de chaque espèce. Par exemple, la saxifrage jaune ([_Saxifraga aizoides_](https://florequebec.ca/?espèce=Saxifraga+aizoides)) et le saule glauque ([_Salix glauca_](https://florequebec.ca/?espèce=Salix+glauca)) sont deux espèces plutôt abondantes dans le nord du Québec et en Gaspésie, mais complètement absentes du Québec méridional. Pour sa part, le caryer ovale ([_Carya ovata_](https://florequebec.ca/?espèce=Carya+ovata)) est retrouvé uniquement dans l’extrême sud du Québec, alors que l'ériocaulon de Parker ([_Eriocaulon parkeri_](https://florequebec.ca/?espèce=Eriocaulon+parkeri)) ne se retrouve que le long de l'estuaire d’eau douce du St-Laurent. Quelques espèces n'ont aucune mention ce qui peut indiquer qu'elles sont rares, localisées, difficiles à identifier, négligées, ou tout simplement qu'aucune observation n'a été intégrée dans les bases de données utilisées. 
 
-Finalement, le statut de rareté et le statut d’indigénat des différentes espèces est indiqué sur chaque carte. Ces données sont tirées de vascan (https://data.canadensys.net/vascan/search?lang=fr) et des listes gouvernementales à jour pour les espèces avec un statut de protection. 
 
