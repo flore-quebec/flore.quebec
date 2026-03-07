@@ -9,7 +9,7 @@ Pour toutes questions, commentaires ou suggestions, merci de contacter <a href="
 
 <figure style="width: 75%; margin: 0 auto; text-align: center;">
   <img src="https://cdn.hebergix.com/fr/floreqc/retraite_nov2025.jpg" alt="Retraite Novembre 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;  border-radius: 0.5vh;">
-  <figcaption style="font-size: 2vh;">Une partie de l’équipe de rédaction de Flore Québec lors de la retraite de rédaction de Novembre 2025 organisée par Flora Quebeca</figcaption>
+  <figcaption style="font-size: 1.75vh;">Une partie de l’équipe de rédaction de Flore Québec lors de la retraite de rédaction de Novembre 2025 organisée par Flora Quebeca</figcaption>
 </figure>
 
 ## VASCAN
@@ -20,7 +20,7 @@ Flore Québec repose en grande partie sur [VASCAN](https://data.canadensys.net/v
 
 Les comptes-rendus sont le coeur du site Flore Québec. Ils ont comme objectif principal de faciliter la reconnaissance et l'identification des espèces. Pour ce faire, l'emphase est mise sur les traits distinctifs, i.e. les éléments qui permettent de remarquer et de distinguer l'espèce sur le terrain. On y décrit également les espèces semblables et les critères permettant de différencier l'espèce visée des espèces semblables. Ces descriptions ont surtout pour but de faciliter l'identification et la reconnaissance des différentes espèces sur le terrain et non de fournir une description exhaustive des espèces.  
 
-Les descriptions sont majoritairement basées sur des observations personnelles, l’examen de spécimens d’herbier ou de données provenant de la littérature (majoritairement [_Flora of North America_](https://floranorthamerica.org/), [_Flora Novae Angliae_](https://gobotany.nativeplanttrust.org/about/), [_GoBotany_](https://gobotany.nativeplanttrust.org), [_Michigan Flora_](https://michiganflora.net/), [_Minnesota Wildflowers_](https://www.minnesotawildflowers.info/), la [Flore Laurentienne](https://www.cheneliere.ca/fr/flore-laurentienne-d3-9782891058179.html) ou la [FLore nordique du Québec et du Labrador](https://www.pulaval.com/livres?search=flore+nordique).
+Les descriptions sont majoritairement basées sur des observations personnelles, l’examen de spécimens d’herbier ou de données provenant de la littérature (majoritairement [_Flora of North America_](https://floranorthamerica.org/), [_Flora Novae Angliae_](https://gobotany.nativeplanttrust.org/about/), [_GoBotany_](https://gobotany.nativeplanttrust.org), [_Michigan Flora_](https://michiganflora.net/), [_Minnesota Wildflowers_](https://www.minnesotawildflowers.info/), la [Flore Laurentienne](https://www.cheneliere.ca/fr/flore-laurentienne-d3-9782891058179.html) ou la [Flore nordique du Québec et du Labrador](https://www.pulaval.com/livres?search=flore+nordique).
 
 ## Photos
 
