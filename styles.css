@@ -276,6 +276,8 @@ body {
     margin-bottom: 0vh;
     background-color: var(--white); /* #f2f2f2; */
     /* border: 1px solid var(--transparentgreen); */
+    /* transform: scale(0.3);
+    transform-origin: top left; *//* anchor point */
 }
 
 .gallery {
@@ -384,7 +386,7 @@ body {
     font-size: 1.2vmin; /* Larger font size for title */
     text-align: left;
     border-radius: 0 0 15px 15px; /* Rounded corners at the bottom */
-    font-weight: normal; /* Bold title text */
+    font-weight: 300; /* Bold title text */
     font-style: normal;
     text-shadow: 0px 0px #777;
 }
@@ -968,7 +970,7 @@ ul {
   align-items: center;
   justify-content: center;
   margin-top: 3vmin;
-  border-top: 1px solid #DDDDDD;
+  border-top: 1px dotted #BBB;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1147,7 +1149,7 @@ ul {
 .contributor, .doi, .edit {
   display: flex;
   font-size: 1.75vmin;
-  font-weight: normal;
+  font-weight: 300;
   color: #888;
   text-align: center;
   margin-bottom: 1vmin;
@@ -1390,7 +1392,25 @@ ul {
   flex-direction: column;
   border: 0px solid red;
   padding-top: 5vh;
-  padding-bottom: 5vh;
+  padding-bottom: 1vh;
+}
+
+.taxon_key_footer {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0vmin;
+  border-top: 0px solid #DDDDDD;
+}
+
+.taxon_text_footer {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0vmin;
+  border-top: 0px solid #DDDDDD;
 }
 
 @media only screen and (max-width: 600px) {

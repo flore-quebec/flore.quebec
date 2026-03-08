@@ -225,30 +225,31 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             protection.innerHTML = makeProtection();
             let initiated = data[which].initiated;
             let edited = data[which].edited;
-            if(data[which].contribution === "NA"){ // just fill the column with "" in data
-                contrib.innerHTML = ''; 
-            } else {
-                //contrib.innerHTML = data[which].contribution+"&nbsp;";
-                initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">' + initiated + '</a>';
-                //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer"' + 'Marc-AurèleVallée' + '">' + initiated + '</a>';                
-                initiated = 'Initié par ' + initiated;
-                if(edited[0] !== ''){
+            //if(data[which].contribution === "NA"){ // just fill the column with "" in data
+                //contrib.innerHTML = ''; 
+            //} else {
+                //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(initiated.replaceAll(" ", "")) + '">' + initiated + '</a>';
+                //initiated = 'Initié par ' + initiated;
+                //if(edited[0] !== ''){
                   
-                edited = edited.map(editor => {
-    return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
-});  
-                  
-                  if(edited.length > 1){
-                    edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
-                  }
-                  contrib.innerHTML = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
-                } else {
-                  contrib.innerHTML = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
-                }
-                //contrib.innerHTML = initiated + '&nbsp;et modifié par ' + edited + '. ';
-            };
-            const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
-            edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
+                //edited = edited.map(editor => {
+    //return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
+//});  
+                  //if(edited.length > 1){
+                    //edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
+                  //}
+                  //contrib.innerHTML = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+                //} else {
+                  //contrib.innerHTML = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+                //}
+            //};
+            //const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
+            //edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
+
+            const att = load_attributions(initiated, edited, 'species');
+            
+            contrib.innerHTML = att[0];
+            edit.innerHTML = att[1];
 
             const map = document.getElementById('map');
             const pheno = document.getElementById('pheno');
@@ -282,32 +283,19 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
         
         
         function resetKey(){
-            const key = document.getElementById("taxon_key");
-            const text = document.getElementById("taxon_text");
-            key.innerHTML = "";
-            text.innerHTML = "";
+            document.getElementById("taxon_key").innerHTML = '';
+            document.getElementById("taxon_text").innerHTML = '';
+            document.getElementById("contributortaxon").innerHTML = '';
+            document.getElementById("edittaxon").innerHTML = '';
+            document.getElementById("contributorkey").innerHTML = '';
+            document.getElementById("editkey").innerHTML = '';
         }
         
-        
-        //function disableKey(){
-        //    const key = document.getElementById("taxon_key");
-        //    const text = document.getElementById("taxon_text");
-        //    text.style.display = "none";
-        //    key.style.display = "none";
-        //    resetKey();
-        //    var tax = document.getElementById("selected");
-        //    tax.removeEventListener('click', taxonClick);
-        //}
-        
-
         window.onclick = function (event) {
-        //    if (event.target === modal) {
-        //        closeModal(true);
-        //    };
-            const gallery = document.getElementById("gallery-content");
-            if (event.target === gallery) {
-                closeGallery();
-            };
+          const gallery = document.getElementById("gallery-content");
+          if (event.target === gallery) {
+              closeGallery();
+          };
         };
 
 
@@ -1381,6 +1369,10 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
     //stats.style.display = isHidden ? "flex" : "none";
     text.style.display = isHidden ? "flex" : "none";
     key.style.display = isHidden ? "flex" : "none";
+    document.getElementById("taxon_text_footer").style.display = isHidden ? "flex" : "none";
+    document.getElementById("taxon_key_footer").style.display = isHidden ? "flex" : "none";
+    //document.getElementById("key_text_footer").style.display = isHidden ? "flex" : "none";
+    //document.getElementById("key_key_footer").style.display = isHidden ? "flex" : "none";
   }
         
 
@@ -1698,47 +1690,54 @@ var eventHandler = function(name) {
 
   
   
-  function load_attributions(init, edit){
+  function load_attributions(init, edit, sp, datem, path){
   
+    console.log('init + edit', init, edit);
+    
     let initiated;
     let edited;
     let contrib;
-    if(init === ''){ // just fill the column with "" in data
-        contrib = '';
+    
+    let date;
+    let edit_link;
+    let contrib_link;
+    
+    if(sp === 'species'){
+      date = data[which].date.slice(0,10);
+      edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
     } else {
-        //contrib.innerHTML = data[which].contribution+"&nbsp;";
+      date = datem.slice(0,10);
+      edit_link = 'https://github.com/flore-quebec/keys/blob/main/' + path;
+    }
+    console.log('init', init);
+    if(init === '' || init === 'NA'){ // just fill the column with "" in data
+        contrib_link = '';
+    } else {
         initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(init.replaceAll(" ", "")) + '">' + init + '</a>';
-        //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer"' + 'Marc-AurèleVallée' + '">' + initiated + '</a>';                
         initiated = 'Initié par ' + initiated;
         if(edit[0] !== ''){
-          
-          edited = edit.map(editor => {
-return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
-});  
-          if(edited.length > 1){
-             edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
-          }
-          contrib = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+           edited = edit.map(editor => {
+             return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
+           });  
+           if(edited.length > 1){
+              edited = edited.slice(0, -1).join(', ') + ' et ' + edited[edited.length - 1];
+           }
+           contrib_link = '<span style="display: inline;">' + initiated + '&nbsp;et modifié par ' + edited + '. Mis à jour le ' + date + '.</span>';
         } else {
-          contrib = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + data[which].date.slice(0,10) + '.</span>';
+           contrib_link = '<span style="display: inline;">' + initiated + '. Mis à jour le ' + date + '.</span>';
         }
-    
-    const edit_link = "https://github.com/flore-quebec/species/tree/main/Esp%C3%A8ces/"+data[which].famille+"/"+data[which].genre+"/"+data[which].espèce.replace(" ","_")+".md";
-    edit.innerHTML = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
-    
-    
-    
+        
     };
+    edit_link = '<a class=\"edit\" href=\"' + edit_link + '\" target=\"_blank\">&nbsp;Éditez sur GitHub<img class="minioctocat" src="https://cdn.hebergix.com/fr/floreqc/github-mark.png"></a>';
+    return [contrib_link, edit_link];
   }
+
   
   
   function load_apropos() {
     const profileContainer = document.getElementById("apropos_content");
     profileContainer.innerHTML = '';
-    //const url = `https://raw.githubusercontent.com/flore-quebec/species/refs/heads/main/Esp%C3%A8ces/Asparagaceae/Polygonatum/Polygonatum_multiflorum.md`;
     const url = `https://raw.githubusercontent.com/flore-quebec/flore.quebec/refs/heads/main/apropos.md`;
-    
-
     return fetch(url)
         .then(response => response.text())
         .then(data => {

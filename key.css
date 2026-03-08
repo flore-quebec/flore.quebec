@@ -70,9 +70,9 @@
     .akey::before {
       position: absolute;
       content: "";
-      top: -15px; /* Expand area above */
-      bottom: -15px; /* Expand area below */
-      left: -15px; /* Expand area to the left */
-      right: -15px; /* Expand area to the right */
+      top: -30px; /* Expand area above */
+      bottom: -30px; /* Expand area below */
+      left: -30px; /* Expand area to the left */
+      right: -30px; /* Expand area to the right */
       background: transparent; /* Keeps it invisible */
     }

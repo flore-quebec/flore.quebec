@@ -42,17 +42,25 @@
 
   function extractAndDisplay(taxon) {
       const gettaxon = taxa.filter(tax => ((taxon === tax.taxa.replaceAll("_"," "))))[0];
+      console.log("gettaxon", gettaxon);
       const pathkey = gettaxon.key;
       const pathtaxon = gettaxon.key.replace("_clé.", "_taxon.");
       const urlkey = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathkey;
-      //const urlkey = "https://cdn.hebergix.com/fr/floreqc/viola.md";
-      //const urlkey = "https://raw.githubusercontent.com/flore-quebec/data/refs/heads/main/viola.md";
       const urltaxon = "https://raw.githubusercontent.com/flore-quebec/keys/refs/heads/main/" + pathtaxon;
       if(pathkey === ""){
-        document.getElementById("taxon_key").innerHTML = '';
-        document.getElementById("taxon_text").innerHTML = '';
-        disableKey();
+        resetKey();
       } else {
+        console.log('keys', keys);
+        const getcredittaxon = keys.filter(tax => ((pathtaxon === tax.file)))[0];
+        const getcreditkey = keys.filter(key => ((pathkey === key.file)))[0];
+        const taxatt = '';
+        if(getcredittaxon !== undefined){
+          const taxatt = load_attributions(getcredittaxon.initiated, getcredittaxon.edited.split(/,\s*/), 'taxon', getcredittaxon.date, getcredittaxon.file);
+          document.getElementById("contributortaxon").innerHTML = taxatt[0];
+          document.getElementById("edittaxon").innerHTML = taxatt[1];
+        }
+        const keyatt = load_attributions(getcreditkey.initiated, getcreditkey.edited.split(/,\s*/), 'taxon', getcreditkey.date, getcreditkey.file);    
+        console.log('getcreditkey', getcreditkey);
         Promise.all([
           fetch(urltaxon),
           fetch(urlkey)
@@ -64,14 +72,8 @@
               ]);
           })
           .then(([taxonText, keyText])  => {
-            //console.log(taxonText);
             document.getElementById("taxon_text").innerHTML = marked.parse(taxonText);
             return keyText;
-            
-            //let tex;
-            //const tex = ``;
-            //return tex;
-   
           })
           .then(texte => {
               // Regular expression to match italicized text (text wrapped in * or _)
@@ -86,6 +88,8 @@
               });                      
             
               const keyContainer = document.getElementById("taxon_key");
+              document.getElementById("contributorkey").innerHTML = keyatt[0];
+              document.getElementById("editkey").innerHTML = keyatt[1];
 
               // Clear previous results
               keyContainer.innerHTML = '';
