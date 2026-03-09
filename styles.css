@@ -261,18 +261,18 @@ body {
 .selected {
     color: var(--black);
     font-size: 6vmin; /* Larger font size for dropdowns */
-    padding-top: 2vmin;
+    padding-top: 1vh;
     padding-bottom: 1vmin;
     font-style: italic;
     font-weight: 500;
-    width: 82vw;
+    width: 88vw;
     border-radius: 2vmin;
     /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
     display: none;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 5vh;
+    justify-content: left;
+    margin-top: 0vh;
     margin-bottom: 0vh;
     background-color: var(--white); /* #f2f2f2; */
     /* border: 1px solid var(--transparentgreen); */
@@ -1317,6 +1317,7 @@ ul {
   width: 86vw;
   margin-left: 6vw;
   margin-right: 6vw;
+  margin-top: 2vh;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -1475,6 +1476,8 @@ ul {
         font-size: 1.4vmin;
         color: #bbb;
         margin-bottom: 2px;
+        font-style: normal;
+        font-weight: 300;
     }
 
     .value {

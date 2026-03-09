@@ -176,23 +176,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             };
             
             const taxonomy = document.getElementById('taxonomy');
-            
-            //taxonomy.innerHTML=data[which].class+'&nbsp>&nbsp'+data[which].ordre+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?famille='+data[which].famille+'>'+data[which].famille+'</a>'+'&nbsp>&nbsp'+'<a class=taxonomylink href='+window.location.pathname+'?genre='+data[which].genre+'>'+data[which].genre+'</a>'+section;
-            
-            const levels = ["class", "ordre", "famille", "sous-famille", "tribu", "sous-tribu", "genre", "sous-genre", "section"];
-            const levelnames = ["Classe", "Ordre", "Famille", "Sous-famille", "Tribu", "Sous-tribu", "Genre", "Sous-genre", "Section"];
-            const taxons = levels.map(level => data[which][level]);
-            console.log("taxons", taxons);
-            let tax = levels.map((level, index) => ({
-              level,
-              name: levelnames[index],
-              value: taxons[index],
-            }));
-            tax = tax.filter(item => item.value !== '');
-            console.log("tax", tax);
-            
-            set_taxonomy(tax);
-            
+            const tax = get_taxonomy(which);
+            set_taxonomy(tax, 'gridContainer');
             const right = document.getElementById('links');
 
 
@@ -309,6 +294,12 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             //document.getElementById("selected").style.display = 'flex';
             document.getElementById("imageGallery").style.display = 'flex';
             //document.getElementById("filters").style.display = 'flex';
+            
+            const w = data.findIndex(el => el[group] === taxon.replaceAll(' ','_'));
+            let taxo = get_taxonomy(w);
+            const icut = taxo.findIndex(el => el.level === group);
+            const taxocut = icut !== -1 ? taxo.slice(0, icut + 1) : taxo; // eliminates what comes after the target group
+            set_taxonomy(taxocut, 'taxContainer');
             
             const groups = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série"];
             
@@ -1624,10 +1615,8 @@ var eventHandler = function(name) {
   }
   
   
-  
-  
-  function set_taxonomy(tax){
-        const container = document.getElementById("gridContainer");
+  function set_taxonomy(tax, id){
+        const container = document.getElementById(id);
         container.innerHTML = '';
         const linkit = ["famille", "sous-famille", "tribu", "sous-tribu", "genre", "sous-genre", "section", "sous-section", "série"];
         tax.forEach((item, index) => {
@@ -1661,6 +1650,26 @@ var eventHandler = function(name) {
             }
         });
   }
+  
+  
+  function get_taxonomy(i){
+      const levels = ["class", "ordre", "famille", "sous-famille", "tribu", "sous-tribu", "genre", "sous-genre", "section"];
+      const levelnames = ["Classe", "Ordre", "Famille", "Sous-famille", "Tribu", "Sous-tribu", "Genre", "Sous-genre", "Section"];
+      console.log('data[i]', data[i]);
+      const taxons = levels.map(level => data[i][level]);
+      console.log("taxons", taxons);
+      let tax = levels.map((level, index) => ({
+        level,
+        name: levelnames[index],
+        value: taxons[index],
+      }));
+      tax = tax.filter(item => item.value !== '');
+      return tax
+  }
+  
+  
+  
+  
   
   function get_stats(){
     const nbfamily = new Set(data.map(item => item.famille)).size;
