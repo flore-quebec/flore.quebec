@@ -295,13 +295,15 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             document.getElementById("imageGallery").style.display = 'flex';
             //document.getElementById("filters").style.display = 'flex';
             
-            const w = data.findIndex(el => el[group] === taxon.replaceAll(' ','_'));
-            let taxo = get_taxonomy(w);
-            const icut = taxo.findIndex(el => el.level === group);
-            const taxocut = icut !== -1 ? taxo.slice(0, icut + 1) : taxo; // eliminates what comes after the target group
-            set_taxonomy(taxocut, 'taxContainer');
-            
             const groups = ["famille", "genre", "section", "sous-famille", "tribu", "sous-tribu", "sous-genre", "sous-section", "série"];
+            
+            if (groups.includes(group) || group === 'species') {
+              const w = data.findIndex(el => el[group] === taxon.replaceAll(' ','_'));
+              let taxo = get_taxonomy(w);
+              const icut = taxo.findIndex(el => el.level === group);
+              const taxocut = icut !== -1 ? taxo.slice(0, icut + 1) : taxo; // eliminates what comes after the target group
+              set_taxonomy(taxocut, 'taxContainer');            
+            }
             
             resetKey();
             //const text = document.getElementById("taxon_text");
