@@ -48,7 +48,7 @@ body {
     padding-bottom: 2vmin;
     margin-bottom: 0.0vmin;
     color: var(--white); /* Header text color */
-    border-bottom: 0px solid #00000015 ;
+    border-bottom: 1px solid #aaa ;
     border-top: 0px solid #00000015 ;
     border-top: 0px solid var(--green);
     box-shadow: 0px 0px #EEEEEE;
@@ -308,14 +308,14 @@ body {
 
 .image-container {
     width: 38vh; /* 33vh of the viewport height */
-    height: 40vh; /* 35vh of the viewport height */
+    height: 48vh; /* 35vh of the viewport height */
     margin: 0.75vw;
     position: relative;
     border-radius: 15px; /* Rounded corners for image containers */
-    /* overflow: hidden; */
-    box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
-    border: 0px solid #999;
-    background-color: #ddd;
+    overflow: hidden;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.3); /* 0 4px 6px 0.1 Box shadow for images 4px 6px */
+    border: 1px solid #ccc;
+    background-color: #fff;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -332,11 +332,11 @@ body {
 
 .image {
     width: 100%; /* hack for underflow problem of image with title area */
-    height: 100%;
+    height: 80%;
     object-fit: cover;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    border-radius: 15px; /* Rounded corners for images */
+    border-radius: 0px 0px 0px 0px; /* Rounded corners for images */
     transform: none;
     background-color: #ddd;
 }
@@ -347,7 +347,7 @@ body {
 
 @media only screen and (max-width: 600px) {
   .image {
-    border-radius: 5px; /* Rounded corners for images */
+    border-radius: 4px 4px 0px 0px; /* Rounded corners for images */
   }
   
   .image-container:hover {
@@ -358,18 +358,19 @@ body {
 
 .image-title {
     position: absolute;
-    bottom: 2%;
-    left: 2%;
-    width: 96%;
+    top: 91%;
+    left: 4%;
+    width: 75%;
+    transform: translate(0%, -50%); /*shifts the element left by 0% of its own width and up by 50%*/
     background-color: rgba(255, 255, 255, 0.85); /* White background with transparency */
     color: #000; /* Black title text */
     text-shadow: 0px 0px #555;
     padding: 0px; /* Larger padding for title */
-    padding-top: 6px; /* Larger padding for title */
-    padding-bottom: 1px; /* Larger padding for title */
-    font-size: 2.45vmin; /* Larger font size for title */
+    padding-top: 0px; /* Larger padding for title */
+    padding-bottom: 0px; /* Larger padding for title */
+    font-size: clamp(1.1vmin, 2.75vmin, 2.75vmin); /*2.25vmin; /* Larger font size for title */
     font-style: italic;
-    text-align: center;
+    text-align: left;
     border-radius: 15px 15px 15px 15px; /* Rounded corners at the bottom */
     font-weight: normal; /* Bold title text */
     border-left: 0px solid #fff;
@@ -383,7 +384,7 @@ body {
 .image-credit {
     color: #555; /* Black title text */
     padding: 2px; /* Larger padding for title */
-    font-size: 1.2vmin; /* Larger font size for title */
+    font-size: 1.1vmin; /* Larger font size for title */
     text-align: left;
     border-radius: 0 0 15px 15px; /* Rounded corners at the bottom */
     font-weight: 300; /* Bold title text */
@@ -395,13 +396,13 @@ body {
     .image-title {
         text-shadow: 0px 0px #555;
         border-radius: 5px 5px 5px 5px; /* Rounded corners at the bottom */
-        font-size: 4vmin; /* Larger font size for title */
+        font-size: 3.5vmin; /* Larger font size for title */
         padding-bottom: 0px; /* Larger padding for title */
     }
 
     .image-credit {
         border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-        font-size: 2.5vmin; /* Larger font size for title */
+        font-size: 1.75vmin; /* Larger font size for title */
     }
 }
 
@@ -410,7 +411,7 @@ body {
 
 .image-map {
     position: absolute;
-    top: 2%;
+    top: 80%;
     right: 0%;
     width: 23%;
     background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
@@ -418,6 +419,7 @@ body {
     padding: 0px; /* Larger padding for title */
     padding-top: 0px; /* Larger padding for title */
     padding-bottom: 0px; /* Larger padding for title */
+    margin-right: 0px;
     font-size: 2.45vh; /* Larger font size for title */
     font-style: italic;
     text-align: center;
@@ -427,16 +429,16 @@ body {
 
 .image-map-mini {
     height: 9vh;
-    opacity: 0.90;
+    opacity: 0.99;
 }
 
 
 @media only screen and (max-width: 600px) {
     .image-map {
         position: absolute;
-        top: 1%;
+        top: 80%;
         right: 0%;
-        width: 30%;
+        width: 20%;
         background-color: rgba(255, 255, 255, 0.01); /* White background with transparency */
         color: black; /* Black title text */
         padding: 0px; /* Larger padding for title */
@@ -448,8 +450,8 @@ body {
         font-weight: normal; /* Bold title text */
     }
     .image-map-mini {
-        height: 7vh;
-        opacity: 0.9;
+        height: 5vh;
+        opacity: 0.99;
     }
 }
 

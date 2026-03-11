@@ -490,7 +490,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                 imageElement.innerHTML = `
                       <img class="image" loading="lazy" src=${image.src} alt=${image.alt}>
                       <div class="image-title">
-                        ${spname}<br>
+                        ${spname}<br><div style="margin-top: 0.0vh;"></div>
                         <span class="image-credit">${image.credit[0].replace(', some rights reserved','').replace(', no rights reserved','')}</span>
                       </div>
                       <div class="image-map">
