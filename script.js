@@ -1729,7 +1729,7 @@ var eventHandler = function(name) {
       edit_link = 'https://github.com/flore-quebec/keys/blob/main/' + path;
     }
     console.log('init', init);
-    if(init === '' || init === 'NA'){ // just fill the column with "" in data
+    if(init.length === 0 || init.join() === 'NA'){
         contrib_link = '';
     } else {
         //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(init.replaceAll(" ", "")) + '">' + init + '</a>';
