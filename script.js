@@ -95,7 +95,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
                   //.then(r => r.blob()) # useful if what is read is not necessarily text?
                   .then(b => b.text())
                   .then(m => {
-                    let mm = taxa_links(m, headerText);
+                    let mm = remove_credits(m);
+                    mm = taxa_links(mm, headerText);
                     modalText.innerHTML=marked.parse(mm);
                   });
                 const ct = document.getElementById("textchange");
@@ -1772,6 +1773,17 @@ var eventHandler = function(name) {
         })
   }
   
+  
+  function remove_credits(text) {
+      const pattern = /^(Auteurs?|Modifié par|Édité par|Adapté par|Rédigé par)\s*:.*$/gmi;
+      const results = text.match(pattern) || [];    
+      const remaining = text.split('\n')
+        .filter(line => !results.includes(line))
+        .join('\n');
+      return remaining;
+  }
+  
+
   
   //load_contributions();
 /*  

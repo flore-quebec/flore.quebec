@@ -74,8 +74,9 @@
               ]);
           })
           .then(([taxonText, keyText])  => {
-            document.getElementById("taxon_text").innerHTML = marked.parse(taxonText);
-            return keyText;
+            let mm = remove_credits(taxonText);
+            document.getElementById("taxon_text").innerHTML = marked.parse(mm);
+            return remove_credits(keyText);
           })
           .then(texte => {
               // Regular expression to match italicized text (text wrapped in * or _)
