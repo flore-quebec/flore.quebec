@@ -388,7 +388,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
               //selected = speciesSelect.value;
               //last_value = genreSelect.value;
               filteredImages = data.filter(image => (
-                (taxon === image["initiated"])
+                (image["initiated"].includes(taxon))
               ));
             } else if (group === 'modifié') {
               document.getElementById("selected").style.display = 'none';
@@ -1524,13 +1524,14 @@ var eventHandler = function(name) {
 
         // Fetch Markdown content and process it
         return fetch(url)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                return response.text();
+            })
             .then(data => {
-                // Convert Markdown to HTML
                 bio.innerHTML = marked.parse(data);
-
+                comments = data.match(/<!--(.*?)-->/gs);
                 // Extract comments for images
-                const comments = data.match(/<!--(.*?)-->/gs);
                 if (comments) {
                     comments.forEach(comment => {
                         const avatar = comment.replace(/<!--|-->/g, '').trim();
@@ -1538,13 +1539,19 @@ var eventHandler = function(name) {
                     });
                 }
             })
-            .catch(error => console.error('Error fetching the Markdown file:', error))
+            .catch(error => { // to get a profile if the contributor does not have a bio yet
+                console.error('Error fetching the Markdown file:', error);
+                bio.innerHTML = '<b>' + cont.name + '<b>';
+                profile.appendChild(stats);
+                profile.appendChild(bio);
+                profile.appendChild(pic);
+                return profile; // Return the complete profile element
+            })
             .then(() => {
                 // Append stats, bio, and pic to the profile
                 profile.appendChild(stats);
                 profile.appendChild(bio);
                 profile.appendChild(pic);
-
                 return profile; // Return the complete profile element
             });
     });
