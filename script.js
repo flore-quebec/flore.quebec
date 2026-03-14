@@ -1724,9 +1724,18 @@ var eventHandler = function(name) {
     if(init === '' || init === 'NA'){ // just fill the column with "" in data
         contrib_link = '';
     } else {
-        initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(init.replaceAll(" ", "")) + '">' + init + '</a>';
+        //initiated = '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(init.replaceAll(" ", "")) + '">' + init + '</a>';
+        //initiated = 'Initié par ' + initiated;
+        
+        initiated = init.map(initiator => {
+         return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(initiator.replaceAll(" ", "")) + '">' + initiator + '</a>';
+        });  
+        if(initiated.length > 1){
+          initiated = initiated.slice(0, -1).join(', ') + ' et ' + initiated[initiated.length - 1];
+        }        
         initiated = 'Initié par ' + initiated;
-        if(edit[0] !== ''){
+        //console.log('edit[0]', edit[0]);
+        if(edit[0] !== '' && edit[0] !== undefined){
            edited = edit.map(editor => {
              return '<a style="all: unset; cursor: pointer;" href="?page=Contribuer#' + encodeURIComponent(editor.replaceAll(" ", "")) + '">' + editor + '</a>';
            });  

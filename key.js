@@ -55,11 +55,13 @@
         const getcreditkey = keys.filter(key => ((pathkey === key.file)))[0];
         const taxatt = '';
         if(getcredittaxon !== undefined){
-          const taxatt = load_attributions(getcredittaxon.initiated, getcredittaxon.edited.split(/,\s*/), 'taxon', getcredittaxon.date, getcredittaxon.file);
+          //console.log('getcredittaxon.initiated', getcredittaxon.initiated);
+          //console.log('getcredittaxon.edited', getcredittaxon.edited);
+          const taxatt = load_attributions(getcredittaxon.initiated, getcredittaxon.edited, 'taxon', getcredittaxon.date, getcredittaxon.file);
           document.getElementById("contributortaxon").innerHTML = taxatt[0];
           document.getElementById("edittaxon").innerHTML = taxatt[1];
         }
-        const keyatt = load_attributions(getcreditkey.initiated, getcreditkey.edited.split(/,\s*/), 'taxon', getcreditkey.date, getcreditkey.file);    
+        const keyatt = load_attributions(getcreditkey.initiated, getcreditkey.edited, 'taxon', getcreditkey.date, getcreditkey.file);    
         console.log('getcreditkey', getcreditkey);
         Promise.all([
           fetch(urltaxon),
