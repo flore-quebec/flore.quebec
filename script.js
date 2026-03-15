@@ -466,7 +466,10 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
 
 
             // Clear the current gallery
-            imageGallery.innerHTML = '';
+            //imageGallery.innerHTML = '';
+            document.querySelectorAll("#imageGallery > :not(#accueil)").forEach(el => el.remove());
+            document.getElementById("sitestats").style.display = 'none';
+	          document.getElementById("welcome").style.display = 'none';
 
             // Add filtered images to the gallery
             filteredImages.forEach(image => {
@@ -1709,8 +1712,9 @@ var eventHandler = function(name) {
       div.style.boxShadow = '1px 1px 3px rgba(0, 0, 0, 0.2)';
       div.innerHTML = key + ': ' + value[0];
       stats.appendChild(div);
-      stats.style.display = 'flex';
+      //stats.style.display = 'flex';
     });
+    document.getElementById("sitestats").style.display = 'flex';
   }
   //get_stats();
 
