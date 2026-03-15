@@ -290,7 +290,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             console.log("*** Entering updateGallery ***");
           
             document.getElementById("hexagon-gallery").style.display = 'none';
-
+            document.getElementById("sitestats").style.display = 'none';
+            document.getElementById("welcome").style.display = 'none';
             document.getElementById("modal-content").style.display = 'none';
             //document.getElementById("selected").style.display = 'flex';
             document.getElementById("imageGallery").style.display = 'flex';
@@ -1162,6 +1163,8 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
             const querystring = window.location.search.substring(1);
             if(querystring !== ''){
               document.getElementById("hexagon-gallery").style.display = 'none';
+              document.getElementById("sitestats").style.display = 'none';
+              document.getElementById("welcome").style.display = 'none';
             };
             //  document.getElementById("hexagon-gallery").style.display = 'none';
             //};
@@ -1230,6 +1233,7 @@ et les supérieurs resserrés, ce qui lui donne une apparence unique.`;
           //history.pushState({ "page": window.location.href }, '', window.location.href); 
           
           if(querystring == ''){
+            set_welcome();
             set_hex();
             get_stats();
           };
@@ -1410,6 +1414,8 @@ var eventHandler = function(name) {
   const taxon = tomselect.getValue();
   const level = tomselect.options[taxon].level;
 	document.getElementById("hexagon-gallery").style.display = 'none';
+	document.getElementById("sitestats").style.display = 'none';
+	document.getElementById("welcome").style.display = 'none';
 	document.getElementById("Home").style.display = 'contents';
 	document.getElementById("Explorer").style.display = 'none';
 	document.getElementById("Contribuer").style.display = 'none';
@@ -1703,11 +1709,15 @@ var eventHandler = function(name) {
       div.style.boxShadow = '1px 1px 3px rgba(0, 0, 0, 0.2)';
       div.innerHTML = key + ': ' + value[0];
       stats.appendChild(div);
+      stats.style.display = 'flex';
     });
   }
   //get_stats();
 
-  
+  function set_welcome(){
+    const welcome = document.getElementById("welcome");
+    welcome.style.display = 'block';
+  }
   
   function load_attributions(init, edit, sp, datem, path){
   

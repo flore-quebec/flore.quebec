@@ -624,6 +624,7 @@ h2 {
     color: var(--green);
     flex-wrap: wrap;
     text-align: center;
+    display: none;
 }
 .construction {
     width: 100%;
@@ -635,7 +636,7 @@ h2 {
 }
 
 .sitestats {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
