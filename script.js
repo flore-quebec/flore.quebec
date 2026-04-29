@@ -1696,7 +1696,7 @@ var eventHandler = function(name) {
     const nbspecies = new Set(data.map(item => item.espèce)).size;
     const nbaccounts = new Set(data.map(item => item.date)).size - 1;
     const nbkeys = taxa.filter(item => item.key !== "").length;
-    const nbcontributors = new Set(data.map(item => item.initiated)).size - 1;
+    const nbcontributors = new Set(data.flatMap(item => item.initiated)).size - 1;
     const nbphotos = new Set(data.flatMap(item => item.images)).size;
     const nbphotographers = new Set(data.flatMap(item => item.credit)).size;
     const nblinks = new Set(data.flatMap(item => item.link)).size;
